@@ -1,0 +1,23 @@
+.tape {
+    display: table;
+    table-layout: fixed;
+    padding: 5px;
+}
+
+.square {
+    display: table-cell;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 1px;
+    width: 20px;
+    height: 20px;
+}
+
+.tape .square:last-child {
+    border-right: 1px solid black;
+}
+
+.index {
+    background-color: yellow;
+}

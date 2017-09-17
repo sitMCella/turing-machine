@@ -1,0 +1,16 @@
+<div class="title">One third Turing machine</div>
+<div class="reference" (click)="navigateTo('')">Back to Turing machines catalog</div>
+<div class="configuration">
+  <div>
+    <table>
+      <tr><th>m-config</th><th>symbol</th><th>operations</th><th>final m-config</th></tr>
+      <tr><td>b</td><td>none</td><td>P0,R</td><td>c</td></tr>
+      <tr><td>c</td><td>none</td><td>R</td><td>e</td></tr>
+      <tr><td>e</td><td>none</td><td>P1,R</td><td>f</td></tr>
+      <tr><td>f</td><td>none</td><td>R</td><td>b</td></tr>
+    </table>
+  </div>
+  <div class="app-tape">
+    <app-tape [algorithmService]="algorithm"></app-tape>
+  </div>
+</div>
