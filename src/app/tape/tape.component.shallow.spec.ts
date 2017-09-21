@@ -11,15 +11,15 @@ describe('TapeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TapeComponent ]
+      declarations: [TapeComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TapeComponent);
     component = fixture.componentInstance;
-    component.algorithmService = new OneThirdAlgorithmService();
+    component.algorithm = new OneThirdAlgorithmServiceStub();
     fixture.detectChanges();
   });
 
@@ -33,18 +33,14 @@ describe('TapeComponent', () => {
     expect(compiled.querySelectorAll('.tape').length).toBeGreaterThanOrEqual(1);
   });
 
-  describe('each tape', () => {
 
-    it('should contain 20 squares', () => {
-      const compiled: any = fixture.debugElement.nativeElement;
-      const tapes: any = compiled.querySelectorAll('.tape');
-      for (let i = 0; i < tapes.length; i++) {
-        const squares: any = tapes[i].querySelectorAll('.square');
-        expect(squares == null).toBeFalsy();
-        expect(squares.length).toEqual(20);
-      }
-    });
+  class OneThirdAlgorithmServiceStub extends OneThirdAlgorithmService {
+    constructor() {
+      super();
+    }
 
-  });
+    public evolve(): void {
+    }
+  }
 
 });

@@ -13,12 +13,12 @@ describe('MachinesCatalogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MachinesCatalogComponent ],
+      declarations: [MachinesCatalogComponent],
       providers: [
         { provide: Router, useClass: RouterStub }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

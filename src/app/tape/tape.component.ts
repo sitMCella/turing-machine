@@ -13,12 +13,20 @@ import { Square } from '../square';
 export class TapeComponent implements OnInit {
 
   @Input()
-  public algorithmService: OneThirdAlgorithmService;
+  public algorithm: OneThirdAlgorithmService;
 
   public machineStatus: Array<MachineStatus> = [];
 
+  private anyErrors = false;
+  private finished = false;
+
   ngOnInit() {
-    this.machineStatus = this.algorithmService.evolve();
+    const subscription = this.algorithm.machineStatusObservable.subscribe(
+      value => this.machineStatus.push(<MachineStatus>value),
+      error => this.anyErrors = true,
+      () => this.finished = true
+    );
+    this.algorithm.evolve();
   }
 
 }

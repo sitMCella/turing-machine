@@ -22,7 +22,7 @@ describe('OneThirdMachineComponent', () => {
         { provide: Router, useClass: RouterStub }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,21 +36,21 @@ describe('OneThirdMachineComponent', () => {
   });
 
   it('should show title', () => {
-    const compiled = fixture.debugElement.nativeElement;
-      const title: HTMLElement = compiled.querySelector('.title');
-      expect(title == null).toBeFalsy();
-      expect(title.innerHTML).toBe('One third Turing machine');
+    const compiled: any = fixture.debugElement.nativeElement;
+    const title: HTMLElement = compiled.querySelector('.title');
+    expect(title == null).toBeFalsy();
+    expect(title.innerHTML).toBe('One third Turing machine');
   });
 
   it('should show link to turing machines catalog', () => {
-    const compiled = fixture.debugElement.nativeElement;
-      const reference: HTMLElement = compiled.querySelector('.reference');
-      expect(reference == null).toBeFalsy();
+    const compiled: any = fixture.debugElement.nativeElement;
+    const reference: HTMLElement = compiled.querySelector('.reference');
+    expect(reference == null).toBeFalsy();
   });
 
   it('should open the turing machines catalog', inject([Router], (router: Router) => {
     const spy = spyOn(router, 'navigateByUrl');
-    const compiled = fixture.debugElement.nativeElement;
+    const compiled: any = fixture.debugElement.nativeElement;
     const reference: HTMLElement = compiled.querySelector('.reference');
 
     reference.click();
@@ -59,16 +59,30 @@ describe('OneThirdMachineComponent', () => {
   }));
 
   it('should show turing machine configuration', () => {
-    const compiled = fixture.debugElement.nativeElement;
-      const configuration: HTMLElement = compiled.querySelector('.configuration');
-      expect(configuration == null).toBeFalsy();
+    const compiled: any = fixture.debugElement.nativeElement;
+    const configuration: HTMLElement = compiled.querySelector('.configuration');
+    expect(configuration == null).toBeFalsy();
   });
 
   it('should show at least one tape', () => {
-    const compiled = fixture.debugElement.nativeElement;
+    const compiled: any = fixture.debugElement.nativeElement;
+    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+    expect(tapes == null).toBeFalsy();
+    expect(tapes.length).toBeGreaterThanOrEqual(1);
+  });
+
+  describe('each tape', () => {
+
+    it('should contain 20 squares', () => {
+      const compiled: any = fixture.debugElement.nativeElement;
       const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
-      expect(tapes == null).toBeFalsy();
-      expect(tapes.length).toBeGreaterThanOrEqual(1);
+      for (let i = 0; i < tapes.length; i++) {
+        const squares: any = tapes[i].querySelectorAll('.square');
+        expect(squares == null).toBeFalsy();
+        expect(squares.length).toEqual(20);
+      }
+    });
+
   });
 
 });

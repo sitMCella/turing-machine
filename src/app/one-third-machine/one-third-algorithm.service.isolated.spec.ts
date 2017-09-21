@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
 import { MachineStatus } from '../machine-status';
@@ -12,27 +12,30 @@ describe('OneThirdAlgorithmService', () => {
     oneThirdAlgorithmService = new OneThirdAlgorithmService();
   });
 
-  it('should have an initial machine status', () => {
-    const firstMachineStatus: MachineStatus = oneThirdAlgorithmService.getFirstMachineStatus();
-
-    for (let i = 0; i < firstMachineStatus.tape.squares.length; i++) {
-      expect(firstMachineStatus.tape.squares[i].id).toBe(i + 1);
-      expect(firstMachineStatus.tape.squares[i].value).toBe('');
-    }
-    expect(firstMachineStatus.index).toBe(0);
-  });
+  it('should have an initial machine status', async(() => {
+    oneThirdAlgorithmService.machineStatusObservable.subscribe(status => {
+      for (let i = 0; i < status.tape.squares.length; i++) {
+        expect(status.tape.squares[i].id).toBe(i + 1);
+        expect(status.tape.squares[i].value).toBe('');
+      }
+      expect(status.index).toBe(0);
+    });
+  }));
 
   describe('evolve', () => {
 
-    it('should create 20 machine status', () => {
-      const machineStatus: Array<MachineStatus> = oneThirdAlgorithmService.evolve();
+    const machineStatus: Array<MachineStatus> = [];
 
-      expect(machineStatus.length).toBe(20);
-    });
+    it('should create 20 machine status', async(() => {
+      oneThirdAlgorithmService.evolve();
 
-    it('should create machine status', () => {
-      const machineStatus: Array<MachineStatus> = oneThirdAlgorithmService.evolve();
+      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+        status => machineStatus.push(status),
+        error => console.log(error),
+        () => expect(machineStatus.length).toBe(20));
+    }));
 
+    it('should create machine status', async(() => {
       const expectedSquareValues: Array<Array<string>> = [
         ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
         ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -56,14 +59,18 @@ describe('OneThirdAlgorithmService', () => {
         ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '']
       ];
 
-      for (let tapeIndex = 0; tapeIndex < machineStatus.length; tapeIndex++) {
-        for (let squareIndex = 0; squareIndex < machineStatus[tapeIndex].tape.squares.length; squareIndex++) {
-          expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-          expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
-        }
-        expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
-      }
-    });
+      let tapeIndex = 0;
+      oneThirdAlgorithmService.machineStatusObservable.subscribe(status => {
+          for (let squareIndex = 0; squareIndex < status.tape.squares.length; squareIndex++) {
+            expect(status.tape.squares[squareIndex].id).toBe(squareIndex + 1);
+            expect(status.tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+          }
+          expect(status.index).toBe(tapeIndex);
+          tapeIndex++;
+      });
+
+      oneThirdAlgorithmService.evolve();
+    }));
 
   });
 

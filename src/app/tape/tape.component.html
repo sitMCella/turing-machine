@@ -1,8 +1,6 @@
-<div *ngIf="machineStatus">
-  <div class="tape" *ngFor="let status of machineStatus">
-    <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
-      [ngClass]="{'index': status.index == i}">
-      {{square.value}}
-    </span>
-  </div>
+<div class="tape" *ngFor="let status of machineStatus">
+  <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
+    [ngClass]="{'index': status.index == i}">
+    {{square.value}}
+  </span>
 </div>
