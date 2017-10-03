@@ -10,13 +10,13 @@ import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.
       {
         path: '',
         component: MachinesCatalogComponent
-    },
-    {
+      },
+      {
         path: 'one-third',
         component: OneThirdMachineComponent
-    }
+      }
     ])
   ],
-  exports: [ RouterModule ] // re-export the module declarations
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

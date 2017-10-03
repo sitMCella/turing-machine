@@ -22,17 +22,20 @@ describe('OneThirdAlgorithmService', () => {
     });
   }));
 
+  it('should initially have completed as false', () => {
+    expect(oneThirdAlgorithmService.completed).toBeFalsy();
+  });
+
   describe('evolve', () => {
 
-    const machineStatus: Array<MachineStatus> = [];
-
     it('should create 20 machine status', async(() => {
-      oneThirdAlgorithmService.evolve();
-
+      const machineStatus: Array<MachineStatus> = [];
       oneThirdAlgorithmService.machineStatusObservable.subscribe(
         status => machineStatus.push(status),
         error => console.log(error),
         () => expect(machineStatus.length).toBe(20));
+
+      oneThirdAlgorithmService.evolve();
     }));
 
     it('should create machine status', async(() => {
@@ -61,15 +64,51 @@ describe('OneThirdAlgorithmService', () => {
 
       let tapeIndex = 0;
       oneThirdAlgorithmService.machineStatusObservable.subscribe(status => {
-          for (let squareIndex = 0; squareIndex < status.tape.squares.length; squareIndex++) {
-            expect(status.tape.squares[squareIndex].id).toBe(squareIndex + 1);
-            expect(status.tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
-          }
-          expect(status.index).toBe(tapeIndex);
-          tapeIndex++;
+        for (let squareIndex = 0; squareIndex < status.tape.squares.length; squareIndex++) {
+          expect(status.tape.squares[squareIndex].id).toBe(squareIndex + 1);
+          expect(status.tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+        }
+        expect(status.index).toBe(tapeIndex);
+        tapeIndex++;
       });
 
       oneThirdAlgorithmService.evolve();
+    }));
+
+    it('should set completed as true if evolution is complete', async(() => {
+      oneThirdAlgorithmService.evolve();
+
+      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+        status => { },
+        error => console.log(error),
+        () => expect(this.completed).toBeTruthy());
+    }));
+
+  });
+
+  describe('stop', () => {
+
+    it('should stop algorithm evolution', async(() => {
+      const machineStatus: Array<MachineStatus> = [];
+      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+        status => machineStatus.push(status),
+        error => console.log(error),
+        () => expect(machineStatus.length).toBeLessThan(20));
+
+      oneThirdAlgorithmService.evolve();
+
+      oneThirdAlgorithmService.stop();
+    }));
+
+    it('should set completed as true', async(() => {
+      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+        status => { },
+        error => console.log(error),
+        () => expect(this.completed).toBeTruthy());
+
+      oneThirdAlgorithmService.evolve();
+
+      oneThirdAlgorithmService.stop();
     }));
 
   });

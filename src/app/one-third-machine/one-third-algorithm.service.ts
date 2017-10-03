@@ -12,11 +12,13 @@ import { Tape } from '../tape';
 
 export class OneThirdAlgorithmService {
   public readonly machineStatusObservable: Observable<MachineStatus>;
+  public completed: boolean;
 
-  private configurations: Array<Configuration>;
   private maxIterations = 20;
-  private machineStatus: BehaviorSubject<MachineStatus>;
   private actualStatus: MachineStatus;
+  private machineStatus: BehaviorSubject<MachineStatus>;
+  private configurations: Array<Configuration>;
+  private continue: boolean;
 
   constructor() {
     const squares: Array<Square> = [];
@@ -33,15 +35,22 @@ export class OneThirdAlgorithmService {
     const thirdConfiguration = new Configuration('e', '', [new PrintOneOperation(), new MoveRightOperation()], 'f');
     const fourthConfiguration = new Configuration('f', '', [new MoveRightOperation()], 'b');
     this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration, fourthConfiguration];
+    this.continue = true;
+    this.completed = false;
   }
 
   public evolve(): void {
     let configuration: Configuration = this.configurations[0];
-    for (let i = 1; i < this.maxIterations; i++) {
+    for (let i = 1; i < this.maxIterations && this.continue; i++) {
       this.actualStatus = configuration.evolve(this.actualStatus);
       this.machineStatus.next(this.actualStatus);
       configuration = this.findConfigurationFrom(configuration.finalConfigurationName);
     }
+    this.completed = true;
+  }
+
+  public stop(): void {
+    this.continue = false;
   }
 
   private findConfigurationFrom(name: string): Configuration {

@@ -20,7 +20,7 @@ describe('AppComponent', () => {
         TapeComponent
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue : '/' }
+        { provide: APP_BASE_HREF, useValue: '/' }
       ],
       imports: [
         AppRoutingModule

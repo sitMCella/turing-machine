@@ -18,8 +18,12 @@ export class OneThirdMachineComponent implements OnInit {
     this.algorithm = new OneThirdAlgorithmService();
   }
 
-  public navigateTo(path: string) {
+  public navigateTo(path: string): void {
     this.router.navigateByUrl(path);
+  }
+
+  public stop(): void {
+    this.algorithm.stop();
   }
 
 }
