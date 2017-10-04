@@ -28,7 +28,7 @@ describe('OneThirdAlgorithmService', () => {
 
   describe('evolve', () => {
 
-    it('should create 20 machine status', async(() => {
+    it('should create 20 machine statuses', async(() => {
       const machineStatus: Array<MachineStatus> = [];
       oneThirdAlgorithmService.machineStatusObservable.subscribe(
         status => machineStatus.push(status),
@@ -38,7 +38,7 @@ describe('OneThirdAlgorithmService', () => {
       oneThirdAlgorithmService.evolve();
     }));
 
-    it('should create machine status', async(() => {
+    it('should create machine statuses', async(() => {
       const expectedSquareValues: Array<Array<string>> = [
         ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
         ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -110,6 +110,20 @@ describe('OneThirdAlgorithmService', () => {
 
       oneThirdAlgorithmService.stop();
     }));
+
+  });
+
+  describe('getDefaultInitialTape', () => {
+
+    it('should return the default initial tape', () => {
+      const tape: Tape = oneThirdAlgorithmService.getDefaultInitialTape();
+      expect(tape).not.toBeNull();
+      expect(tape.squares.length).toBe(20);
+      for (let i = 0; i < tape.squares.length; i++) {
+        expect(tape.squares[i].id).toBe(i + 1);
+        expect(tape.squares[i].value).toBe('');
+      }
+    });
 
   });
 

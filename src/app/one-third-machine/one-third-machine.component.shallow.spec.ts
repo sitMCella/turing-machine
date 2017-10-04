@@ -85,15 +85,4 @@ describe('OneThirdMachineComponent', () => {
 
   });
 
-  it('should stop algorithm evolution', () => {
-    const compiled: any = fixture.debugElement.nativeElement;
-    const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
-
-    stopButton.click();
-
-    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
-    expect(tapes == null).toBeFalsy();
-    expect(tapes.length).toBeLessThanOrEqual(20);
-  });
-
 });

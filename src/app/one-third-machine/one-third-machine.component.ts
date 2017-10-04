@@ -22,8 +22,4 @@ export class OneThirdMachineComponent implements OnInit {
     this.router.navigateByUrl(path);
   }
 
-  public stop(): void {
-    this.algorithm.stop();
-  }
-
 }

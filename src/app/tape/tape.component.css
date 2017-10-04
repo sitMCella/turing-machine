@@ -1,3 +1,14 @@
+.actions {
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.stop {    
+    text-align: center;
+}
+
+.initial-tape,
 .tape {
     display: table;
     table-layout: fixed;
@@ -14,7 +25,7 @@
     height: 20px;
 }
 
-.tape .square:last-child {
+.square:last-child {
     border-right: 1px solid black;
 }
 

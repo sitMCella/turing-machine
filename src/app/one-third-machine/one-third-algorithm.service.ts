@@ -14,18 +14,18 @@ export class OneThirdAlgorithmService {
   public readonly machineStatusObservable: Observable<MachineStatus>;
   public completed: boolean;
 
-  private maxIterations = 20;
+  private defaultMaxIterations = 20;
+  private maxIterations;
+  private defaultInitialTape: Tape;
   private actualStatus: MachineStatus;
   private machineStatus: BehaviorSubject<MachineStatus>;
   private configurations: Array<Configuration>;
   private continue: boolean;
 
   constructor() {
-    const squares: Array<Square> = [];
-    for (let i = 0; i < this.maxIterations; i++) {
-      squares[i] = new Square(i + 1, '');
-    }
-    const initialTape: Tape = new Tape(squares);
+    this.maxIterations = this.defaultMaxIterations;
+    this.defaultInitialTape = this.createDefaultInitialTape();
+    const initialTape: Tape = this.defaultInitialTape;
     this.actualStatus = new MachineStatus(initialTape, 0);
     this.machineStatus = new BehaviorSubject(this.actualStatus);
     this.machineStatusObservable = this.machineStatus.asObservable();
@@ -51,6 +51,18 @@ export class OneThirdAlgorithmService {
 
   public stop(): void {
     this.continue = false;
+  }
+
+  public getDefaultInitialTape(): Tape {
+    return this.defaultInitialTape;
+  }
+
+  private createDefaultInitialTape(): Tape {
+    const squares: Array<Square> = [];
+    for (let i = 0; i < this.defaultMaxIterations; i++) {
+      squares[i] = new Square(i + 1, '');
+    }
+    return new Tape(squares);
   }
 
   private findConfigurationFrom(name: string): Configuration {

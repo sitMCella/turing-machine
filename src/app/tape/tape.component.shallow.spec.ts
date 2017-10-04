@@ -27,12 +27,49 @@ describe('TapeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain at least one tape', () => {
+  it('should contains the default initial tape', () => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelectorAll('.tape') == null).toBeFalsy();
-    expect(compiled.querySelectorAll('.tape').length).toBeGreaterThanOrEqual(1);
+    const initialTape: HTMLElement = compiled.querySelector('.initial-tape');
+    expect(initialTape).not.toBeNull();
+    expect(initialTape).not.toBeUndefined();
   });
 
+  it('should contains the default initial tape with 20 squares', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
+    expect(squares).not.toBeNull();
+    expect(squares).not.toBeUndefined();
+    expect(squares.length).toBe(20);
+  });
+
+  it('should contains the stop button', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
+    expect(stopButton).not.toBeNull();
+    expect(stopButton).not.toBeUndefined();
+  });
+
+  it('should contains at least one tape', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+    expect(tapes == null).toBeFalsy();
+    expect(tapes.length).toBeGreaterThanOrEqual(1);
+  });
+
+  describe('stop button', () => {
+
+    it('should stop algorithm evolution', () => {
+      const compiled: any = fixture.debugElement.nativeElement;
+      const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
+
+      stopButton.click();
+
+      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+      expect(tapes == null).toBeFalsy();
+      expect(tapes.length).toBeLessThanOrEqual(20);
+    });
+
+  });
 
   class OneThirdAlgorithmServiceStub extends OneThirdAlgorithmService {
     constructor() {

@@ -1,3 +1,12 @@
+<div>Initial tape:</div>
+<div class="initial-tape">
+  <span class="square" *ngFor="let square of initialTape.squares">
+    {{square.value}}
+  </span>
+</div>
+<div class="actions">
+  <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
+</div>
 <div class="tape" *ngFor="let status of machineStatus">
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
     [ngClass]="{'index': status.index == i}">
