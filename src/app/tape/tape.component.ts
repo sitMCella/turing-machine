@@ -4,6 +4,7 @@ import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
 import { DeepCopy } from '../deep-copy';
+import { Algorithm } from '../algorithm';
 
 @Component({
   selector: 'app-tape',
@@ -13,7 +14,7 @@ import { DeepCopy } from '../deep-copy';
 export class TapeComponent implements OnInit {
 
   @Input()
-  public algorithm: OneThirdAlgorithmService;
+  public algorithm: Algorithm;
 
   public initialTape: Tape;
   public machineStatus: Array<MachineStatus> = [];
@@ -29,7 +30,12 @@ export class TapeComponent implements OnInit {
       error => this.anyErrors = true,
       () => this.finished = true
     );
-    this.algorithm.evolve();
+    this.algorithm.evolve(this.algorithm.getDefaultInitialTape());
+  }
+
+  public evolve(): void {
+    this.machineStatus = [];
+    this.algorithm.evolve(this.initialTape);
   }
 
   public stop(): void {

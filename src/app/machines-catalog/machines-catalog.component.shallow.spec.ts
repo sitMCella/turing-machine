@@ -34,7 +34,8 @@ describe('MachinesCatalogComponent', () => {
   it('should show the turing machine catalog', () => {
     const compiled = fixture.debugElement.nativeElement;
     const catalog = compiled.querySelectorAll('.catalog>li');
-    expect(catalog == null).toBeFalsy();
+    expect(catalog).not.toBeNull();
+    expect(catalog).not.toBeUndefined();
     expect(catalog.length).toBe(1);
   });
 

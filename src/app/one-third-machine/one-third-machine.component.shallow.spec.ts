@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 import { OneThirdMachineComponent } from './one-third-machine.component';
 import { TapeComponent } from '../tape/tape.component';
 
@@ -20,7 +20,8 @@ describe('OneThirdMachineComponent', () => {
       ],
       providers: [
         { provide: Router, useClass: RouterStub }
-      ]
+      ],
+      imports: [FormsModule]
     })
       .compileComponents();
   }));
@@ -38,14 +39,16 @@ describe('OneThirdMachineComponent', () => {
   it('should show title', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const title: HTMLElement = compiled.querySelector('.title');
-    expect(title == null).toBeFalsy();
+    expect(title).not.toBeNull();
+    expect(title).not.toBeUndefined();
     expect(title.innerHTML).toBe('One third Turing machine');
   });
 
   it('should show link to turing machines catalog', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const reference: HTMLElement = compiled.querySelector('.reference');
-    expect(reference == null).toBeFalsy();
+    expect(reference).not.toBeNull();
+    expect(reference).not.toBeUndefined();
   });
 
   it('should open the turing machines catalog', inject([Router], (router: Router) => {
@@ -61,13 +64,15 @@ describe('OneThirdMachineComponent', () => {
   it('should show turing machine configuration', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const configuration: HTMLElement = compiled.querySelector('.configuration');
-    expect(configuration == null).toBeFalsy();
+    expect(configuration).not.toBeNull();
+    expect(configuration).not.toBeUndefined();
   });
 
   it('should show at least one tape', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
-    expect(tapes == null).toBeFalsy();
+    expect(tapes).not.toBeNull();
+    expect(tapes).not.toBeUndefined();
     expect(tapes.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -78,7 +83,8 @@ describe('OneThirdMachineComponent', () => {
       const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
       for (let i = 0; i < tapes.length; i++) {
         const squares: any = tapes[i].querySelectorAll('.square');
-        expect(squares == null).toBeFalsy();
+        expect(squares).not.toBeNull();
+        expect(squares).not.toBeUndefined();
         expect(squares.length).toEqual(20);
       }
     });
