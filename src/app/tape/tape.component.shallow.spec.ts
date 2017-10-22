@@ -76,9 +76,37 @@ describe('TapeComponent', () => {
     expect(tapes.length).toEqual(2);
   }));
 
+  describe('resize setting', () => {
+
+    it('should resize default initial tape squares count', fakeAsync(() => {
+      tick(1000);
+      discardPeriodicTasks();
+      fixture.detectChanges();
+      const compiled: any = fixture.debugElement.nativeElement;
+      const squaresCount: HTMLInputElement = compiled.querySelector('.squaresCount input');
+      squaresCount.value = '4';
+      squaresCount.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        const resizeButton: HTMLButtonElement = compiled.querySelector('.applySettings');
+        resizeButton.click();
+        fixture.detectChanges();
+        tick(50);
+        discardPeriodicTasks();
+        fixture.detectChanges();
+
+        const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
+        expect(squares).not.toBeNull();
+        expect(squares).toBeDefined();
+        expect(squares.length).toBe(4);
+      });
+    }));
+
+  });
+
   describe('evolve button', () => {
 
-    it('should  evolve algorithm with default initial tape', fakeAsync(() => {
+    it('should evolve algorithm with default initial tape', fakeAsync(() => {
       tick(1000);
       discardPeriodicTasks();
       const compiled: any = fixture.debugElement.nativeElement;

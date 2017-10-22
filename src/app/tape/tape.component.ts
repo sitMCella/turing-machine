@@ -21,7 +21,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   public algorithm: Algorithm;
   public initialTape: Tape;
   public squaresCount: number;
-  public observable1: Observable<MachineStatus[]>;
+  public machineStatusObservable: Observable<MachineStatus[]>;
 
   private subscription: Subscription;
   private subject: BehaviorSubject<MachineStatus[]>;
@@ -78,7 +78,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.anyErrors = false;
     this.machineStatus = [];
     this.subject = new BehaviorSubject([]);
-    this.observable1 = this.subject.asObservable();
+    this.machineStatusObservable = this.subject.asObservable();
   }
 
   evolveAlgorithm(): void {

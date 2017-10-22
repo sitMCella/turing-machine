@@ -14,7 +14,7 @@
   <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
   <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
 </div>
-<div class="tape" *ngFor="let status of observable1 | async">
+<div class="tape" *ngFor="let status of machineStatusObservable | async">
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
     [ngClass]="{'index': status.index == i}">
     {{square.value}}

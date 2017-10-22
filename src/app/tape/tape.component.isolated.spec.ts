@@ -55,8 +55,8 @@ describe('TapeComponent', () => {
     it('should initially create machine status view observable', () => {
         component.ngOnInit();
 
-        expect(component.observable1).not.toBeNull();
-        expect(component.observable1).toBeDefined();
+        expect(component.machineStatusObservable).not.toBeNull();
+        expect(component.machineStatusObservable).toBeDefined();
     });
 
     it('should initially evolve algorithm', () => {
@@ -70,8 +70,8 @@ describe('TapeComponent', () => {
         it('should create machine status view observable', () => {
             component.evolve();
 
-            expect(component.observable1).not.toBeNull();
-            expect(component.observable1).toBeDefined();
+            expect(component.machineStatusObservable).not.toBeNull();
+            expect(component.machineStatusObservable).toBeDefined();
         });
 
         it('should evolve algorithm', () => {
