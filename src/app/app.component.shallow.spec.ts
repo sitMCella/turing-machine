@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
 import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
 import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
 import { TapeComponent } from './tape/tape.component';
@@ -40,10 +39,11 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it('should show the turing machines catalog', () => {
+  it('should show the turing machines catalog', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     const catalog = compiled.querySelectorAll('.catalog');
-    expect(catalog == null).toBeFalsy();
-  });
+    expect(catalog).not.toBeNull();
+    expect(catalog).toBeDefined();
+  }));
 
 });

@@ -4,11 +4,17 @@
     <input type="text" [(ngModel)]="square.value">
   </span>
 </div>
+<div class="settings">
+  <span class="squaresCount">
+    <input type="text" [(ngModel)]="squaresCount">
+  </span>
+  <button [disabled]="!squaresCount || !algorithm.completed" (click)="changeInitialTapeSize()" class="applySettings">Resize</button>
+</div>
 <div class="actions">
   <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
   <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
 </div>
-<div class="tape" *ngFor="let status of machineStatus">
+<div class="tape" *ngFor="let status of observable1 | async">
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
     [ngClass]="{'index': status.index == i}">
     {{square.value}}

@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OneThirdMachineComponent } from './one-third-machine.component';
-import { TapeComponent } from '../tape/tape.component';
+import { OneThirdAlgorithmService } from './one-third-algorithm.service';
 
 class RouterStub {
   navigateByUrl(url: string) { return url; }
@@ -15,13 +16,14 @@ describe('OneThirdMachineComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OneThirdMachineComponent,
-        TapeComponent
+        OneThirdMachineComponent
       ],
       providers: [
+        OneThirdAlgorithmService,
         { provide: Router, useClass: RouterStub }
       ],
-      imports: [FormsModule]
+      imports: [FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -40,7 +42,7 @@ describe('OneThirdMachineComponent', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const title: HTMLElement = compiled.querySelector('.title');
     expect(title).not.toBeNull();
-    expect(title).not.toBeUndefined();
+    expect(title).toBeDefined();
     expect(title.innerHTML).toBe('One third Turing machine');
   });
 
@@ -48,7 +50,7 @@ describe('OneThirdMachineComponent', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const reference: HTMLElement = compiled.querySelector('.reference');
     expect(reference).not.toBeNull();
-    expect(reference).not.toBeUndefined();
+    expect(reference).toBeDefined();
   });
 
   it('should open the turing machines catalog', inject([Router], (router: Router) => {
@@ -65,30 +67,7 @@ describe('OneThirdMachineComponent', () => {
     const compiled: any = fixture.debugElement.nativeElement;
     const configuration: HTMLElement = compiled.querySelector('.configuration');
     expect(configuration).not.toBeNull();
-    expect(configuration).not.toBeUndefined();
-  });
-
-  it('should show at least one tape', () => {
-    const compiled: any = fixture.debugElement.nativeElement;
-    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
-    expect(tapes).not.toBeNull();
-    expect(tapes).not.toBeUndefined();
-    expect(tapes.length).toBeGreaterThanOrEqual(1);
-  });
-
-  describe('each tape', () => {
-
-    it('should contain 20 squares', () => {
-      const compiled: any = fixture.debugElement.nativeElement;
-      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
-      for (let i = 0; i < tapes.length; i++) {
-        const squares: any = tapes[i].querySelectorAll('.square');
-        expect(squares).not.toBeNull();
-        expect(squares).not.toBeUndefined();
-        expect(squares.length).toEqual(20);
-      }
-    });
-
+    expect(configuration).toBeDefined();
   });
 
 });

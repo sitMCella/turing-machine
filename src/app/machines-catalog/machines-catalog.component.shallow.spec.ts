@@ -21,11 +21,11 @@ describe('MachinesCatalogComponent', () => {
       .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     fixture = TestBed.createComponent(MachinesCatalogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -35,7 +35,7 @@ describe('MachinesCatalogComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     const catalog = compiled.querySelectorAll('.catalog>li');
     expect(catalog).not.toBeNull();
-    expect(catalog).not.toBeUndefined();
+    expect(catalog).toBeDefined();
     expect(catalog.length).toBe(1);
   });
 

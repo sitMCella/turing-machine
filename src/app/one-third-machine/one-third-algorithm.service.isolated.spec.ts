@@ -1,4 +1,4 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, inject, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
@@ -12,26 +12,21 @@ describe('OneThirdAlgorithmService', () => {
     oneThirdAlgorithmService = new OneThirdAlgorithmService();
   });
 
-  it('should have an initial max iterations value set to 20', async(() => {
-    expect(oneThirdAlgorithmService.maxIterations).toBe(20);
-  }));
-
   it('should initially have completed as false', () => {
     expect(oneThirdAlgorithmService.completed).toBeFalsy();
   });
 
-  it('should set max iterations value to 4', async(() => {
-    oneThirdAlgorithmService.maxIterations = 4;
-
-    expect(oneThirdAlgorithmService.maxIterations).toBe(4);
-  }));
+  it('should initially have error as false', () => {
+    expect(oneThirdAlgorithmService.error).toBeFalsy();
+  });
 
   describe('getDefaultInitialTape', () => {
 
     it('should return the default initial tape', () => {
       const tape: Tape = oneThirdAlgorithmService.getDefaultInitialTape();
+
       expect(tape).not.toBeNull();
-      expect(tape).not.toBeUndefined();
+      expect(tape).toBeDefined();
       expect(tape.squares.length).toBe(20);
       for (let i = 0; i < tape.squares.length; i++) {
         expect(tape.squares[i].id).toBe(i + 1);
@@ -45,20 +40,21 @@ describe('OneThirdAlgorithmService', () => {
 
     describe('default initial tape', () => {
 
-      it('should create 20 machine statuses', async(() => {
+      it('should create 21 machine statuses', fakeAsync(() => {
         const machineStatus: Array<MachineStatus> = [];
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+
+        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
           status => machineStatus.push(status),
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
+        tick(2100);
+        discardPeriodicTasks();
 
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
-
-        expect(machineStatus.length).toBe(20);
+        expect(machineStatus.length).toBe(21);
       }));
 
-      it('should create machine statuses', async(() => {
+      it('should create machine statuses with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -79,42 +75,49 @@ describe('OneThirdAlgorithmService', () => {
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', ''],
+          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '']
         ];
+        const machineStatus: Array<MachineStatus> = [];
 
-        let tapeIndex = 0;
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(status => {
-          for (let squareIndex = 0; squareIndex < status.tape.squares.length; squareIndex++) {
-            expect(status.tape.squares[squareIndex].id).toBe(squareIndex + 1);
-            expect(status.tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+          status => machineStatus.push(status),
+          error => new Error(error),
+          () => {
+            for (let tapeIndex = 0; tapeIndex < 21; tapeIndex++) {
+              expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
+              for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+              }
+              expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
+            }
           }
-          expect(status.index).toBe(tapeIndex);
-          tapeIndex++;
-        });
-
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
+        );
+        tick(2100);
+        discardPeriodicTasks();
       }));
 
-      it('should set completed as true when evolution is complete', async(() => {
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
-
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+      it('should set completed as true when evolution is complete', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
           status => { },
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
+        tick(2100);
+        discardPeriodicTasks();
 
         expect(oneThirdAlgorithmService.completed).toBeTruthy();
       }));
 
-      it('should set eror as false when evolution is complete', async(() => {
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
-
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+      it('should set error as false when evolution is complete', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
           status => { },
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
+        tick(2100);
+        discardPeriodicTasks();
 
         expect(oneThirdAlgorithmService.error).toBeFalsy();
       }));
@@ -132,58 +135,65 @@ describe('OneThirdAlgorithmService', () => {
         initialTape.squares[1].value = 'A';
       });
 
-      it('should create 2 machine statuses', async(() => {
+      it('should create 2 machine statuses', fakeAsync(() => {
         const machineStatus: Array<MachineStatus> = [];
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+
+        oneThirdAlgorithmService.evolve(initialTape).subscribe(
           status => machineStatus.push(status),
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
-
-        oneThirdAlgorithmService.evolve(initialTape);
+        tick(200);
+        discardPeriodicTasks();
 
         expect(machineStatus.length).toBe(2);
       }));
 
-      it('should create machine statuses', async(() => {
+      it('should create machine statuses with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         ];
+        const machineStatus: Array<MachineStatus> = [];
 
-        let tapeIndex = 0;
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(status => {
-          for (let squareIndex = 0; squareIndex < status.tape.squares.length; squareIndex++) {
-            expect(status.tape.squares[squareIndex].id).toBe(squareIndex + 1);
-            expect(status.tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+          status => machineStatus.push(status),
+          error => new Error(error),
+          () => {
+            for (let tapeIndex = 0; tapeIndex < 2; tapeIndex++) {
+              expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
+              for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+              }
+              expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
+            }
           }
-          expect(status.index).toBe(tapeIndex);
-          tapeIndex++;
-        });
-
-        oneThirdAlgorithmService.evolve(initialTape);
+        );
+        tick(200);
+        discardPeriodicTasks();
       }));
 
-      it('should set completed as true on evolution error', async(() => {
-        oneThirdAlgorithmService.evolve(initialTape);
-
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+      it('should set completed as true on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(initialTape).subscribe(
           status => { },
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
+        tick(200);
+        discardPeriodicTasks();
 
         expect(oneThirdAlgorithmService.completed).toBeTruthy();
       }));
 
-      it('should set error as true on evolution error', async(() => {
-        oneThirdAlgorithmService.evolve(initialTape);
-
-        oneThirdAlgorithmService.machineStatusObservable.subscribe(
+      it('should set error as true on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(initialTape).subscribe(
           status => { },
-          error => console.log(error),
+          error => new Error(error),
           () => { }
         );
+        tick(200);
+        discardPeriodicTasks();
 
         expect(oneThirdAlgorithmService.error).toBeTruthy();
       }));
@@ -194,31 +204,47 @@ describe('OneThirdAlgorithmService', () => {
 
   describe('stop', () => {
 
-    xit('should stop algorithm evolution', async(() => {
+    it('should stop algorithm evolution', fakeAsync(() => {
       const machineStatus: Array<MachineStatus> = [];
-      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
         status => machineStatus.push(status),
-        error => console.log(error),
+        error => new Error(error),
         () => { }
       );
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
+      tick(1000);
+      discardPeriodicTasks();
 
       oneThirdAlgorithmService.stop();
 
-      expect(machineStatus.length).toBeLessThan(20);
+      expect(machineStatus.length).toBeLessThan(21);
     }));
 
-    xit('should set completed as true', async(() => {
-      oneThirdAlgorithmService.machineStatusObservable.subscribe(
+    it('should set completed as true', fakeAsync(() => {
+      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
         status => { },
-        error => console.log(error),
+        error => new Error(error),
         () => { }
       );
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape());
+      tick(1000);
+      discardPeriodicTasks();
 
       oneThirdAlgorithmService.stop();
 
-      expect(this.completed).toBeTruthy();
+      expect(oneThirdAlgorithmService.completed).toBeTruthy();
+    }));
+
+    it('should set error as false', fakeAsync(() => {
+      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+        status => { },
+        error => new Error(error),
+        () => { }
+      );
+      tick(1000);
+      discardPeriodicTasks();
+
+      oneThirdAlgorithmService.stop();
+
+      expect(oneThirdAlgorithmService.error).toBeFalsy();
     }));
 
   });

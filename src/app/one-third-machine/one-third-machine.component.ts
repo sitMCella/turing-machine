@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
@@ -8,15 +8,9 @@ import { OneThirdAlgorithmService } from './one-third-algorithm.service';
   templateUrl: './one-third-machine.component.html',
   styleUrls: ['./one-third-machine.component.css']
 })
-export class OneThirdMachineComponent implements OnInit {
+export class OneThirdMachineComponent {
 
-  constructor(private router: Router) { }
-
-  public algorithm: OneThirdAlgorithmService;
-
-  ngOnInit() {
-    this.algorithm = new OneThirdAlgorithmService();
-  }
+  constructor(public algorithm: OneThirdAlgorithmService, private router: Router) { }
 
   public navigateTo(path: string): void {
     this.router.navigateByUrl(path);
