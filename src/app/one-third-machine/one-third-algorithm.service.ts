@@ -19,6 +19,7 @@ import { DeepCopy } from '../deep-copy';
 export class OneThirdAlgorithmService implements Algorithm {
   public completed: boolean;
   public error: boolean;
+  public break: boolean;
   public _subscription: Subscription;
 
   private defaultMaxIterations = 20;
@@ -28,6 +29,9 @@ export class OneThirdAlgorithmService implements Algorithm {
   private configurations: Array<Configuration>;
   private continue: boolean;
   private machineStatus: BehaviorSubject<MachineStatus>;
+  private initialTape: Tape;
+  private configuration: Configuration;
+  private i: number;
 
   constructor() {
     this.deepCopy = new DeepCopy();
@@ -42,29 +46,28 @@ export class OneThirdAlgorithmService implements Algorithm {
 
   public evolve(initialTape: Tape): Observable<MachineStatus> {
     this.init(initialTape);
-    let configuration: Configuration = this.configurations[0];
-    let i = 0;
-    this._subscription = Observable.interval(100).take(initialTape.squares.length + 1).subscribe(res => {
-      if (i < initialTape.squares.length && this.continue) {
-        this.actualStatus = this.evolveConfiguration(configuration, this.actualStatus);
-        if (this.error === false) {
-          this.machineStatus.next(this.actualStatus);
-          configuration = this.findConfigurationFrom(configuration.finalConfigurationName);
-        }
-        i++;
-      } else {
-        this.machineStatus.complete();
-        this.completed = true;
-      }
-    });
+    this.initialTape = initialTape;
+    this.configuration = this.configurations[0];
+    this.i = 0;
+    this.algorithmEvolution();
     return this.machineStatus.asObservable();
   }
 
   public stop(): void {
     this.continue = false;
-    this.machineStatus.complete();
     this.completed = true;
-    this.subscription.unsubscribe();
+    this.machineStatus.complete();
+    this._subscription.unsubscribe();
+  }
+
+  public pause(): void {
+    this.break = true;
+    this._subscription.unsubscribe();
+  }
+
+  public resume(): void {
+    this.break = false;
+    this.algorithmEvolution();
   }
 
   public getDefaultInitialTape(): Tape {
@@ -87,10 +90,27 @@ export class OneThirdAlgorithmService implements Algorithm {
     return new Tape(squares);
   }
 
+  private algorithmEvolution(): void {
+    this._subscription = Observable.interval(100).take(this.initialTape.squares.length + 1 - this.i).subscribe(res => {
+      if (this.i < this.initialTape.squares.length && this.continue) {
+        this.actualStatus = this.evolveConfiguration(this.configuration, this.actualStatus);
+        if (this.error === false) {
+          this.machineStatus.next(this.actualStatus);
+          this.configuration = this.findConfigurationFrom(this.configuration.finalConfigurationName);
+        }
+        this.i++;
+      } else {
+        this.machineStatus.complete();
+        this.completed = true;
+      }
+    });
+  }
+
   private init(initialTape: Tape): void {
     this.completed = false;
     this.error = false;
     this.continue = true;
+    this.break = false;
     this.actualStatus = new MachineStatus(<Tape>this.deepCopy.apply(initialTape), 0);
     this.machineStatus = new BehaviorSubject(this.actualStatus);
   }

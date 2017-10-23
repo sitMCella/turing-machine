@@ -249,4 +249,47 @@ describe('OneThirdAlgorithmService', () => {
 
   });
 
+  describe('pause', () => {
+
+    it('should stop algorithm evolution', fakeAsync(() => {
+      const machineStatus: Array<MachineStatus> = [];
+      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+        status => machineStatus.push(status),
+        error => new Error(error),
+        () => { }
+      );
+      tick(1000);
+      discardPeriodicTasks();
+
+      oneThirdAlgorithmService.pause();
+
+      expect(machineStatus.length).toBeLessThan(21);
+    }));
+
+  });
+
+  describe('resume', () => {
+
+    it('should resume algorithm evolution', fakeAsync(() => {
+      const machineStatus: Array<MachineStatus> = [];
+      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+        status => machineStatus.push(status),
+        error => new Error(error),
+        () => { }
+      );
+      tick(1000);
+      discardPeriodicTasks();
+      oneThirdAlgorithmService.pause();
+      tick(1000);
+      discardPeriodicTasks();
+
+      oneThirdAlgorithmService.resume();
+      tick(1100);
+      discardPeriodicTasks();
+
+      expect(machineStatus.length).toEqual(21);
+    }));
+
+  });
+
 });

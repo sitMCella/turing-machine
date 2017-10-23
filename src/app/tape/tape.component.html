@@ -13,6 +13,8 @@
 <div class="actions">
   <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
   <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
+  <button *ngIf="!algorithm.break && !algorithm.completed" (click)="pause()" class="pause">Pause</button>
+  <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
 </div>
 <div class="tape" *ngFor="let status of machineStatusObservable | async">
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 

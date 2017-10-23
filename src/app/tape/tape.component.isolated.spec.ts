@@ -17,6 +17,7 @@ describe('TapeComponent', () => {
     let observable: Observable<MachineStatus>;
     let subscription: Subscription;
     let defaultInitialTape: Tape;
+    let machineStatusViewSubscription: Subscription;
 
     beforeEach(() => {
         intervalService = new IntervalServiceStub();
@@ -27,12 +28,12 @@ describe('TapeComponent', () => {
         component.algorithm = algorithm;
         observable = Observable.of(new MachineStatus(null, 33));
         spyOn(algorithm, 'evolve').and.returnValue(observable);
+        machineStatusViewSubscription = new Subscription();
+        spyOn(observable, 'subscribe').and.returnValue(machineStatusViewSubscription);
         spyOnProperty(algorithm, 'subscription', 'get').and.returnValue(subscription);
         const squares: Array<Square> = [new Square(1, ''), new Square(2, 'A')];
         defaultInitialTape = new Tape(squares);
         spyOn(algorithm, 'getDefaultInitialTape').and.returnValue(defaultInitialTape);
-        spyOn(algorithm, 'stop');
-        spyOn(observable, 'subscribe');
         spyOn(subscription, 'unsubscribe');
     });
 
@@ -78,6 +79,92 @@ describe('TapeComponent', () => {
             component.evolve();
 
             expect(algorithm.evolve).toHaveBeenCalled();
+        });
+
+    });
+
+    describe('stop', () => {
+
+        beforeEach(() => {
+            spyOn(algorithm, 'stop');
+        });
+
+        it('should stop algorithm evolution', () => {
+            component.evolve();
+
+            component.stop();
+
+            expect(algorithm.stop).toHaveBeenCalled();
+        });
+
+        it('should unsubscribe from algorithm', () => {
+            spyOn(machineStatusViewSubscription, 'unsubscribe');
+            component.evolve();
+
+            component.stop();
+
+            expect(machineStatusViewSubscription.unsubscribe).toHaveBeenCalled();
+        });
+
+        it('should stop timer', () => {
+            spyOn(intervalService, 'clear');
+            component.evolve();
+
+            component.stop();
+
+            expect(intervalService.clear).toHaveBeenCalled();
+        });
+
+    });
+
+    describe('pause', () => {
+
+        beforeEach(() => {
+            spyOn(algorithm, 'pause');
+        });
+
+        it('should pause algorithm evolution', () => {
+            component.evolve();
+
+            component.pause();
+
+            expect(algorithm.pause).toHaveBeenCalled();
+        });
+
+        it('should stop timer', () => {
+            spyOn(intervalService, 'clear');
+            component.evolve();
+
+            component.pause();
+
+            expect(intervalService.clear).toHaveBeenCalled();
+        });
+
+    });
+
+    describe('resume', () => {
+
+        beforeEach(() => {
+            spyOn(algorithm, 'resume');
+        });
+
+        it('should resume algorithm evolution', () => {
+            component.evolve();
+            component.pause();
+
+            component.resume();
+
+            expect(algorithm.resume).toHaveBeenCalled();
+        });
+
+        it('should start timer', () => {
+            spyOn(intervalService, 'setInterval');
+            component.evolve();
+            component.pause();
+
+            component.resume();
+
+            expect(intervalService.setInterval).toHaveBeenCalled();
         });
 
     });

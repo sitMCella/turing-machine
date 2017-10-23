@@ -11,4 +11,6 @@ export interface Algorithm {
     getDefaultInitialTape(): Tape;
     evolve(initialTape: Tape): Observable<MachineStatus>;
     stop(): void;
+    pause(): void;
+    resume(): void;
 }

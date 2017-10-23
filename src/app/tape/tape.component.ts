@@ -40,7 +40,9 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this.stopTimer();
   }
 
@@ -67,8 +69,18 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   public stop(): void {
     this.algorithm.stop();
-    this.subscription.unsubscribe();
     this.stopTimer();
+    this.subscription.unsubscribe();
+  }
+
+  public pause(): void {
+    this.algorithm.pause();
+    this.stopTimer();
+  }
+
+  public resume(): void {
+    this.algorithm.resume();
+    this.startTimer();
   }
 
   private init(): void {
@@ -81,7 +93,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.machineStatusObservable = this.subject.asObservable();
   }
 
-  evolveAlgorithm(): void {
+  private evolveAlgorithm(): void {
     this.subscription = this.algorithm.evolve(this.initialTape).subscribe(
       (value) => {
         this.machineStatus.push(value);
@@ -94,13 +106,13 @@ export class TapeComponent implements OnInit, OnDestroy {
     );
   }
 
-  clearAlgorithmStatus(): void {
+  private clearAlgorithmStatus(): void {
     this.finished = true;
     this.algorithm.subscription.unsubscribe();
     this.stopTimer();
   }
 
-  startTimer(): void {
+  private startTimer(): void {
     this.intervalService.setInterval(() => {
       if (this.subject) {
         if (!this.finished) {
@@ -113,7 +125,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  stopTimer(): void {
+  private stopTimer(): void {
     this.intervalService.clear();
     if (this.subject && this.finished && (!this.subject.closed || !this.subject.isStopped)) {
       this.subject.next(this.machineStatus);
