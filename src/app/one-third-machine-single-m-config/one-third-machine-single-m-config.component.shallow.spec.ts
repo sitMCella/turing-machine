@@ -2,21 +2,21 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { OneThirdMachineComponent } from './one-third-machine.component';
-import { OneThirdAlgorithmService } from './one-third-algorithm.service';
+import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config.component';
+import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
 import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
 
-describe('OneThirdMachineComponent', () => {
-  let component: OneThirdMachineComponent;
-  let fixture: ComponentFixture<OneThirdMachineComponent>;
+describe('OneThirdMachineSingleMConfigComponent', () => {
+  let component: OneThirdMachineSingleMConfigComponent;
+  let fixture: ComponentFixture<OneThirdMachineSingleMConfigComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OneThirdMachineComponent
+        OneThirdMachineSingleMConfigComponent
       ],
       providers: [
-        OneThirdAlgorithmService,
+        OneThirdAlgorithmSingleMConfigService,
         AlgorithmEvolutionService,
         { provide: Router, useClass: RouterStub }
       ],
@@ -24,10 +24,10 @@ describe('OneThirdMachineComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OneThirdMachineComponent);
+    fixture = TestBed.createComponent(OneThirdMachineSingleMConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -41,7 +41,7 @@ describe('OneThirdMachineComponent', () => {
     const title: HTMLElement = compiled.querySelector('.title');
     expect(title).not.toBeNull();
     expect(title).toBeDefined();
-    expect(title.innerHTML).toBe('One third Turing machine');
+    expect(title.innerHTML).toBe('One third Turing machine single m-config');
   });
 
   it('should show link to turing machines catalog', () => {

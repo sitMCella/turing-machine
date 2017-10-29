@@ -5,8 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TapeComponent } from './tape/tape.component';
 import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
+import { AlgorithmEvolutionService } from './algoritm-evolution.service';
 import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
 import { OneThirdAlgorithmService } from './one-third-machine/one-third-algorithm.service';
+import { OneThirdAlgorithmSingleMConfigService } from './one-third-machine-single-m-config/one-third-algorithm-single-m-config.service';
+import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
 import { IntervalService } from './interval.service';
 
 @NgModule({
@@ -14,7 +17,8 @@ import { IntervalService } from './interval.service';
     AppComponent,
     TapeComponent,
     MachinesCatalogComponent,
-    OneThirdMachineComponent
+    OneThirdMachineComponent,
+    OneThirdMachineSingleMConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,9 @@ import { IntervalService } from './interval.service';
     FormsModule
   ],
   providers: [
+    AlgorithmEvolutionService,
     OneThirdAlgorithmService,
+    OneThirdAlgorithmSingleMConfigService,
     IntervalService
   ],
   bootstrap: [AppComponent]

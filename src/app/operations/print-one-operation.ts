@@ -4,9 +4,12 @@ import { MachineStatus } from '../machine-status';
 
 export class PrintOneOperation implements Operation {
 
-    apply(machineStatus: MachineStatus): MachineStatus {
-        machineStatus.tape.squares[machineStatus.index].value = '1';
-        return machineStatus;
+  apply(machineStatus: MachineStatus): MachineStatus {
+    if (machineStatus.symbol !== '') {
+      throw new Error('Tape already contains a symbol in current index');
     }
+    machineStatus.symbol = '1';
+    return machineStatus;
+  }
 
 }

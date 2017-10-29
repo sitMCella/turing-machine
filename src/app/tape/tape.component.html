@@ -1,8 +1,10 @@
-<div>Initial tape:</div>
 <div class="initial-tape">
-  <span class="square" *ngFor="let square of initialTape.squares">
-    <input type="text" [(ngModel)]="square.value">
-  </span>
+  <div class="title">Initial tape:</div>
+  <div>
+    <span class="square" *ngFor="let square of initialTape.squares">
+      <input type="text" [(ngModel)]="square.value">
+    </span>
+  </div>
 </div>
 <div class="settings">
   <span class="squaresCount">
@@ -17,8 +19,12 @@
   <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
 </div>
 <div class="tape" *ngFor="let status of machineStatusObservable | async">
-  <span class="square" *ngFor="let square of status.tape.squares; let i = index;" 
-    [ngClass]="{'index': status.index == i}">
+  <span class="square" *ngFor="let square of status.tape.squares; let i = index;" [ngClass]="{'index': status.index == i}">
     {{square.value}}
+  </span>
+</div>
+<div class="error">
+  <span *ngIf="algorithm.error" class="message">
+    {{algorithm.errorMessage}}
   </span>
 </div>

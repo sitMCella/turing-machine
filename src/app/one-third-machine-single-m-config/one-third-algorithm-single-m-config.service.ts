@@ -12,18 +12,19 @@ import { Square } from '../square';
 import { Tape } from '../tape';
 
 @Injectable()
-export class OneThirdAlgorithmService implements Algorithm {
+export class OneThirdAlgorithmSingleMConfigService implements Algorithm {
   private defaultMaxIterations = 20;
   private defaultInitialTape: Tape;
   private configurations: Array<Configuration>;
 
   constructor(private algorithmEvolutionService: AlgorithmEvolutionService) {
     this.defaultInitialTape = this.createDefaultInitialTape();
-    const firstConfiguration = new Configuration('b', '', [new PrintZeroOperation(), new MoveRightOperation()], 'c');
-    const secondConfiguration = new Configuration('c', '', [new MoveRightOperation()], 'e');
-    const thirdConfiguration = new Configuration('e', '', [new PrintOneOperation(), new MoveRightOperation()], 'f');
-    const fourthConfiguration = new Configuration('f', '', [new MoveRightOperation()], 'b');
-    this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration, fourthConfiguration];
+    const firstConfiguration = new Configuration('b', '', [new PrintZeroOperation()], 'b');
+    const secondConfiguration = new Configuration('b', '0',
+      [new MoveRightOperation(), new MoveRightOperation(), new PrintOneOperation()], 'b');
+    const thirdConfiguration = new Configuration('b', '1',
+      [new MoveRightOperation(), new MoveRightOperation(), new PrintZeroOperation()], 'b');
+    this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration];
   }
 
   public getDefaultInitialTape(): Tape {

@@ -1,29 +1,31 @@
 import { TestBed, inject, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { OneThirdAlgorithmService } from './one-third-algorithm.service';
+import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
+import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
 import { DeepCopy } from '../deep-copy';
 
-describe('OneThirdAlgorithmService', () => {
-  let oneThirdAlgorithmService: OneThirdAlgorithmService;
+describe('OneThirdAlgorithmSingleMConfigService', () => {
+  let oneThirdAlgorithmSingleMConfigService: OneThirdAlgorithmSingleMConfigService;
 
   beforeEach(() => {
-    oneThirdAlgorithmService = new OneThirdAlgorithmService();
+    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService();
+    oneThirdAlgorithmSingleMConfigService = new OneThirdAlgorithmSingleMConfigService(algorithmEvolutionService);
   });
 
   it('should initially have completed as false', () => {
-    expect(oneThirdAlgorithmService.completed).toBeFalsy();
+    expect(oneThirdAlgorithmSingleMConfigService.completed).toBeFalsy();
   });
 
   it('should initially have error as false', () => {
-    expect(oneThirdAlgorithmService.error).toBeFalsy();
+    expect(oneThirdAlgorithmSingleMConfigService.error).toBeFalsy();
   });
 
   describe('getDefaultInitialTape', () => {
 
     it('should return the default initial tape', () => {
-      const tape: Tape = oneThirdAlgorithmService.getDefaultInitialTape();
+      const tape: Tape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
 
       expect(tape).not.toBeNull();
       expect(tape).toBeDefined();
@@ -40,86 +42,87 @@ describe('OneThirdAlgorithmService', () => {
 
     describe('default initial tape', () => {
 
-      it('should create 21 machine statuses', fakeAsync(() => {
+      let defaultInitialTape: Tape;
+
+      beforeEach(() => {
+        defaultInitialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
+      });
+
+      it('should create 11 machine statuses', fakeAsync(() => {
         const machineStatus: Array<MachineStatus> = [];
 
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => machineStatus.push(status),
           error => new Error(error),
           () => { }
         );
-        tick(2100);
+        tick(1100);
         discardPeriodicTasks();
 
-        expect(machineStatus.length).toBe(21);
+        expect(machineStatus.length).toBe(11);
       }));
 
       it('should create machine statuses with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '', '', '', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', '', '', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '', '', '', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '', ''],
-          ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', ''],
           ['0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '', '0', '', '1', '']
         ];
         const machineStatus: Array<MachineStatus> = [];
+        let expectedIndex = -2;
 
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => machineStatus.push(status),
           error => new Error(error),
           () => {
-            for (let tapeIndex = 0; tapeIndex < 21; tapeIndex++) {
+            for (let tapeIndex = 0; tapeIndex < 12; tapeIndex++ , expectedIndex += 2) {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
-              expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
+              if (tapeIndex === 0) {
+                expect(machineStatus[tapeIndex].index).toBe(0);
+              } else {
+                expect(machineStatus[tapeIndex].index).toBe(expectedIndex);
+              }
             }
           }
         );
-        tick(2100);
+        tick(1100);
         discardPeriodicTasks();
       }));
 
-      it('should set completed as true when evolution is complete', fakeAsync(() => {
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      it('should set completed as true on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(2100);
+        tick(1100);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.completed).toBeTruthy();
+        expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
       }));
 
-      it('should set error as false when evolution is complete', fakeAsync(() => {
-        oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      it('should set error as true on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(2100);
+        tick(1100);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.error).toBeFalsy();
+        expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
       }));
 
     });
@@ -131,14 +134,14 @@ describe('OneThirdAlgorithmService', () => {
 
       beforeEach(() => {
         deepCopy = new DeepCopy();
-        initialTape = <Tape>deepCopy.apply(oneThirdAlgorithmService.getDefaultInitialTape());
-        initialTape.squares[1].value = 'A';
+        initialTape = <Tape>deepCopy.apply(oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape());
+        initialTape.squares[0].value = 'A';
       });
 
-      it('should create 2 machine statuses', fakeAsync(() => {
+      it('should create 1 machine status', fakeAsync(() => {
         const machineStatus: Array<MachineStatus> = [];
 
-        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => machineStatus.push(status),
           error => new Error(error),
           () => { }
@@ -146,28 +149,25 @@ describe('OneThirdAlgorithmService', () => {
         tick(200);
         discardPeriodicTasks();
 
-        expect(machineStatus.length).toBe(2);
+        expect(machineStatus.length).toBe(1);
       }));
 
-      it('should create machine statuses with correct square values', fakeAsync(() => {
+      it('should create machine status with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
-          ['', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+          ['A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         ];
         const machineStatus: Array<MachineStatus> = [];
 
-        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => machineStatus.push(status),
           error => new Error(error),
           () => {
-            for (let tapeIndex = 0; tapeIndex < 2; tapeIndex++) {
-              expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
+              expect(machineStatus[0].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+                expect(machineStatus[0].tape.squares[squareIndex].value).toBe(expectedSquareValues[0][squareIndex]);
               }
-              expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
-            }
+              expect(machineStatus[0].index).toBe(0);
           }
         );
         tick(200);
@@ -175,7 +175,7 @@ describe('OneThirdAlgorithmService', () => {
       }));
 
       it('should set completed as true on evolution error', fakeAsync(() => {
-        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
@@ -183,11 +183,11 @@ describe('OneThirdAlgorithmService', () => {
         tick(200);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.completed).toBeTruthy();
+        expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
       }));
 
       it('should set error as true on evolution error', fakeAsync(() => {
-        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+        oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
@@ -195,7 +195,7 @@ describe('OneThirdAlgorithmService', () => {
         tick(200);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.error).toBeTruthy();
+        expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
       }));
 
     });
@@ -204,47 +204,53 @@ describe('OneThirdAlgorithmService', () => {
 
   describe('stop', () => {
 
+    let initialTape: Tape;
+
+    beforeEach(() => {
+      initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
+    });
+
     it('should stop algorithm evolution', fakeAsync(() => {
       const machineStatus: Array<MachineStatus> = [];
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(1000);
+      tick(500);
       discardPeriodicTasks();
 
-      oneThirdAlgorithmService.stop();
+      oneThirdAlgorithmSingleMConfigService.stop();
 
-      expect(machineStatus.length).toBeLessThan(21);
+      expect(machineStatus.length).toBeLessThan(11);
     }));
 
     it('should set completed as true', fakeAsync(() => {
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1000);
+      tick(500);
       discardPeriodicTasks();
 
-      oneThirdAlgorithmService.stop();
+      oneThirdAlgorithmSingleMConfigService.stop();
 
-      expect(oneThirdAlgorithmService.completed).toBeTruthy();
+      expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
     }));
 
     it('should set error as false', fakeAsync(() => {
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1000);
+      tick(500);
       discardPeriodicTasks();
 
-      oneThirdAlgorithmService.stop();
+      oneThirdAlgorithmSingleMConfigService.stop();
 
-      expect(oneThirdAlgorithmService.error).toBeFalsy();
+      expect(oneThirdAlgorithmSingleMConfigService.error).toBeFalsy();
     }));
 
   });
@@ -252,18 +258,19 @@ describe('OneThirdAlgorithmService', () => {
   describe('pause', () => {
 
     it('should stop algorithm evolution', fakeAsync(() => {
+      const initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(1000);
+      tick(500);
       discardPeriodicTasks();
 
-      oneThirdAlgorithmService.pause();
+      oneThirdAlgorithmSingleMConfigService.pause();
 
-      expect(machineStatus.length).toBeLessThan(21);
+      expect(machineStatus.length).toBeLessThan(11);
     }));
 
   });
@@ -271,23 +278,24 @@ describe('OneThirdAlgorithmService', () => {
   describe('resume', () => {
 
     it('should resume algorithm evolution', fakeAsync(() => {
+      const initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
-      oneThirdAlgorithmService.evolve(oneThirdAlgorithmService.getDefaultInitialTape()).subscribe(
+      oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(1000);
+      tick(500);
       discardPeriodicTasks();
-      oneThirdAlgorithmService.pause();
+      oneThirdAlgorithmSingleMConfigService.pause();
       tick(1000);
       discardPeriodicTasks();
 
-      oneThirdAlgorithmService.resume();
-      tick(1100);
+      oneThirdAlgorithmSingleMConfigService.resume();
+      tick(600);
       discardPeriodicTasks();
 
-      expect(machineStatus.length).toEqual(21);
+      expect(machineStatus.length).toEqual(11);
     }));
 
   });

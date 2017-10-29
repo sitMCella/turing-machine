@@ -1,9 +1,9 @@
 import { Square } from './square';
 
 export class Tape {
-    squares: Array<Square>;
+  squares: Array<Square>;
 
-    constructor(squares: Array<Square>) {
-        this.squares = squares;
-    }
+  constructor(squares: Array<Square>) {
+    this.squares = squares;
+  }
 }

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
 import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
+import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
 import { TapeComponent } from './tape/tape.component';
 
 describe('AppComponent', () => {
@@ -17,6 +18,7 @@ describe('AppComponent', () => {
         AppComponent,
         MachinesCatalogComponent,
         OneThirdMachineComponent,
+        OneThirdMachineSingleMConfigComponent,
         TapeComponent
       ],
       providers: [

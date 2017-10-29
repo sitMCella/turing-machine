@@ -1,3 +1,11 @@
+.initial-tape .title {
+    padding-bottom: 5px;
+}
+
+.settings {
+    padding: 5px;
+}
+
 .actions {
     padding: 5px;
     margin-bottom: 10px;
@@ -22,6 +30,7 @@
     border-bottom: 1px solid black;
     padding: 1px;
     width: 20px;
+    min-width: 20px;
     height: 20px;
     text-align: center;
     vertical-align: middle;
@@ -38,4 +47,15 @@
 
 .index {
     background-color: yellow;
+}
+
+.error {
+    padding: 5px;
+}
+
+.error .message {
+    color: red;
+    font-size: 14px;
+    font-size: 1em;
+    font-weight: bold;
 }

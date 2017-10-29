@@ -1,5 +1,18 @@
+.title {
+    font-size: 18px;
+    font-size: 1.2857em;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 .catalog {
     font-size: 1em;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.catalog li {
+    padding-bottom: 5px;
 }

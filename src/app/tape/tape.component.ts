@@ -25,9 +25,8 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private subject: BehaviorSubject<MachineStatus[]>;
-  private anyErrors: boolean;
   private finished: boolean;
-  public machineStatus: MachineStatus[];
+  private machineStatus: MachineStatus[];
 
   constructor(private intervalService: IntervalService) {
   }
@@ -87,7 +86,6 @@ export class TapeComponent implements OnInit, OnDestroy {
     this.stopTimer();
     this.startTimer();
     this.finished = false;
-    this.anyErrors = false;
     this.machineStatus = [];
     this.subject = new BehaviorSubject([]);
     this.machineStatusObservable = this.subject.asObservable();
@@ -99,7 +97,6 @@ export class TapeComponent implements OnInit, OnDestroy {
         this.machineStatus.push(value);
       },
       (error) => {
-        this.anyErrors = true;
         this.clearAlgorithmStatus();
       },
       () => this.clearAlgorithmStatus()

@@ -36,7 +36,7 @@ describe('MachinesCatalogComponent', () => {
     const catalog = compiled.querySelectorAll('.catalog>li');
     expect(catalog).not.toBeNull();
     expect(catalog).toBeDefined();
-    expect(catalog.length).toBe(1);
+    expect(catalog.length).toBe(2);
   });
 
   it('should open the one third turing machine', inject([Router], (router: Router) => {
@@ -47,6 +47,16 @@ describe('MachinesCatalogComponent', () => {
     catalog[0].click();
 
     expect(router.navigateByUrl).toHaveBeenCalledWith('/one-third');
+  }));
+
+  it('should open the one third turing machine single m-config', inject([Router], (router: Router) => {
+    const spy = spyOn(router, 'navigateByUrl');
+    const compiled = fixture.debugElement.nativeElement;
+    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+
+    catalog[1].click();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/one-third-single-m-config');
   }));
 
 });

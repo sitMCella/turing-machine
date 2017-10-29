@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { OneThirdMachineComponent } from './one-third-machine.component';
-import { OneThirdAlgorithmService } from './one-third-algorithm.service';
+import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config.component';
+import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
 import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
@@ -11,18 +11,18 @@ class RouterStub {
   navigateByUrl(url: string) { return url; }
 }
 
-describe('OneThirdMachineComponent', () => {
-  let component: OneThirdMachineComponent;
-  let fixture: ComponentFixture<OneThirdMachineComponent>;
+describe('OneThirdMachineSingleMConfigComponent', () => {
+  let component: OneThirdMachineSingleMConfigComponent;
+  let fixture: ComponentFixture<OneThirdMachineSingleMConfigComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OneThirdMachineComponent,
+        OneThirdMachineSingleMConfigComponent,
         TapeComponent
       ],
       providers: [
-        OneThirdAlgorithmService,
+        OneThirdAlgorithmSingleMConfigService,
         AlgorithmEvolutionService,
         IntervalService,
         { provide: Router, useClass: RouterStub }
@@ -30,10 +30,10 @@ describe('OneThirdMachineComponent', () => {
       imports: [FormsModule],
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OneThirdMachineComponent);
+    fixture = TestBed.createComponent(OneThirdMachineSingleMConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -48,10 +48,10 @@ describe('OneThirdMachineComponent', () => {
       expect(tapes).not.toBeNull();
       expect(tapes).toBeDefined();
       expect(tapes.length).toBeGreaterThanOrEqual(1);
-    }, 2100);
+    }, 1100);
   }));
 
-  it('should show 21 tapes', async(() => {
+  it('should show 11 tapes', async(() => {
     const compiled: any = fixture.debugElement.nativeElement;
 
     setTimeout(() => {
@@ -60,8 +60,8 @@ describe('OneThirdMachineComponent', () => {
       const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
       expect(tapes).not.toBeNull();
       expect(tapes).toBeDefined();
-      expect(tapes.length).toEqual(21);
-    }, 2100);
+      expect(tapes.length).toEqual(11);
+    }, 1100);
   }));
 
   describe('each tape', () => {
@@ -78,7 +78,7 @@ describe('OneThirdMachineComponent', () => {
           expect(squares).toBeDefined();
           expect(squares.length).toEqual(20);
         }
-      }, 2100);
+      }, 1100);
     }));
 
   });
