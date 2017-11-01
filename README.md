@@ -2,7 +2,28 @@
 
 Catalog of Turing machines based on "The Annotated Turing" by Charles Petzold.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.6.
+A Turing machine is composed by a list of m-configurations; the configuration and the behaviour of the Turing machine is described into the Turing machine Table.
+
+The Turing machine Table is composed of 4 columns, the first pair of columns describes the configuration of the machine and the second pair of columns describes the behaviour of the machine.
+The first column contains the m-configuration, the second column contains the tape square scanned symbol, the third column contains the operations and the fourth column contains the next m-configuration.
+
+There are some assumptions:
+- The symbol "none" of the Table symbol column corresponds to a tape with no symbol (blank square)
+- The symbol "any" of the Table symbol column corresponds to any non-blank symbol
+- The Table operations column contains zero, one or more operations
+- The available operations are: R (right), L (left), P (print), E (erase)
+- The erase operation is not compared to a print operation with no symbol
+- An error is thrown by print operation if the head square is already filled with a symbol
+- The Turing machine evolution starts with the first m-configuration listed in the Table
+
+Turing machine initial setup:
+- The initial tape is composed of 20 blank squares
+- The head is located on the first square of the initial tape
+
+Features:
+- Turing machine async evolution
+- The initial tape squares are editable
+- The initial tape squares size can be changed
 
 # Development
 
@@ -12,22 +33,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `npm start` for open dev Electron window 
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
-
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
 ## Running unit tests
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
