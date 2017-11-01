@@ -115,7 +115,7 @@ export class AlgorithmEvolutionService {
     let index: number = -1;
     for (let i = 0; i < this.configurations.length; i++) {
       if (this.configurations[i].name === name
-        && actualStatus.symbol === this.configurations[i].simbol) {
+        && actualStatus.symbol === this.configurations[i].symbol) {
         index = i;
         break;
       }

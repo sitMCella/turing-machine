@@ -10,7 +10,7 @@ describe('OneThirdMachineComponent', () => {
   let component: OneThirdMachineComponent;
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         OneThirdMachineComponent
@@ -24,7 +24,7 @@ describe('OneThirdMachineComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OneThirdMachineComponent);

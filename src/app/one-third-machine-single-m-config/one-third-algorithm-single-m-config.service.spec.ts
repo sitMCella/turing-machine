@@ -125,9 +125,21 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
       }));
 
+      it('should set errorMessage on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
+          status => { },
+          error => new Error(error),
+          () => { }
+        );
+        tick(1100);
+        discardPeriodicTasks();
+
+        expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Cannot read symbol on square with index 21');
+      }));
+
     });
 
-    describe('initial tape with letter \"A\" as second square', () => {
+    describe('initial tape with \"A\" as second square symbol', () => {
 
       let deepCopy: DeepCopy;
       let initialTape: Tape;
@@ -162,12 +174,12 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
           status => machineStatus.push(status),
           error => new Error(error),
           () => {
-              expect(machineStatus[0].tape.squares.length).toEqual(20);
-              for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
-                expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[0].tape.squares[squareIndex].value).toBe(expectedSquareValues[0][squareIndex]);
-              }
-              expect(machineStatus[0].index).toBe(0);
+            expect(machineStatus[0].tape.squares.length).toEqual(20);
+            for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
+              expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+              expect(machineStatus[0].tape.squares[squareIndex].value).toBe(expectedSquareValues[0][squareIndex]);
+            }
+            expect(machineStatus[0].index).toBe(0);
           }
         );
         tick(200);
@@ -196,6 +208,18 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         discardPeriodicTasks();
 
         expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
+      }));
+
+      it('should set errorMessage on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
+          status => { },
+          error => new Error(error),
+          () => { }
+        );
+        tick(200);
+        discardPeriodicTasks();
+
+        expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Cannot apply the configuration on given machine status');
       }));
 
     });

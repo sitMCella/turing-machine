@@ -1,17 +1,12 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
-
 import { MachinesCatalogComponent } from './machines-catalog.component';
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}
 
 describe('MachinesCatalogComponent', () => {
   let component: MachinesCatalogComponent;
   let fixture: ComponentFixture<MachinesCatalogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MachinesCatalogComponent],
       providers: [
@@ -19,24 +14,26 @@ describe('MachinesCatalogComponent', () => {
       ]
     })
       .compileComponents();
-  }));
+  });
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(MachinesCatalogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show the turing machine catalog', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    const catalog = compiled.querySelectorAll('.catalog>li');
+  it('should show the turing machines catalog', () => {
+    const compiled: any = fixture.debugElement.nativeElement;
+    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
     expect(catalog).not.toBeNull();
     expect(catalog).toBeDefined();
     expect(catalog.length).toBe(2);
+    expect(catalog[0].innerHTML).toBe('One third Turing machine');
+    expect(catalog[1].innerHTML).toBe('One third Turing machine single m-config');
   });
 
   it('should open the one third turing machine', inject([Router], (router: Router) => {
@@ -60,3 +57,7 @@ describe('MachinesCatalogComponent', () => {
   }));
 
 });
+
+class RouterStub {
+  navigateByUrl(url: string) { return url; }
+}

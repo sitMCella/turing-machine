@@ -130,9 +130,21 @@ describe('OneThirdAlgorithmService', () => {
         expect(oneThirdAlgorithmService.error).toBeTruthy();
       }));
 
+      it('should set errorMessage on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(defaultInitialTape).subscribe(
+          status => { },
+          error => new Error(error),
+          () => { }
+        );
+        tick(2100);
+        discardPeriodicTasks();
+
+        expect(oneThirdAlgorithmService.errorMessage).toBe('Max tape lenght reached');
+      }));
+
     });
 
-    describe('initial tape with letter \"A\" as second square', () => {
+    describe('initial tape with \"A\" as second square symbol', () => {
 
       let deepCopy: DeepCopy;
       let initialTape: Tape;
@@ -204,6 +216,18 @@ describe('OneThirdAlgorithmService', () => {
         discardPeriodicTasks();
 
         expect(oneThirdAlgorithmService.error).toBeTruthy();
+      }));
+
+      it('should set errorMessage on evolution error', fakeAsync(() => {
+        oneThirdAlgorithmService.evolve(initialTape).subscribe(
+          status => { },
+          error => new Error(error),
+          () => { }
+        );
+        tick(200);
+        discardPeriodicTasks();
+
+        expect(oneThirdAlgorithmService.errorMessage).toBe('Cannot find m-configuration with name c and symbol A');
       }));
 
     });

@@ -23,4 +23,16 @@ describe('PrintZeroOperation', () => {
     expect(newMachineStatus.index).toBe(0);
   });
 
+  it('should throw Error if tape already contains a symbol in current index', () => {
+    const squares: Array<Square> = [new Square(1, 'A')];
+    const tape: Tape = new Tape(squares);
+    const machineStatus: MachineStatus = new MachineStatus(tape, 0);
+
+    const apply = function () {
+      printZeroOperation.apply(machineStatus);
+    };
+
+    expect(apply).toThrow(new Error('Tape already contains a symbol in current index'));
+  });
+
 });

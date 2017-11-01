@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,12 +6,9 @@ import { Router } from '@angular/router';
   templateUrl: './machines-catalog.component.html',
   styleUrls: ['./machines-catalog.component.css']
 })
-export class MachinesCatalogComponent implements OnInit {
+export class MachinesCatalogComponent {
 
   constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
 
   public navigateTo(path: string) {
     this.router.navigateByUrl(path);

@@ -7,15 +7,11 @@ import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}
-
 describe('OneThirdMachineComponent', () => {
   let component: OneThirdMachineComponent;
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         OneThirdMachineComponent,
@@ -30,7 +26,7 @@ describe('OneThirdMachineComponent', () => {
       imports: [FormsModule],
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OneThirdMachineComponent);
@@ -84,3 +80,8 @@ describe('OneThirdMachineComponent', () => {
   });
 
 });
+
+class RouterStub {
+  navigateByUrl(url: string) { return url; }
+}
+
