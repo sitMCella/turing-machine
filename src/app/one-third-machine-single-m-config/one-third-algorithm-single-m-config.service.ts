@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Algorithm } from '../algorithm';
-import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
+import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { PrintZeroOperation } from '../operations/print-zero-operation';
 import { MoveRightOperation } from '../operations/move-right-operation';
 import { PrintOneOperation } from '../operations/print-one-operation';

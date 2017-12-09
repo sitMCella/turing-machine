@@ -1,5 +1,5 @@
 import { TestBed, inject, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { AlgorithmEvolutionService } from './algoritm-evolution.service';
+import { AlgorithmEvolutionService } from './algorithm-evolution.service';
 import { Configuration } from './configuration';
 import { MachineStatus } from './machine-status';
 import { Tape } from './tape';

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { OneThirdMachineComponent } from './one-third-machine.component';
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
-import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
+import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 

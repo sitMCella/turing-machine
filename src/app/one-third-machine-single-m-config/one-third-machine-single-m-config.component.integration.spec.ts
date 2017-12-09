@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config.component';
 import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
-import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
+import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 

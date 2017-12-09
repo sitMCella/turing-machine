@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
 import { TapeComponent } from './tape.component';
-import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
+import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OneThirdMachineComponent } from './one-third-machine.component';
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
-import { AlgorithmEvolutionService } from '../algoritm-evolution.service';
+import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 
 describe('OneThirdMachineComponent', () => {
   let component: OneThirdMachineComponent;
