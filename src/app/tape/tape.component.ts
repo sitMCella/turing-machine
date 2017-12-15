@@ -6,6 +6,7 @@ import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorit
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
+import { TapeSymbol } from '../tape-symbol';
 import { DeepCopy } from '../deep-copy';
 import { Algorithm } from '../algorithm';
 import { IntervalService } from '../interval.service';
@@ -42,6 +43,9 @@ export class TapeComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.subject) {
+      this.subject.unsubscribe();
+    }
     this.stopTimer();
   }
 
@@ -54,7 +58,7 @@ export class TapeComponent implements OnInit, OnDestroy {
     }
     if (this.squaresCount > this.initialTape.squares.length) {
       for (let i = size; i < this.squaresCount; i++) {
-        squares.push(new Square(i + 1, ''));
+        squares.push(new Square(i + 1, new TapeSymbol(TapeSymbol.NONE)));
       }
     }
     const anotherInitialTape: Tape = new Tape(squares);

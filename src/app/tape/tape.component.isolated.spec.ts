@@ -9,6 +9,7 @@ import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorit
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
+import { TapeSymbol } from '../tape-symbol';
 import { IntervalService } from '../interval.service';
 
 describe('TapeComponent', () => {
@@ -33,7 +34,7 @@ describe('TapeComponent', () => {
     machineStatusViewSubscription = new Subscription();
     spyOn(observable, 'subscribe').and.returnValue(machineStatusViewSubscription);
     spyOnProperty(algorithm, 'subscription', 'get').and.returnValue(subscription);
-    const squares: Array<Square> = [new Square(1, ''), new Square(2, 'A')];
+    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.NONE)), new Square(2, new TapeSymbol(TapeSymbol.ONE))];
     defaultInitialTape = new Tape(squares);
     spyOn(algorithm, 'getDefaultInitialTape').and.returnValue(defaultInitialTape);
     spyOn(subscription, 'unsubscribe');

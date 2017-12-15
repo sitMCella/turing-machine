@@ -4,6 +4,7 @@ import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
+import { TapeSymbol } from '../tape-symbol';
 import { DeepCopy } from '../deep-copy';
 
 describe('OneThirdAlgorithmService', () => {
@@ -32,7 +33,7 @@ describe('OneThirdAlgorithmService', () => {
       expect(tape.squares.length).toBe(20);
       for (let i = 0; i < tape.squares.length; i++) {
         expect(tape.squares[i].id).toBe(i + 1);
-        expect(tape.squares[i].value).toBe('');
+        expect(tape.squares[i].value.value).toBe('');
       }
     });
 
@@ -96,7 +97,7 @@ describe('OneThirdAlgorithmService', () => {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
               expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
             }
@@ -144,7 +145,7 @@ describe('OneThirdAlgorithmService', () => {
 
     });
 
-    describe('initial tape with \"A\" as second square symbol', () => {
+    describe('initial tape with \"1\" as second square symbol', () => {
 
       let deepCopy: DeepCopy;
       let initialTape: Tape;
@@ -152,7 +153,7 @@ describe('OneThirdAlgorithmService', () => {
       beforeEach(() => {
         deepCopy = new DeepCopy();
         initialTape = <Tape>deepCopy.apply(oneThirdAlgorithmService.getDefaultInitialTape());
-        initialTape.squares[1].value = 'A';
+        initialTape.squares[1].value = new TapeSymbol(TapeSymbol.ONE);
       });
 
       it('should create 2 machine statuses', fakeAsync(() => {
@@ -171,8 +172,8 @@ describe('OneThirdAlgorithmService', () => {
 
       it('should create machine statuses with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
-          ['', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-          ['0', 'A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+          ['', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+          ['0', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         ];
         const machineStatus: Array<MachineStatus> = [];
 
@@ -184,7 +185,7 @@ describe('OneThirdAlgorithmService', () => {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
               expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
             }
@@ -227,7 +228,7 @@ describe('OneThirdAlgorithmService', () => {
         tick(200);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.errorMessage).toBe('Cannot find m-configuration with name c and symbol A');
+        expect(oneThirdAlgorithmService.errorMessage).toBe('Cannot find m-configuration with name c and symbol 1');
       }));
 
     });

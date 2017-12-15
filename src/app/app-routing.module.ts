@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
 import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
 import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
+import { IncreasingOnesMachineComponent } from './increasing-ones-machine/increasing-ones-machine.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,10 @@ import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-singl
       {
         path: 'one-third-single-m-config',
         component: OneThirdMachineSingleMConfigComponent
+      },
+      {
+        path: 'increasing-ones',
+        component: IncreasingOnesMachineComponent
       }
     ])
   ],

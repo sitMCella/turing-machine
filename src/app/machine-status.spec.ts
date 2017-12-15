@@ -1,13 +1,14 @@
 import { Square } from './square';
 import { Tape } from './tape';
 import { MachineStatus } from './machine-status';
+import { TapeSymbol } from './tape-symbol';
 
 describe('MachineStatus', () => {
 
   let machineStatus: MachineStatus;
 
   beforeEach(() => {
-    const squares: Array<Square> = [new Square(1, 'A'), new Square(2, 'B')];
+    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.X))];
     const tape: Tape = new Tape(squares);
     machineStatus = new MachineStatus(tape, 1);
   });
@@ -15,7 +16,7 @@ describe('MachineStatus', () => {
   describe('symbol', () => {
 
     it('should get the actual tape symbol', () => {
-      expect(machineStatus.symbol).toEqual('B');
+      expect(machineStatus.symbol.value).toEqual(TapeSymbol.X);
     });
 
     it('should throw Error if cannot read symbol on actual tape square', () => {
@@ -29,9 +30,9 @@ describe('MachineStatus', () => {
     });
 
     it('should set the actual tape symbol', () => {
-      machineStatus.symbol = 'C';
+      machineStatus.symbol = new TapeSymbol(TapeSymbol.SCHWA);
 
-      expect(machineStatus.symbol).toEqual('C');
+      expect(machineStatus.symbol.value).toEqual(TapeSymbol.SCHWA);
     });
 
   });

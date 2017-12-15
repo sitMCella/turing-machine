@@ -11,6 +11,7 @@ import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorit
 import { Algorithm } from '../algorithm';
 import { DeepCopy } from '../deep-copy';
 import { IntervalService } from '../interval.service';
+import { TapeSymbol } from '../tape-symbol';
 
 xdescribe('TapeComponent', () => {
   let component: TapeComponent;
@@ -33,14 +34,14 @@ xdescribe('TapeComponent', () => {
   }));
 
   it('should be created', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     expect(component).toBeTruthy();
   }));
 
   it('should contain the default initial tape', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
@@ -50,7 +51,7 @@ xdescribe('TapeComponent', () => {
   }));
 
   it('should contain the default initial tape with 2 squares', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
@@ -61,7 +62,7 @@ xdescribe('TapeComponent', () => {
   }));
 
   it('should contain the evolve button', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
@@ -71,7 +72,7 @@ xdescribe('TapeComponent', () => {
   }));
 
   it('should contain the stop button', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
@@ -81,7 +82,7 @@ xdescribe('TapeComponent', () => {
   }));
 
   it('should evolve algorithm with default initial tape', fakeAsync(() => {
-    tick(1000);
+    tick(200);
     discardPeriodicTasks();
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
@@ -94,7 +95,7 @@ xdescribe('TapeComponent', () => {
   describe('resize setting', () => {
 
     it('should resize default initial tape squares count', fakeAsync(() => {
-      tick(1000);
+      tick(200);
       discardPeriodicTasks();
       fixture.detectChanges();
       const compiled: any = fixture.debugElement.nativeElement;
@@ -122,14 +123,14 @@ xdescribe('TapeComponent', () => {
   describe('evolve button', () => {
 
     it('should evolve algorithm with default initial tape', fakeAsync(() => {
-      tick(1000);
+      tick(200);
       discardPeriodicTasks();
       const compiled: any = fixture.debugElement.nativeElement;
       const evolveButton: HTMLButtonElement = compiled.querySelector('.evolve');
 
       evolveButton.click();
       fixture.detectChanges();
-      tick(1000);
+      tick(200);
       discardPeriodicTasks();
       fixture.detectChanges();
 
@@ -139,16 +140,16 @@ xdescribe('TapeComponent', () => {
       expect(tapes.length).toBe(2);
       const secondTapeSquares: Array<HTMLElement> = tapes[1].querySelectorAll('.square');
       expect(secondTapeSquares[0].innerText).toBe('');
-      expect(secondTapeSquares[1].innerText).toBe('A');
+      expect(secondTapeSquares[1].innerText).toBe('1');
     }));
 
     it('should evolve algorithm with modified initial tape', fakeAsync(() => {
-      tick(1000);
+      tick(200);
       discardPeriodicTasks();
       const compiled: any = fixture.debugElement.nativeElement;
       const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
       const firstSquareInitialTape: HTMLInputElement = squares[0].querySelector('input');
-      firstSquareInitialTape.value = 'A';
+      firstSquareInitialTape.value = '1';
       firstSquareInitialTape.dispatchEvent(new Event('input'));
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -164,8 +165,8 @@ xdescribe('TapeComponent', () => {
         expect(tapes).toBeDefined();
         expect(tapes.length).toBe(2);
         const secondTapeSquares: Array<HTMLElement> = tapes[1].querySelectorAll('.square');
-        expect(secondTapeSquares[0].innerText).toBe('A');
-        expect(secondTapeSquares[1].innerText).toBe('B');
+        expect(secondTapeSquares[0].innerText).toBe('1');
+        expect(secondTapeSquares[1].innerText).toBe('0');
       });
     }));
 
@@ -224,18 +225,23 @@ xdescribe('TapeComponent', () => {
 
     public getDefaultInitialTape(): Tape {
       const squares: Array<Square> = [];
-      squares.push(new Square(1, ''));
-      squares.push(new Square(2, ''));
+      squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
+      squares.push(new Square(2, new TapeSymbol(TapeSymbol.NONE)));
       return new Tape(squares);
     }
 
     public evolve(initialTape: Tape): Observable<MachineStatus> {
       const initialStatus: MachineStatus = new MachineStatus(<Tape>this.deepCopy.apply(initialTape), 0);
       this.machineStatus = new BehaviorSubject(initialStatus);
-      this._subscription = Observable.interval(100).take(1).subscribe(res => {
+      this._subscription = Observable.interval(100).subscribe(res => {
         const squares: Array<Square> = [];
-        squares.push(initialTape.squares[0].value === '' ? new Square(1, '') : new Square(1, 'A'));
-        squares.push(initialTape.squares[0].value === '' ? new Square(2, 'A') : new Square(2, 'B'));
+        if (initialTape.squares[0].value.value === TapeSymbol.NONE) {
+          squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
+          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ONE)));
+        } else {
+          squares.push(new Square(1, new TapeSymbol(TapeSymbol.ONE)));
+          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ZERO)));
+        }
         const tape: Tape = new Tape(squares);
         const actualStatus: MachineStatus = new MachineStatus(tape, 1);
         this.machineStatus.next(actualStatus);

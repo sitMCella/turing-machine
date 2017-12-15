@@ -10,6 +10,8 @@ import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.
 import { OneThirdAlgorithmService } from './one-third-machine/one-third-algorithm.service';
 import { OneThirdAlgorithmSingleMConfigService } from './one-third-machine-single-m-config/one-third-algorithm-single-m-config.service';
 import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
+import { IncreasingOnesMachineComponent } from './increasing-ones-machine/increasing-ones-machine.component';
+import { IncreasingOnesAlgorithmService } from './increasing-ones-machine/increasing-ones-algorithm.service';
 import { IntervalService } from './interval.service';
 
 @NgModule({
@@ -18,7 +20,8 @@ import { IntervalService } from './interval.service';
     TapeComponent,
     MachinesCatalogComponent,
     OneThirdMachineComponent,
-    OneThirdMachineSingleMConfigComponent
+    OneThirdMachineSingleMConfigComponent,
+    IncreasingOnesMachineComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,7 @@ import { IntervalService } from './interval.service';
     AlgorithmEvolutionService,
     OneThirdAlgorithmService,
     OneThirdAlgorithmSingleMConfigService,
+    IncreasingOnesAlgorithmService,
     IntervalService
   ],
   bootstrap: [AppComponent]

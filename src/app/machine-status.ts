@@ -1,4 +1,5 @@
 import { Tape } from './tape';
+import { TapeSymbol } from './tape-symbol';
 
 export class MachineStatus {
   public tape: Tape;
@@ -9,14 +10,14 @@ export class MachineStatus {
     this.index = index;
   }
 
-  public get symbol(): string {
+  public get symbol(): TapeSymbol {
     if (this.maxSquareCount()) {
       throw new Error('Cannot read symbol on square with index ' + (this.index + 1));
     }
     return this.tape.squares[this.index].value;
   }
 
-  public set symbol(value: string) {
+  public set symbol(value: TapeSymbol) {
     this.tape.squares[this.index].value = value;
   }
 

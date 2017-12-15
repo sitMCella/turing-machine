@@ -31,9 +31,10 @@ describe('MachinesCatalogComponent', () => {
     const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
     expect(catalog).not.toBeNull();
     expect(catalog).toBeDefined();
-    expect(catalog.length).toBe(2);
+    expect(catalog.length).toBe(3);
     expect(catalog[0].innerHTML).toBe('One third Turing machine');
     expect(catalog[1].innerHTML).toBe('One third Turing machine single m-config');
+    expect(catalog[2].innerHTML).toBe('Increasing Ones Turing machine');
   });
 
   it('should open the one third turing machine', inject([Router], (router: Router) => {
@@ -54,6 +55,16 @@ describe('MachinesCatalogComponent', () => {
     catalog[1].click();
 
     expect(router.navigateByUrl).toHaveBeenCalledWith('/one-third-single-m-config');
+  }));
+
+  it('should open the increasing ones turing machine', inject([Router], (router: Router) => {
+    const spy = spyOn(router, 'navigateByUrl');
+    const compiled = fixture.debugElement.nativeElement;
+    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+
+    catalog[2].click();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/increasing-ones');
   }));
 
 });

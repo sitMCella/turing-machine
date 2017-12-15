@@ -4,6 +4,7 @@ import { Configuration } from './configuration';
 import { MachineStatus } from './machine-status';
 import { Tape } from './tape';
 import { Square } from './square';
+import { TapeSymbol } from './tape-symbol';
 import { PrintOneOperation } from './operations/print-one-operation';
 import { MoveRightOperation } from './operations/move-right-operation';
 import { PrintZeroOperation } from './operations/print-zero-operation';
@@ -17,15 +18,19 @@ describe('AlgorithmEvolutionService', () => {
   beforeEach(() => {
     algorithmEvolutionService = new AlgorithmEvolutionService();
 
-    const firstConfiguration = new Configuration('b', '', [new PrintZeroOperation(), new MoveRightOperation()], 'c');
-    const secondConfiguration = new Configuration('c', '', [new MoveRightOperation()], 'e');
-    const thirdConfiguration = new Configuration('e', '', [new PrintOneOperation(), new MoveRightOperation()], 'f');
-    const fourthConfiguration = new Configuration('f', '', [new MoveRightOperation()], 'b');
+    const firstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE),
+      [new PrintZeroOperation(), new MoveRightOperation()], 'c');
+    const secondConfiguration = new Configuration('c', new TapeSymbol(TapeSymbol.NONE),
+      [new MoveRightOperation()], 'e');
+    const thirdConfiguration = new Configuration('e', new TapeSymbol(TapeSymbol.NONE),
+      [new PrintOneOperation(), new MoveRightOperation()], 'f');
+    const fourthConfiguration = new Configuration('f', new TapeSymbol(TapeSymbol.NONE),
+      [new MoveRightOperation()], 'b');
     configurations = [firstConfiguration, secondConfiguration, thirdConfiguration, fourthConfiguration];
 
     const squares: Array<Square> = [];
     for (let i = 0; i < 10; i++) {
-      squares[i] = new Square(i + 1, '');
+      squares[i] = new Square(i + 1, new TapeSymbol(TapeSymbol.NONE));
     }
     initialTape = new Tape(squares);
   });
@@ -77,7 +82,7 @@ describe('AlgorithmEvolutionService', () => {
             expect(machineStatus[tapeIndex].tape.squares.length).toEqual(10);
             for (let squareIndex = 0; squareIndex < 10; squareIndex++) {
               expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+              expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
             }
             expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
           }

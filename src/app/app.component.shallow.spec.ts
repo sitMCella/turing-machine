@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
 import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
 import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
+import { IncreasingOnesMachineComponent } from './increasing-ones-machine/increasing-ones-machine.component';
 import { TapeComponent } from './tape/tape.component';
 
 describe('AppComponent', () => {
@@ -19,6 +20,7 @@ describe('AppComponent', () => {
         MachinesCatalogComponent,
         OneThirdMachineComponent,
         OneThirdMachineSingleMConfigComponent,
+        IncreasingOnesMachineComponent,
         TapeComponent
       ],
       providers: [

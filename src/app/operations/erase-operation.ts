@@ -3,13 +3,10 @@ import { Operation } from '../operation';
 import { MachineStatus } from '../machine-status';
 import { TapeSymbol } from '../tape-symbol';
 
-export class PrintZeroOperation implements Operation {
+export class EraseOperation implements Operation {
 
   apply(machineStatus: MachineStatus): MachineStatus {
-    if (machineStatus.symbol.value !== TapeSymbol.NONE) {
-      throw new Error('Tape already contains a symbol in current index');
-    }
-    machineStatus.symbol = new TapeSymbol(TapeSymbol.ZERO);
+    machineStatus.symbol = new TapeSymbol(TapeSymbol.NONE);
     return machineStatus;
   }
 

@@ -10,6 +10,7 @@ import { Configuration } from '../configuration';
 import { MachineStatus } from '../machine-status';
 import { Square } from '../square';
 import { Tape } from '../tape';
+import { TapeSymbol } from '../tape-symbol';
 
 @Injectable()
 export class OneThirdAlgorithmSingleMConfigService implements Algorithm {
@@ -19,10 +20,10 @@ export class OneThirdAlgorithmSingleMConfigService implements Algorithm {
 
   constructor(private algorithmEvolutionService: AlgorithmEvolutionService) {
     this.defaultInitialTape = this.createDefaultInitialTape();
-    const firstConfiguration = new Configuration('b', '', [new PrintZeroOperation()], 'b');
-    const secondConfiguration = new Configuration('b', '0',
+    const firstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE), [new PrintZeroOperation()], 'b');
+    const secondConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.ZERO),
       [new MoveRightOperation(), new MoveRightOperation(), new PrintOneOperation()], 'b');
-    const thirdConfiguration = new Configuration('b', '1',
+    const thirdConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.ONE),
       [new MoveRightOperation(), new MoveRightOperation(), new PrintZeroOperation()], 'b');
     this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration];
   }
@@ -74,7 +75,7 @@ export class OneThirdAlgorithmSingleMConfigService implements Algorithm {
   private createDefaultInitialTape(): Tape {
     const squares: Array<Square> = [];
     for (let i = 0; i < this.defaultMaxIterations; i++) {
-      squares[i] = new Square(i + 1, '');
+      squares[i] = new Square(i + 1, new TapeSymbol(TapeSymbol.NONE));
     }
     return new Tape(squares);
   }

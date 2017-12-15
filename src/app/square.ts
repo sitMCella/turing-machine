@@ -1,8 +1,10 @@
+import { TapeSymbol } from './tape-symbol';
+
 export class Square {
   public id: number;
-  public value: string;
+  public value: TapeSymbol;
 
-  constructor(id: number, value: string) {
+  constructor(id: number, value: TapeSymbol) {
     this.id = id;
     this.value = value;
   }

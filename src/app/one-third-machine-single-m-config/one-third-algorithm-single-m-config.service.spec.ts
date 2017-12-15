@@ -5,6 +5,7 @@ import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
 import { DeepCopy } from '../deep-copy';
+import { TapeSymbol } from '../tape-symbol';
 
 describe('OneThirdAlgorithmSingleMConfigService', () => {
   let oneThirdAlgorithmSingleMConfigService: OneThirdAlgorithmSingleMConfigService;
@@ -32,7 +33,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
       expect(tape.squares.length).toBe(20);
       for (let i = 0; i < tape.squares.length; i++) {
         expect(tape.squares[i].id).toBe(i + 1);
-        expect(tape.squares[i].value).toBe('');
+        expect(tape.squares[i].value.value).toBe('');
       }
     });
 
@@ -87,7 +88,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
               if (tapeIndex === 0) {
                 expect(machineStatus[tapeIndex].index).toBe(0);
@@ -139,7 +140,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
 
     });
 
-    describe('initial tape with \"A\" as second square symbol', () => {
+    describe('initial tape with \"1\" as second square symbol', () => {
 
       let deepCopy: DeepCopy;
       let initialTape: Tape;
@@ -147,7 +148,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
       beforeEach(() => {
         deepCopy = new DeepCopy();
         initialTape = <Tape>deepCopy.apply(oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape());
-        initialTape.squares[0].value = 'A';
+        initialTape.squares[0].value = new TapeSymbol(TapeSymbol.ONE);
       });
 
       it('should create 1 machine status', fakeAsync(() => {
@@ -166,7 +167,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
 
       it('should create machine status with correct square values', fakeAsync(() => {
         const expectedSquareValues: Array<Array<string>> = [
-          ['A', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+          ['1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         ];
         const machineStatus: Array<MachineStatus> = [];
 
@@ -177,7 +178,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
             expect(machineStatus[0].tape.squares.length).toEqual(20);
             for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
               expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[0].tape.squares[squareIndex].value).toBe(expectedSquareValues[0][squareIndex]);
+              expect(machineStatus[0].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[0][squareIndex]);
             }
             expect(machineStatus[0].index).toBe(0);
           }
@@ -219,7 +220,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         tick(200);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Cannot apply the configuration on given machine status');
+        expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Tape already contains a symbol in current index');
       }));
 
     });
