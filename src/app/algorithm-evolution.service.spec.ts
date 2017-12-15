@@ -82,7 +82,7 @@ describe('AlgorithmEvolutionService', () => {
             expect(machineStatus[tapeIndex].tape.squares.length).toEqual(10);
             for (let squareIndex = 0; squareIndex < 10; squareIndex++) {
               expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+              expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
             }
             expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
           }

@@ -23,9 +23,9 @@ describe('Configuration', () => {
     expect(finalMachineStatus).not.toBe(initialMachineStatus);
     expect(finalMachineStatus.tape.squares.length).toBe(2);
     expect(finalMachineStatus.tape.squares[0].id).toBe(1);
-    expect(finalMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.ONE);
+    expect(finalMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.ONE);
     expect(finalMachineStatus.tape.squares[1].id).toBe(2);
-    expect(finalMachineStatus.tape.squares[1].value.value).toBe(TapeSymbol.NONE);
+    expect(finalMachineStatus.tape.squares[1].symbol.value).toBe(TapeSymbol.NONE);
     expect(finalMachineStatus.index).toBe(1);
   });
 
@@ -42,9 +42,9 @@ describe('Configuration', () => {
     expect(finalMachineStatus).not.toBe(initialMachineStatus);
     expect(finalMachineStatus.tape.squares.length).toBe(2);
     expect(finalMachineStatus.tape.squares[0].id).toBe(1);
-    expect(finalMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.ONE);
+    expect(finalMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.ONE);
     expect(finalMachineStatus.tape.squares[1].id).toBe(2);
-    expect(finalMachineStatus.tape.squares[1].value.value).toBe(TapeSymbol.ZERO);
+    expect(finalMachineStatus.tape.squares[1].symbol.value).toBe(TapeSymbol.ZERO);
     expect(finalMachineStatus.index).toBe(1);
   });
 

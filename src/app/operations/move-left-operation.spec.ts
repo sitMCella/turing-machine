@@ -16,9 +16,9 @@ describe('MoveLeftOperation', () => {
 
     expect(newMachineStatus).toBe(machineStatus);
     expect(newMachineStatus.tape.squares[0].id).toBe(1);
-    expect(newMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.NONE);
+    expect(newMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.NONE);
     expect(newMachineStatus.tape.squares[1].id).toBe(2);
-    expect(newMachineStatus.tape.squares[1].value.value).toBe(TapeSymbol.NONE);
+    expect(newMachineStatus.tape.squares[1].symbol.value).toBe(TapeSymbol.NONE);
     expect(newMachineStatus.index).toBe(0);
   });
 

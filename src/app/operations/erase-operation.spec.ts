@@ -21,7 +21,7 @@ describe('EraseOperation', () => {
 
     expect(newMachineStatus).toBe(machineStatus);
     expect(newMachineStatus.tape.squares[0].id).toBe(1);
-    expect(newMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.NONE);
+    expect(newMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.NONE);
     expect(newMachineStatus.index).toBe(0);
   });
 

@@ -2,10 +2,10 @@ import { TapeSymbol } from './tape-symbol';
 
 export class Square {
   public id: number;
-  public value: TapeSymbol;
+  public symbol: TapeSymbol;
 
-  constructor(id: number, value: TapeSymbol) {
+  constructor(id: number, symbol: TapeSymbol) {
     this.id = id;
-    this.value = value;
+    this.symbol = symbol;
   }
 }

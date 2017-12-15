@@ -8,7 +8,7 @@ export class DeepCopy {
     let copy: object;
 
     if (obj instanceof Square) {
-      return new Square(obj.id, obj.value);
+      return new Square(obj.id, obj.symbol);
     }
 
     if (obj instanceof MachineStatus) {

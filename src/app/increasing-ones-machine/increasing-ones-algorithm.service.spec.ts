@@ -33,7 +33,7 @@ describe('IncreasingOnesAlgorithmService', () => {
       expect(tape.squares.length).toBe(12);
       for (let i = 0; i < tape.squares.length; i++) {
         expect(tape.squares[i].id).toBe(i + 1);
-        expect(tape.squares[i].value.value).toBe('');
+        expect(tape.squares[i].symbol.value).toBe('');
       }
     });
 
@@ -100,7 +100,7 @@ describe('IncreasingOnesAlgorithmService', () => {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(12);
               for (let squareIndex = 0; squareIndex < 12; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
               expect(machineStatus[tapeIndex].index).toBe(expectedTapeIndexes[tapeIndex]);
             }
@@ -156,7 +156,7 @@ describe('IncreasingOnesAlgorithmService', () => {
       beforeEach(() => {
         deepCopy = new DeepCopy();
         initialTape = <Tape>deepCopy.apply(increasingOnesAlgorithmService.getDefaultInitialTape());
-        initialTape.squares[4].value = new TapeSymbol(TapeSymbol.ONE);
+        initialTape.squares[4].symbol = new TapeSymbol(TapeSymbol.ONE);
       });
 
       it('should create 1 machine status', fakeAsync(() => {
@@ -183,12 +183,12 @@ describe('IncreasingOnesAlgorithmService', () => {
           status => machineStatus.push(status),
           error => new Error(error),
           () => {
-              expect(machineStatus[0].tape.squares.length).toEqual(12);
-              for (let squareIndex = 0; squareIndex < 12; squareIndex++) {
-                expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[0].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[0][squareIndex]);
-              }
-              expect(machineStatus[0].index).toBe(0);
+            expect(machineStatus[0].tape.squares.length).toEqual(12);
+            for (let squareIndex = 0; squareIndex < 12; squareIndex++) {
+              expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+              expect(machineStatus[0].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[0][squareIndex]);
+            }
+            expect(machineStatus[0].index).toBe(0);
           }
         );
         tick(200);

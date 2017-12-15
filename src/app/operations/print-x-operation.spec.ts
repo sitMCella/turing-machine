@@ -20,7 +20,7 @@ describe('PrintXOperation', () => {
 
     expect(newMachineStatus).toBe(machineStatus);
     expect(newMachineStatus.tape.squares[0].id).toBe(1);
-    expect(newMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.X);
+    expect(newMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.X);
     expect(newMachineStatus.index).toBe(0);
   });
 

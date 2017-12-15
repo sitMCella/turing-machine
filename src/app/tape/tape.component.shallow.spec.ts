@@ -235,7 +235,7 @@ xdescribe('TapeComponent', () => {
       this.machineStatus = new BehaviorSubject(initialStatus);
       this._subscription = Observable.interval(100).subscribe(res => {
         const squares: Array<Square> = [];
-        if (initialTape.squares[0].value.value === TapeSymbol.NONE) {
+        if (initialTape.squares[0].symbol.value === TapeSymbol.NONE) {
           squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
           squares.push(new Square(2, new TapeSymbol(TapeSymbol.ONE)));
         } else {

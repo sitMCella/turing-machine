@@ -2,7 +2,7 @@
   <div class="title">Initial tape:</div>
   <div>
     <span class="square" *ngFor="let square of initialTape.squares">
-      <input type="text" [(ngModel)]="square.value.value">
+      <input type="text" [(ngModel)]="square.symbol.value">
     </span>
   </div>
 </div>
@@ -20,7 +20,7 @@
 </div>
 <div class="tape" *ngFor="let status of machineStatusObservable | async">
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" [ngClass]="{'index': status.index == i}">
-    {{square.value.value}}
+    {{square.symbol.value}}
   </span>
 </div>
 <div class="error">

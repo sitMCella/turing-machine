@@ -14,11 +14,11 @@ export class MachineStatus {
     if (this.maxSquareCount()) {
       throw new Error('Cannot read symbol on square with index ' + (this.index + 1));
     }
-    return this.tape.squares[this.index].value;
+    return this.tape.squares[this.index].symbol;
   }
 
-  public set symbol(value: TapeSymbol) {
-    this.tape.squares[this.index].value = value;
+  public set symbol(symbol: TapeSymbol) {
+    this.tape.squares[this.index].symbol = symbol;
   }
 
   public maxSquareCount(): boolean {

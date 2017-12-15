@@ -33,7 +33,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
       expect(tape.squares.length).toBe(20);
       for (let i = 0; i < tape.squares.length; i++) {
         expect(tape.squares[i].id).toBe(i + 1);
-        expect(tape.squares[i].value.value).toBe('');
+        expect(tape.squares[i].symbol.value).toBe('');
       }
     });
 
@@ -88,7 +88,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
               expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
               for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
                 expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+                expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
               }
               if (tapeIndex === 0) {
                 expect(machineStatus[tapeIndex].index).toBe(0);
@@ -148,7 +148,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
       beforeEach(() => {
         deepCopy = new DeepCopy();
         initialTape = <Tape>deepCopy.apply(oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape());
-        initialTape.squares[0].value = new TapeSymbol(TapeSymbol.ONE);
+        initialTape.squares[0].symbol = new TapeSymbol(TapeSymbol.ONE);
       });
 
       it('should create 1 machine status', fakeAsync(() => {
@@ -178,7 +178,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
             expect(machineStatus[0].tape.squares.length).toEqual(20);
             for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
               expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[0].tape.squares[squareIndex].value.value).toBe(expectedSquareValues[0][squareIndex]);
+              expect(machineStatus[0].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[0][squareIndex]);
             }
             expect(machineStatus[0].index).toBe(0);
           }

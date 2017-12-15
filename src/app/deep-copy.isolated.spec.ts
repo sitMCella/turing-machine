@@ -18,7 +18,7 @@ describe('DeepCopy', () => {
 
     expect(copiedSquare).not.toBe(square);
     expect(copiedSquare.id).toBe(1);
-    expect(copiedSquare.value.value).toBe(TapeSymbol.ANY);
+    expect(copiedSquare.symbol.value).toBe(TapeSymbol.ANY);
   });
 
   it('should copy Tape object', () => {
@@ -31,9 +31,9 @@ describe('DeepCopy', () => {
     expect(copiedTape.squares).not.toBe(tape.squares);
     expect(copiedTape.squares.length).toBe(2);
     expect(copiedTape.squares[0].id).toBe(1);
-    expect(copiedTape.squares[0].value.value).toBe(TapeSymbol.NONE);
+    expect(copiedTape.squares[0].symbol.value).toBe(TapeSymbol.NONE);
     expect(copiedTape.squares[1].id).toBe(2);
-    expect(copiedTape.squares[1].value.value).toBe(TapeSymbol.SCHWA);
+    expect(copiedTape.squares[1].symbol.value).toBe(TapeSymbol.SCHWA);
   });
 
   it('should copy MachineStatus object', () => {
@@ -47,7 +47,7 @@ describe('DeepCopy', () => {
     expect(copiedMachineStatus.tape).not.toBe(machineStatus.tape);
     expect(copiedMachineStatus.tape.squares.length).toBe(1);
     expect(copiedMachineStatus.tape.squares[0].id).toBe(1);
-    expect(copiedMachineStatus.tape.squares[0].value.value).toBe(TapeSymbol.ONE);
+    expect(copiedMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.ONE);
     expect(copiedMachineStatus.index).toBe(3);
   });
 
