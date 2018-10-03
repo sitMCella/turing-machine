@@ -1,5 +1,4 @@
-import { async } from '@angular/core/testing';
-import { Subscription, Observable, Subject, of } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 import { TapeComponent } from './tape.component';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';

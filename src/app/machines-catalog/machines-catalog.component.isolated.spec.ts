@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MachinesCatalogComponent } from './machines-catalog.component';
 

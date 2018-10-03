@@ -7,8 +7,24 @@ A Turing machine is composed by a list of m-configurations; the configuration an
 The Turing machine Table is composed of 4 columns, the first pair of columns describes the configuration of the machine and the second pair of columns describes the behaviour of the machine.
 The first column contains the m-configuration, the second column contains the tape square scanned symbol, the third column contains the operations and the fourth column contains the next m-configuration.
 
+The following is an example of a Turing machine Table:
+
+| m-config | symbol | operations | final m-config |
+| :------: | :------: | :------: | :------: |
+| b | none | P0,R | c |
+| c | none | R | e |
+| e | none | P1,R | f |
+| f | none | R | b |
+
+The machines make use of a one-dimensional tape divided into squares.
+
+The application prints at every computational stage the complete configuration (the current m-configuration, all the symbols into the tape and the position of the head).
+
 There are some assumptions:
-- The symbol "none" of the Table symbol column corresponds to a tape with no symbol (blank square)
+- The machines compute binary numeric sequences
+- The machines use only alternate squares for printing numeric sequences
+- The tape does not extend infinitely toward the right
+- The symbol "none" of the Table symbol column corresponds to a square with no symbol (blank square)
 - The symbol "any" of the Table symbol column corresponds to any non-blank symbol
 - The Table operations column contains zero, one or more operations
 - The available operations are: R (right), L (left), P (print), E (erase)
@@ -22,8 +38,8 @@ Turing machine initial setup:
 
 Features:
 - Turing machine async evolution
-- The initial tape squares are editable
-- The initial tape squares size can be changed
+- The initial tape square symbols are editable
+- The initial tape squares count can be changed
 
 # Development
 

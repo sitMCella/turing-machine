@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Subscription, Observable, BehaviorSubject, interval } from 'rxjs';
 import { TapeComponent } from './tape.component';
 import { Tape } from '../tape';
 import { Square } from '../square';
 import { MachineStatus } from '../machine-status';
-import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';
 import { Algorithm } from '../algorithm';
 import { DeepCopy } from '../deep-copy';
 import { IntervalService } from '../interval.service';

@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import { interval, Subscription, Observable, BehaviorSubject, Subscriber } from 'rxjs';
-import { PrintZeroOperation } from './operations/print-zero-operation';
-import { MoveRightOperation } from './operations/move-right-operation';
-import { PrintOneOperation } from './operations/print-one-operation';
+import { interval, Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { MachineStatus } from './machine-status';
 import { Configuration } from './configuration';
-import { Square } from './square';
 import { Tape } from './tape';
-import { Algorithm } from './algorithm';
 import { DeepCopy } from './deep-copy';
 import { TapeSymbolCompare } from './tape-symbol-compare';
 

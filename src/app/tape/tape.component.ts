@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';

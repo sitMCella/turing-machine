@@ -1,9 +1,8 @@
-import { TestBed, inject, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
-import { Square } from '../square';
 import { DeepCopy } from '../deep-copy';
 import { TapeSymbol } from '../tape-symbol';
 
