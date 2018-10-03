@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { IncreasingOnesAlgorithmService } from './increasing-ones-algorithm.service';
 
 @Component({
   selector: 'app-increasing-ones-machine',
   templateUrl: './increasing-ones-machine.component.html',
-  styleUrls: ['../machine-component.css']
+  styleUrls: ['../machine-component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IncreasingOnesMachineComponent {
 

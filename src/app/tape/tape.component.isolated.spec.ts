@@ -34,6 +34,8 @@ describe('TapeComponent', () => {
     defaultInitialTape = new Tape(squares);
     spyOn(algorithm, 'getDefaultInitialTape').and.returnValue(defaultInitialTape);
     spyOn(subscription, 'unsubscribe');
+    spyOn(intervalService, 'clear');
+    spyOn(intervalService, 'setInterval');
   });
 
   it('should initially have the default initial tape', () => {
@@ -43,6 +45,18 @@ describe('TapeComponent', () => {
     expect(component.initialTape).toBeDefined();
     expect(component.initialTape.squares).toBeDefined();
     expect(component.initialTape.squares.length).toEqual(2);
+  });
+
+  it('should stop timer', () => {
+    component.ngOnInit();
+
+    expect(intervalService.clear).toHaveBeenCalled();
+  });
+
+  it('should start timer', () => {
+    component.ngOnInit();
+
+    expect(intervalService.setInterval).toHaveBeenCalled();
   });
 
   it('should initially have undefined squaresCount', () => {
@@ -86,6 +100,7 @@ describe('TapeComponent', () => {
 
     beforeEach(() => {
       spyOn(algorithm, 'stop');
+      spyOn(machineStatusViewSubscription, 'unsubscribe');
     });
 
     it('should stop algorithm evolution', () => {
@@ -97,7 +112,6 @@ describe('TapeComponent', () => {
     });
 
     it('should unsubscribe from algorithm', () => {
-      spyOn(machineStatusViewSubscription, 'unsubscribe');
       component.evolve();
 
       component.stop();
@@ -106,7 +120,6 @@ describe('TapeComponent', () => {
     });
 
     it('should stop timer', () => {
-      spyOn(intervalService, 'clear');
       component.evolve();
 
       component.stop();
@@ -131,7 +144,6 @@ describe('TapeComponent', () => {
     });
 
     it('should stop timer', () => {
-      spyOn(intervalService, 'clear');
       component.evolve();
 
       component.pause();
@@ -157,7 +169,6 @@ describe('TapeComponent', () => {
     });
 
     it('should start timer', () => {
-      spyOn(intervalService, 'setInterval');
       component.evolve();
       component.pause();
 

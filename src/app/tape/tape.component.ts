@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
@@ -12,6 +12,7 @@ import { IntervalService } from '../interval.service';
   selector: 'app-tape',
   templateUrl: './tape.component.html',
   styleUrls: ['./tape.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TapeComponent implements OnInit, OnDestroy {
 

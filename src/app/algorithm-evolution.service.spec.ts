@@ -182,6 +182,21 @@ describe('AlgorithmEvolutionService', () => {
       expect(machineStatus.length).toBeLessThan(11);
     }));
 
+    it('should not set completed as true', fakeAsync(() => {
+      const machineStatus: Array<MachineStatus> = [];
+      algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
+        status => machineStatus.push(status),
+        error => new Error(error),
+        () => { }
+      );
+      tick(500);
+      discardPeriodicTasks();
+
+      algorithmEvolutionService.pause();
+
+      expect(algorithmEvolutionService.completed).toBeFalsy();
+    }));
+
   });
 
   describe('resume', () => {

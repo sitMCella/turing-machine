@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-machines-catalog',
   templateUrl: './machines-catalog.component.html',
-  styleUrls: ['./machines-catalog.component.css']
+  styleUrls: ['./machines-catalog.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MachinesCatalogComponent {
 
