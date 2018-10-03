@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Observable, BehaviorSubject, interval } from 'rxjs';
 import { TapeComponent } from './tape.component';
 import { Tape } from '../tape';
 import { Square } from '../square';
@@ -233,7 +231,7 @@ xdescribe('TapeComponent', () => {
     public evolve(initialTape: Tape): Observable<MachineStatus> {
       const initialStatus: MachineStatus = new MachineStatus(<Tape>this.deepCopy.apply(initialTape), 0);
       this.machineStatus = new BehaviorSubject(initialStatus);
-      this._subscription = Observable.interval(100).subscribe(res => {
+      this._subscription = interval(100).subscribe(res => {
         const squares: Array<Square> = [];
         if (initialTape.squares[0].symbol.value === TapeSymbol.NONE) {
           squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));

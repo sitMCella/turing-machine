@@ -1,8 +1,5 @@
 import { async } from '@angular/core/testing';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/of';
+import { Subscription, Observable, Subject, of } from 'rxjs';
 import { TapeComponent } from './tape.component';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';
@@ -29,7 +26,7 @@ describe('TapeComponent', () => {
     algorithm = new OneThirdAlgorithmService(algorithmEvolutionService);
     algorithm.subscription = subscription;
     component.algorithm = algorithm;
-    observable = Observable.of(new MachineStatus(null, 33));
+    observable = of(new MachineStatus(null, 33));
     spyOn(algorithm, 'evolve').and.returnValue(observable);
     machineStatusViewSubscription = new Subscription();
     spyOn(observable, 'subscribe').and.returnValue(machineStatusViewSubscription);

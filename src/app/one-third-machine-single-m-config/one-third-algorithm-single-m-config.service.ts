@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
 import { Algorithm } from '../algorithm';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { PrintZeroOperation } from '../operations/print-zero-operation';

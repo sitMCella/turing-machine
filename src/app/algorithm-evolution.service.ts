@@ -1,10 +1,5 @@
-import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/operator/take';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscriber } from 'rxjs/Subscriber';
+import { interval, Subscription, Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { PrintZeroOperation } from './operations/print-zero-operation';
 import { MoveRightOperation } from './operations/move-right-operation';
 import { PrintOneOperation } from './operations/print-one-operation';
@@ -85,7 +80,7 @@ export class AlgorithmEvolutionService {
   }
 
   private algorithmEvolution(): void {
-    this._subscription = Observable.interval(100).subscribe(res => {
+    this._subscription = interval(100).subscribe(res => {
       if (this.continue) {
         this.algorithmConfigurationEvolution();
         this.i++;
