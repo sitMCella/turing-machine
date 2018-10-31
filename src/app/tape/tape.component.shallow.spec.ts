@@ -243,7 +243,7 @@ xdescribe('TapeComponent', () => {
 
   describe('stop button', () => {
 
-    xit('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', fakeAsync(() => {
       const compiled: any = fixture.debugElement.nativeElement;
       const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
 
@@ -260,7 +260,7 @@ xdescribe('TapeComponent', () => {
 
   describe('pause button', () => {
 
-    xit('should break algorithm evolution', fakeAsync(() => {
+    it('should break algorithm evolution', fakeAsync(() => {
       const compiled: any = fixture.debugElement.nativeElement;
       const pauseButton: HTMLButtonElement = compiled.querySelector('.pause');
 
