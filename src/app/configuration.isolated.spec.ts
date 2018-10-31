@@ -7,6 +7,24 @@ import { MachineStatus } from './machine-status';
 
 describe('Configuration', () => {
 
+  class FakeFirstOperation implements Operation {
+    apply(machineStatus: MachineStatus): MachineStatus {
+      const finalSquares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.NONE))];
+      const finalTape: Tape = new Tape(finalSquares);
+      const finalMachineStatus: MachineStatus = new MachineStatus(machineStatus.configurationName, finalTape, 1);
+      return finalMachineStatus;
+    }
+  }
+
+  class FakeSecondOperation implements Operation {
+    apply(machineStatus: MachineStatus): MachineStatus {
+      const finalSquares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.ZERO))];
+      const finalTape: Tape = new Tape(finalSquares);
+      const finalMachineStatus: MachineStatus = new MachineStatus(machineStatus.configurationName, finalTape, 1);
+      return finalMachineStatus;
+    }
+  }
+
   const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.NONE))];
   const tape: Tape = new Tape(squares);
   const initialConfigurationName = 'initial configuration';
@@ -46,21 +64,3 @@ describe('Configuration', () => {
   });
 
 });
-
-class FakeFirstOperation implements Operation {
-  apply(machineStatus: MachineStatus): MachineStatus {
-    const finalSquares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.NONE))];
-    const finalTape: Tape = new Tape(finalSquares);
-    const finalMachineStatus: MachineStatus = new MachineStatus(machineStatus.configurationName, finalTape, 1);
-    return finalMachineStatus;
-  }
-}
-
-class FakeSecondOperation implements Operation {
-  apply(machineStatus: MachineStatus): MachineStatus {
-    const finalSquares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.ZERO))];
-    const finalTape: Tape = new Tape(finalSquares);
-    const finalMachineStatus: MachineStatus = new MachineStatus(machineStatus.configurationName, finalTape, 1);
-    return finalMachineStatus;
-  }
-}

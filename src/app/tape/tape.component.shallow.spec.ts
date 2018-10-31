@@ -11,6 +11,78 @@ import { IntervalService } from '../interval.service';
 import { TapeSymbol } from '../tape-symbol';
 
 xdescribe('TapeComponent', () => {
+
+  class AlgorithmService implements Algorithm {
+    public completed: boolean;
+    public error: boolean;
+    public errorMessage: string;
+    public break: boolean;
+    public _subscription: Subscription;
+
+    private deepCopy: DeepCopy;
+    private machineStatus: BehaviorSubject<MachineStatus>;
+
+    constructor() {
+      this.completed = false;
+      this.error = false;
+      this.break = false;
+      this.deepCopy = new DeepCopy();
+    }
+
+    public getDefaultInitialTape(): Tape {
+      const squares: Array<Square> = [];
+      squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
+      squares.push(new Square(2, new TapeSymbol(TapeSymbol.NONE)));
+      return new Tape(squares);
+    }
+
+    public evolve(initialTape: Tape): Observable<MachineStatus> {
+      const initialStatus: MachineStatus = new MachineStatus('b', <Tape>this.deepCopy.apply(initialTape), 0);
+      this.machineStatus = new BehaviorSubject(initialStatus);
+      this._subscription = interval(100).subscribe(res => {
+        const squares: Array<Square> = [];
+        if (initialTape.squares[0].symbol.value === TapeSymbol.NONE) {
+          squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
+          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ONE)));
+        } else {
+          squares.push(new Square(1, new TapeSymbol(TapeSymbol.ONE)));
+          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ZERO)));
+        }
+        const tape: Tape = new Tape(squares);
+        const actualStatus: MachineStatus = new MachineStatus('f', tape, 1);
+        this.machineStatus.next(actualStatus);
+        this.machineStatus.complete();
+        this.completed = true;
+        this.error = false;
+      });
+      return this.machineStatus.asObservable();
+    }
+
+    public stop(): void {
+      this.completed = true;
+      this.machineStatus.complete();
+      this.subscription.unsubscribe();
+    }
+
+    public pause(): void {
+      this.break = true;
+      this.subscription.unsubscribe();
+    }
+
+    public resume(): void {
+      this.break = false;
+    }
+
+    public get subscription(): Subscription {
+      return this._subscription;
+    }
+
+    public set subscription(newSubscription: Subscription) {
+      this._subscription = newSubscription;
+    }
+
+  }
+
   let component: TapeComponent;
   let fixture: ComponentFixture<TapeComponent>;
 
@@ -202,76 +274,5 @@ xdescribe('TapeComponent', () => {
     }));
 
   });
-
-  class AlgorithmService implements Algorithm {
-    public completed: boolean;
-    public error: boolean;
-    public errorMessage: string;
-    public break: boolean;
-    public _subscription: Subscription;
-
-    private deepCopy: DeepCopy;
-    private machineStatus: BehaviorSubject<MachineStatus>;
-
-    constructor() {
-      this.completed = false;
-      this.error = false;
-      this.break = false;
-      this.deepCopy = new DeepCopy();
-    }
-
-    public getDefaultInitialTape(): Tape {
-      const squares: Array<Square> = [];
-      squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
-      squares.push(new Square(2, new TapeSymbol(TapeSymbol.NONE)));
-      return new Tape(squares);
-    }
-
-    public evolve(initialTape: Tape): Observable<MachineStatus> {
-      const initialStatus: MachineStatus = new MachineStatus('b', <Tape>this.deepCopy.apply(initialTape), 0);
-      this.machineStatus = new BehaviorSubject(initialStatus);
-      this._subscription = interval(100).subscribe(res => {
-        const squares: Array<Square> = [];
-        if (initialTape.squares[0].symbol.value === TapeSymbol.NONE) {
-          squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
-          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ONE)));
-        } else {
-          squares.push(new Square(1, new TapeSymbol(TapeSymbol.ONE)));
-          squares.push(new Square(2, new TapeSymbol(TapeSymbol.ZERO)));
-        }
-        const tape: Tape = new Tape(squares);
-        const actualStatus: MachineStatus = new MachineStatus('f', tape, 1);
-        this.machineStatus.next(actualStatus);
-        this.machineStatus.complete();
-        this.completed = true;
-        this.error = false;
-      });
-      return this.machineStatus.asObservable();
-    }
-
-    public stop(): void {
-      this.completed = true;
-      this.machineStatus.complete();
-      this.subscription.unsubscribe();
-    }
-
-    public pause(): void {
-      this.break = true;
-      this.subscription.unsubscribe();
-    }
-
-    public resume(): void {
-      this.break = false;
-    }
-
-    public get subscription(): Subscription {
-      return this._subscription;
-    }
-
-    public set subscription(newSubscription: Subscription) {
-      this._subscription = newSubscription;
-    }
-
-  }
 
 });

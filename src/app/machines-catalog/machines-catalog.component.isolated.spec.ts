@@ -3,6 +3,11 @@ import { Router } from '@angular/router';
 import { MachinesCatalogComponent } from './machines-catalog.component';
 
 describe('MachinesCatalogComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: MachinesCatalogComponent;
   let fixture: ComponentFixture<MachinesCatalogComponent>;
 
@@ -68,7 +73,3 @@ describe('MachinesCatalogComponent', () => {
   }));
 
 });
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}

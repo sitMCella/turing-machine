@@ -9,6 +9,15 @@ import { TapeSymbol } from '../tape-symbol';
 import { IntervalService } from '../interval.service';
 
 describe('TapeComponent', () => {
+
+  class IntervalServiceStub extends IntervalService {
+    public setInterval(callback: () => void, time: number) {
+    }
+
+    public clear(): void {
+    }
+  }
+
   let component: TapeComponent;
   let intervalService: IntervalService;
   let algorithm: OneThirdAlgorithmService;
@@ -179,13 +188,5 @@ describe('TapeComponent', () => {
     });
 
   });
-
-  class IntervalServiceStub extends IntervalService {
-    public setInterval(callback: () => void, time: number) {
-    }
-
-    public clear(): void {
-    }
-  }
 
 });

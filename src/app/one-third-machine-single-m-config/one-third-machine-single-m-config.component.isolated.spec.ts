@@ -7,6 +7,11 @@ import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-sin
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 
 describe('OneThirdMachineSingleMConfigComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: OneThirdMachineSingleMConfigComponent;
   let fixture: ComponentFixture<OneThirdMachineSingleMConfigComponent>;
 
@@ -69,7 +74,3 @@ describe('OneThirdMachineSingleMConfigComponent', () => {
   });
 
 });
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}

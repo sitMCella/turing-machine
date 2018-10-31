@@ -7,6 +7,11 @@ import { OneThirdAlgorithmService } from './one-third-algorithm.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 
 describe('OneThirdMachineComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: OneThirdMachineComponent;
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
@@ -69,7 +74,3 @@ describe('OneThirdMachineComponent', () => {
   });
 
 });
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}

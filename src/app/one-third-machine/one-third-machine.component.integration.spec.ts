@@ -8,6 +8,11 @@ import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 
 describe('OneThirdMachineComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: OneThirdMachineComponent;
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
@@ -80,8 +85,3 @@ describe('OneThirdMachineComponent', () => {
   });
 
 });
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}
-

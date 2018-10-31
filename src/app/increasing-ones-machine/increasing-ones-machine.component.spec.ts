@@ -7,6 +7,11 @@ import { IncreasingOnesAlgorithmService } from './increasing-ones-algorithm.serv
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 
 describe('IncreasingOnesMachineComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: IncreasingOnesMachineComponent;
   let fixture: ComponentFixture<IncreasingOnesMachineComponent>;
 
@@ -69,7 +74,3 @@ describe('IncreasingOnesMachineComponent', () => {
   });
 
 });
-
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}

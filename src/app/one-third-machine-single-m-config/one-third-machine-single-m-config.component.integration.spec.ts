@@ -7,11 +7,12 @@ import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 
-class RouterStub {
-  navigateByUrl(url: string) { return url; }
-}
-
 describe('OneThirdMachineSingleMConfigComponent', () => {
+
+  class RouterStub {
+    navigateByUrl(url: string) { return url; }
+  }
+
   let component: OneThirdMachineSingleMConfigComponent;
   let fixture: ComponentFixture<OneThirdMachineSingleMConfigComponent>;
 
