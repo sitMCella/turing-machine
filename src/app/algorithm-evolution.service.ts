@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { interval, Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { interval, Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { MachineStatus } from './machine-status';
 import { Configuration } from './configuration';
 import { Tape } from './tape';

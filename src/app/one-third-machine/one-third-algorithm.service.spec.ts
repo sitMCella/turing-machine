@@ -139,7 +139,7 @@ describe('OneThirdAlgorithmService', () => {
         tick(2100);
         discardPeriodicTasks();
 
-        expect(oneThirdAlgorithmService.errorMessage).toBe('Max tape lenght reached');
+        expect(oneThirdAlgorithmService.errorMessage).toBe('Max tape length reached');
       }));
 
     });

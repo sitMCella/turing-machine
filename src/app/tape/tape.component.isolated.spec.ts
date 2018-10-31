@@ -27,6 +27,7 @@ describe('TapeComponent', () => {
     component.algorithm = algorithm;
     observable = of(new MachineStatus(null, 33));
     spyOn(algorithm, 'evolve').and.returnValue(observable);
+    spyOn(observable, 'pipe').and.returnValue(observable);
     machineStatusViewSubscription = new Subscription();
     spyOn(observable, 'subscribe').and.returnValue(machineStatusViewSubscription);
     spyOnProperty(algorithm, 'subscription', 'get').and.returnValue(subscription);

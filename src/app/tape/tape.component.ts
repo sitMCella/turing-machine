@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { Square } from '../square';
@@ -26,8 +27,10 @@ export class TapeComponent implements OnInit, OnDestroy {
   private subject: BehaviorSubject<MachineStatus[]>;
   private finished: boolean;
   private machineStatus: MachineStatus[];
+  private notifier: Subject<boolean>;
 
   constructor(private intervalService: IntervalService) {
+    this.notifier = new Subject<boolean>();
   }
 
   ngOnInit() {
@@ -38,8 +41,10 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    this.notifier.next(true);
+    this.notifier.unsubscribe();
+    if (this.algorithm) {
+      this.algorithm.stop();
     }
     if (this.subject) {
       this.subject.unsubscribe();
@@ -94,7 +99,9 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   private evolveAlgorithm(): void {
-    this.subscription = this.algorithm.evolve(this.initialTape).subscribe(
+    this.subscription = this.algorithm.evolve(this.initialTape)
+    .pipe(takeUntil(this.notifier))
+    .subscribe(
       (value) => {
         this.machineStatus.push(value);
       },
