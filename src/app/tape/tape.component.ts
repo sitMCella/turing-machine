@@ -42,6 +42,7 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.notifier.next(true);
+    this.notifier.complete();
     this.notifier.unsubscribe();
     if (this.algorithm) {
       this.algorithm.stop();

@@ -142,7 +142,7 @@ describe('IncreasingOnesAlgorithmService', () => {
         tick(2300);
         discardPeriodicTasks();
 
-        expect(increasingOnesAlgorithmService.errorMessage).toBe('Max tape lenght reached');
+        expect(increasingOnesAlgorithmService.errorMessage).toBe('Max tape length reached');
       }));
 
     });

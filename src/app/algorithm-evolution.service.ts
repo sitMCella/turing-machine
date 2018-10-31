@@ -89,7 +89,7 @@ export class AlgorithmEvolutionService {
   private algorithmConfigurationEvolution(): void {
     try {
       if (this.actualStatus.maxSquareCount()) {
-        throw Error('Max tape lenght reached');
+        throw Error('Max tape length reached');
       }
       this.actualStatus = this.configuration.evolve(this.actualStatus);
       if (this.error === false) {
@@ -103,7 +103,7 @@ export class AlgorithmEvolutionService {
 
   private findConfigurationFrom(name: string, actualStatus: MachineStatus): Configuration {
     if (actualStatus.maxSquareCount()) {
-      throw Error('Max tape lenght reached');
+      throw Error('Max tape length reached');
     }
     let index: number = -1;
     for (let i = 0; i < this.configurations.length; i++) {
