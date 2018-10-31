@@ -7,7 +7,7 @@ import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { TapeComponent } from '../tape/tape.component';
 import { IntervalService } from '../interval.service';
 
-describe('OneThirdMachineSingleMConfigComponent', () => {
+xdescribe('OneThirdMachineSingleMConfigComponent', () => {
 
   class RouterStub {
     navigateByUrl(url: string) { return url; }
