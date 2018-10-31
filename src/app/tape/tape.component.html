@@ -18,7 +18,12 @@
   <button *ngIf="!algorithm.break && !algorithm.completed" (click)="pause()" class="pause">Pause</button>
   <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
 </div>
-<div class="tape" *ngFor="let status of machineStatusObservable | async">
+<div class="complete-configuration">
+  <span class="configuration-name"><b>m-config</b></span>
+  <span class="title"><b>tape symbols and position of the head</b></span>
+</div>
+<div class="complete-configuration" *ngFor="let status of machineStatusObservable | async">
+  <span class="configuration-name">{{status.configurationName}}</span>
   <span class="square" *ngFor="let square of status.tape.squares; let i = index;" [ngClass]="{'index': status.index == i}">
     {{square.symbol.value}}
   </span>

@@ -5,12 +5,27 @@ import { TapeSymbol } from './tape-symbol';
 
 describe('MachineStatus', () => {
 
+  const configurationName = 'configuration name';
+  const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.X))];
+  const tape: Tape = new Tape(squares);
+  const index = 1;
+
   let machineStatus: MachineStatus;
 
   beforeEach(() => {
-    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.X))];
-    const tape: Tape = new Tape(squares);
-    machineStatus = new MachineStatus(tape, 1);
+    machineStatus = new MachineStatus(configurationName, tape, index);
+  });
+
+  it('should get the configuration name', () => {
+    expect(machineStatus.configurationName).toEqual(configurationName);
+  });
+
+  it('should get the tape', () => {
+    expect(machineStatus.tape).toEqual(tape);
+  });
+
+  it('should get the index', () => {
+    expect(machineStatus.index).toEqual(index);
   });
 
   describe('symbol', () => {

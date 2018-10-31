@@ -228,7 +228,7 @@ xdescribe('TapeComponent', () => {
     }
 
     public evolve(initialTape: Tape): Observable<MachineStatus> {
-      const initialStatus: MachineStatus = new MachineStatus(<Tape>this.deepCopy.apply(initialTape), 0);
+      const initialStatus: MachineStatus = new MachineStatus('b', <Tape>this.deepCopy.apply(initialTape), 0);
       this.machineStatus = new BehaviorSubject(initialStatus);
       this._subscription = interval(100).subscribe(res => {
         const squares: Array<Square> = [];
@@ -240,7 +240,7 @@ xdescribe('TapeComponent', () => {
           squares.push(new Square(2, new TapeSymbol(TapeSymbol.ZERO)));
         }
         const tape: Tape = new Tape(squares);
-        const actualStatus: MachineStatus = new MachineStatus(tape, 1);
+        const actualStatus: MachineStatus = new MachineStatus('f', tape, 1);
         this.machineStatus.next(actualStatus);
         this.machineStatus.complete();
         this.completed = true;

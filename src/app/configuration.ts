@@ -22,6 +22,7 @@ export class Configuration {
     this.operations.forEach(operation => {
       finalMachineStatus = operation.apply(finalMachineStatus);
     });
+    finalMachineStatus.configurationName = this.finalConfigurationName;
     return finalMachineStatus;
   }
 

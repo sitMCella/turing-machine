@@ -12,7 +12,7 @@ export class DeepCopy {
     }
 
     if (obj instanceof MachineStatus) {
-      return new MachineStatus(<Tape>this.apply(obj.tape), obj.index);
+      return new MachineStatus(obj.configurationName, <Tape>this.apply(obj.tape), obj.index);
     }
 
     if (obj instanceof Array) {

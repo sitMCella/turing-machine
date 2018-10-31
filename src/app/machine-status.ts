@@ -2,10 +2,12 @@ import { Tape } from './tape';
 import { TapeSymbol } from './tape-symbol';
 
 export class MachineStatus {
+  public configurationName: string;
   public tape: Tape;
   public index: number;
 
-  constructor(tape: Tape, index: number) {
+  constructor(configurationName: string, tape: Tape, index: number) {
+    this.configurationName = configurationName;
     this.tape = tape;
     this.index = index;
   }

@@ -25,7 +25,7 @@ describe('TapeComponent', () => {
     algorithm = new OneThirdAlgorithmService(algorithmEvolutionService);
     algorithm.subscription = subscription;
     component.algorithm = algorithm;
-    observable = of(new MachineStatus(null, 33));
+    observable = of(new MachineStatus('configuration name', null, 33));
     spyOn(algorithm, 'evolve').and.returnValue(observable);
     spyOn(observable, 'pipe').and.returnValue(observable);
     machineStatusViewSubscription = new Subscription();

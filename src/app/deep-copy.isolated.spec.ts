@@ -37,13 +37,15 @@ describe('DeepCopy', () => {
   });
 
   it('should copy MachineStatus object', () => {
+    const configurationName = 'configuration name';
     const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE))];
     const tape: Tape = new Tape(squares);
-    const machineStatus: MachineStatus = new MachineStatus(tape, 3);
+    const machineStatus: MachineStatus = new MachineStatus(configurationName, tape, 3);
 
     const copiedMachineStatus: MachineStatus = <MachineStatus>deepCopy.apply(machineStatus);
 
     expect(copiedMachineStatus).not.toBe(machineStatus);
+    expect(copiedMachineStatus.configurationName).toBe(configurationName);
     expect(copiedMachineStatus.tape).not.toBe(machineStatus.tape);
     expect(copiedMachineStatus.tape.squares.length).toBe(1);
     expect(copiedMachineStatus.tape.squares[0].id).toBe(1);

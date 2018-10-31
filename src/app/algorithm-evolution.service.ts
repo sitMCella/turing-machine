@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { interval, Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { interval, Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { MachineStatus } from './machine-status';
 import { Configuration } from './configuration';
 import { Tape } from './tape';
@@ -20,7 +20,6 @@ export class AlgorithmEvolutionService {
   private configurations: Array<Configuration>;
   private continue: boolean;
   private machineStatus: BehaviorSubject<MachineStatus>;
-  private initialTape: Tape;
   private configuration: Configuration;
   private i: number;
 
@@ -30,10 +29,8 @@ export class AlgorithmEvolutionService {
   }
 
   public evolve(configurations: Array<Configuration>, initialTape: Tape): Observable<MachineStatus> {
-    this.init(configurations, initialTape);
-    this.initialTape = initialTape;
-    this.configuration = this.configurations[0];
     this.i = 0;
+    this.init(configurations, initialTape);
     this.algorithmEvolution();
     return this.machineStatus.asObservable();
   }
@@ -64,13 +61,14 @@ export class AlgorithmEvolutionService {
   }
 
   private init(configurations: Array<Configuration>, initialTape: Tape): void {
+    this.configuration = configurations[0];
     this.configurations = configurations;
     this.completed = false;
     this.error = false;
     this.errorMessage = '';
     this.continue = true;
     this.break = false;
-    this.actualStatus = new MachineStatus(<Tape>this.deepCopy.apply(initialTape), 0);
+    this.actualStatus = new MachineStatus(this.configuration.name, <Tape>this.deepCopy.apply(initialTape), 0);
     this.machineStatus = new BehaviorSubject(this.actualStatus);
   }
 
@@ -105,7 +103,7 @@ export class AlgorithmEvolutionService {
     if (actualStatus.maxSquareCount()) {
       throw Error('Max tape length reached');
     }
-    let index: number = -1;
+    let index = -1;
     for (let i = 0; i < this.configurations.length; i++) {
       if (this.configurations[i].name === name
         && this.tapeSymbolCompare.compare(actualStatus.symbol, this.configurations[i].symbol)) {
