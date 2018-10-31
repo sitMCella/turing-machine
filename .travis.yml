@@ -12,7 +12,7 @@ before_script:
 script:
 - ng lint
 - npm run test-headless
-- ng build --prod --base-href https://github.com/sitMCella/turing-machine/
+- ng build --prod --base-href https://sitmcella.github.io/turing-machine/
 
 deploy:
   provider: pages
