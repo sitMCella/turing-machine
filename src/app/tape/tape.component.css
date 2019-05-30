@@ -17,7 +17,8 @@
 }
 
 .initial-tape,
-.complete-configuration {
+.complete-configuration,
+.complete-configuration-header {
     display: table;
     table-layout: fixed;
     padding: 5px;

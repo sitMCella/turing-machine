@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Subscription, Observable, BehaviorSubject, interval } from 'rxjs';
 import { TapeComponent } from './tape.component';
@@ -9,20 +9,21 @@ import { Algorithm } from '../algorithm';
 import { DeepCopy } from '../deep-copy';
 import { IntervalService } from '../interval.service';
 import { TapeSymbol } from '../tape-symbol';
+import { TimeServiceStub } from '../time-stub.service';
 
-xdescribe('TapeComponent', () => {
+describe('TapeComponent', () => {
 
   class AlgorithmService implements Algorithm {
     public completed: boolean;
     public error: boolean;
     public errorMessage: string;
     public break: boolean;
-    public _subscription: Subscription;
 
+    private _subscription: Subscription;
     private deepCopy: DeepCopy;
     private machineStatus: BehaviorSubject<MachineStatus>;
 
-    constructor() {
+    constructor(private _intervalService: IntervalService) {
       this.completed = false;
       this.error = false;
       this.break = false;
@@ -39,7 +40,8 @@ xdescribe('TapeComponent', () => {
     public evolve(initialTape: Tape): Observable<MachineStatus> {
       const initialStatus: MachineStatus = new MachineStatus('b', <Tape>this.deepCopy.apply(initialTape), 0);
       this.machineStatus = new BehaviorSubject(initialStatus);
-      this._subscription = interval(100).subscribe(res => {
+      this._intervalService.setInterval(100);
+      this._subscription = this._intervalService.subscribe(() => {
         const squares: Array<Square> = [];
         if (initialTape.squares[0].symbol.value === TapeSymbol.NONE) {
           squares.push(new Square(1, new TapeSymbol(TapeSymbol.NONE)));
@@ -61,12 +63,14 @@ xdescribe('TapeComponent', () => {
     public stop(): void {
       this.completed = true;
       this.machineStatus.complete();
-      this.subscription.unsubscribe();
+      this._subscription.unsubscribe();
+      this._intervalService.clear();
     }
 
     public pause(): void {
       this.break = true;
-      this.subscription.unsubscribe();
+      this._subscription.unsubscribe();
+      this._intervalService.clear();
     }
 
     public resume(): void {
@@ -83,14 +87,26 @@ xdescribe('TapeComponent', () => {
 
   }
 
+  let algorithmTimeService: TimeServiceStub;
+  let algorithmIntervalService: IntervalService;
+  let timeService: TimeServiceStub;
+  let intervalService: IntervalService;
   let component: TapeComponent;
   let fixture: ComponentFixture<TapeComponent>;
+  let algorithm: Algorithm;
 
   beforeEach(async(() => {
+    algorithmTimeService = new TimeServiceStub();
+    algorithmIntervalService = new IntervalService(algorithmTimeService);
+    algorithm = new AlgorithmService(algorithmIntervalService);
+    timeService = new TimeServiceStub();
+    intervalService = new IntervalService(timeService);
     TestBed.configureTestingModule({
       declarations: [TapeComponent],
       imports: [FormsModule],
-      providers: [IntervalService]
+      providers: [
+        { provide: IntervalService, useValue: intervalService }
+      ]
     })
       .compileComponents();
   }));
@@ -98,64 +114,61 @@ xdescribe('TapeComponent', () => {
   beforeEach(async(() => {
     fixture = TestBed.createComponent(TapeComponent);
     component = fixture.componentInstance;
-    component.algorithm = new AlgorithmService();
-    fixture.detectChanges();
+
+    component.algorithm = algorithm;
   }));
 
-  it('should be created', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
+  it('should be created', async(() => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   }));
 
-  it('should contain the default initial tape', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
-    fixture.detectChanges();
+  it('should contain the default initial tape', async(() => {
     const compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+
     const initialTape: HTMLElement = compiled.querySelector('.initial-tape');
     expect(initialTape).not.toBeNull();
     expect(initialTape).toBeDefined();
   }));
 
-  it('should contain the default initial tape with 2 squares', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
-    fixture.detectChanges();
+  it('should contain the default initial tape with 2 squares', async(() => {
     const compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+
     const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
     expect(squares).not.toBeNull();
     expect(squares).toBeDefined();
     expect(squares.length).toBe(2);
   }));
 
-  it('should contain the evolve button', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
-    fixture.detectChanges();
+  it('should contain the evolve button', async(() => {
     const compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+
     const stopButton: HTMLButtonElement = compiled.querySelector('.evolve');
     expect(stopButton).not.toBeNull();
     expect(stopButton).toBeDefined();
   }));
 
-  it('should contain the stop button', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
-    fixture.detectChanges();
+  it('should contain the stop button', async(() => {
     const compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+
     const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
     expect(stopButton).not.toBeNull();
     expect(stopButton).toBeDefined();
   }));
 
-  it('should evolve algorithm with default initial tape', fakeAsync(() => {
-    tick(200);
-    discardPeriodicTasks();
-    fixture.detectChanges();
+  it('should evolve algorithm with default initial tape', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    algorithmTimeService.tick(1);
+    fixture.detectChanges();
+
+    const tapes: Array<HTMLElement> = compiled.querySelectorAll('.complete-configuration');
     expect(tapes).not.toBeNull();
     expect(tapes).toBeDefined();
     expect(tapes.length).toEqual(2);
@@ -163,11 +176,13 @@ xdescribe('TapeComponent', () => {
 
   describe('resize setting', () => {
 
-    it('should resize default initial tape squares count', fakeAsync(() => {
-      tick(200);
-      discardPeriodicTasks();
-      fixture.detectChanges();
+    it('should resize default initial tape squares count', async(() => {
       const compiled: any = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+
+      algorithmTimeService.tick(2);
+      fixture.detectChanges();
+
       const squaresCount: HTMLInputElement = compiled.querySelector('.squaresCount input');
       squaresCount.value = '4';
       squaresCount.dispatchEvent(new Event('input'));
@@ -176,8 +191,7 @@ xdescribe('TapeComponent', () => {
         const resizeButton: HTMLButtonElement = compiled.querySelector('.applySettings');
         resizeButton.click();
         fixture.detectChanges();
-        tick(50);
-        discardPeriodicTasks();
+        algorithmTimeService.tick(1);
         fixture.detectChanges();
 
         const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
@@ -191,19 +205,19 @@ xdescribe('TapeComponent', () => {
 
   describe('evolve button', () => {
 
-    it('should evolve algorithm with default initial tape', fakeAsync(() => {
-      tick(200);
-      discardPeriodicTasks();
+    it('should evolve algorithm with default initial tape', async(() => {
       const compiled: any = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+      algorithmTimeService.tick(1);
+      fixture.detectChanges();
       const evolveButton: HTMLButtonElement = compiled.querySelector('.evolve');
 
       evolveButton.click();
       fixture.detectChanges();
-      tick(200);
-      discardPeriodicTasks();
+      algorithmTimeService.tick(1);
       fixture.detectChanges();
 
-      const tapes: Array<any> = compiled.querySelectorAll('.tape');
+      const tapes: Array<any> = compiled.querySelectorAll('.complete-configuration');
       expect(tapes).not.toBeNull();
       expect(tapes).toBeDefined();
       expect(tapes.length).toBe(2);
@@ -212,10 +226,11 @@ xdescribe('TapeComponent', () => {
       expect(secondTapeSquares[1].innerText).toBe('1');
     }));
 
-    it('should evolve algorithm with modified initial tape', fakeAsync(() => {
-      tick(200);
-      discardPeriodicTasks();
+    it('should evolve algorithm with modified initial tape', async(() => {
       const compiled: any = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+      algorithmTimeService.tick(1);
+      fixture.detectChanges();
       const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
       const firstSquareInitialTape: HTMLInputElement = squares[0].querySelector('input');
       firstSquareInitialTape.value = '1';
@@ -225,11 +240,10 @@ xdescribe('TapeComponent', () => {
         const evolveButton: HTMLButtonElement = compiled.querySelector('.evolve');
         evolveButton.click();
         fixture.detectChanges();
-        tick(1000);
-        discardPeriodicTasks();
+        algorithmTimeService.tick(1);
         fixture.detectChanges();
 
-        const tapes: Array<any> = compiled.querySelectorAll('.tape');
+        const tapes: Array<any> = compiled.querySelectorAll('.complete-configuration');
         expect(tapes).not.toBeNull();
         expect(tapes).toBeDefined();
         expect(tapes.length).toBe(2);
@@ -243,14 +257,17 @@ xdescribe('TapeComponent', () => {
 
   describe('stop button', () => {
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', async(() => {
       const compiled: any = fixture.debugElement.nativeElement;
       const stopButton: HTMLButtonElement = compiled.querySelector('.stop');
 
+      fixture.detectChanges();
+      algorithmTimeService.tick(1);
+      fixture.detectChanges();
       stopButton.click();
       fixture.detectChanges();
 
-      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.complete-configuration');
       expect(tapes).not.toBeNull();
       expect(tapes).toBeDefined();
       expect(tapes.length).toBeLessThanOrEqual(2);
@@ -260,14 +277,15 @@ xdescribe('TapeComponent', () => {
 
   describe('pause button', () => {
 
-    it('should break algorithm evolution', fakeAsync(() => {
+    it('should break algorithm evolution', async(() => {
       const compiled: any = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
       const pauseButton: HTMLButtonElement = compiled.querySelector('.pause');
 
       pauseButton.click();
       fixture.detectChanges();
 
-      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.tape');
+      const tapes: Array<HTMLElement> = compiled.querySelectorAll('.complete-configuration');
       expect(tapes).not.toBeNull();
       expect(tapes).toBeDefined();
       expect(tapes.length).toBeLessThanOrEqual(2);

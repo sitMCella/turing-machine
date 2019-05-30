@@ -5,6 +5,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IncreasingOnesMachineComponent } from './increasing-ones-machine.component';
 import { IncreasingOnesAlgorithmService } from './increasing-ones-algorithm.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
+import { IntervalService } from '../interval.service';
+import { TimeServiceStub } from '../time-stub.service';
 
 describe('IncreasingOnesMachineComponent', () => {
 
@@ -16,6 +18,7 @@ describe('IncreasingOnesMachineComponent', () => {
   let fixture: ComponentFixture<IncreasingOnesMachineComponent>;
 
   beforeEach(() => {
+    const intervalService: IntervalService = new IntervalService(new TimeServiceStub());
     TestBed.configureTestingModule({
       declarations: [
         IncreasingOnesMachineComponent
@@ -23,6 +26,7 @@ describe('IncreasingOnesMachineComponent', () => {
       providers: [
         IncreasingOnesAlgorithmService,
         AlgorithmEvolutionService,
+        { provide: IntervalService, useValue: intervalService },
         { provide: Router, useClass: RouterStub }
       ],
       imports: [FormsModule],

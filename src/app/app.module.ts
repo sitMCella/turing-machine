@@ -13,6 +13,7 @@ import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-singl
 import { IncreasingOnesMachineComponent } from './increasing-ones-machine/increasing-ones-machine.component';
 import { IncreasingOnesAlgorithmService } from './increasing-ones-machine/increasing-ones-algorithm.service';
 import { IntervalService } from './interval.service';
+import { TimeService } from './time.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { IntervalService } from './interval.service';
     OneThirdAlgorithmService,
     OneThirdAlgorithmSingleMConfigService,
     IncreasingOnesAlgorithmService,
-    IntervalService
+    IntervalService,
+    TimeService
   ],
   bootstrap: [AppComponent]
 })

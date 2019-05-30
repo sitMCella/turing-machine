@@ -1,16 +1,21 @@
-import { fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { DeepCopy } from '../deep-copy';
 import { TapeSymbol } from '../tape-symbol';
+import { IntervalService } from '../interval.service';
+import { TimeServiceStub } from '../time-stub.service';
 
 describe('OneThirdAlgorithmSingleMConfigService', () => {
+
+  let timeService: TimeServiceStub;
   let oneThirdAlgorithmSingleMConfigService: OneThirdAlgorithmSingleMConfigService;
 
   beforeEach(() => {
-    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService();
+    timeService = new TimeServiceStub();
+    const intervalService: IntervalService = new IntervalService(timeService);
+    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService(intervalService);
     oneThirdAlgorithmSingleMConfigService = new OneThirdAlgorithmSingleMConfigService(algorithmEvolutionService);
   });
 
@@ -48,7 +53,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         defaultInitialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
       });
 
-      it('should create 11 machine statuses', fakeAsync(() => {
+      it('should create 11 machine statuses', () => {
         const machineStatus: Array<MachineStatus> = [];
 
         oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
@@ -56,13 +61,12 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
           error => new Error(error),
           () => { }
         );
-        tick(1100);
-        discardPeriodicTasks();
+        timeService.tick(11);
 
         expect(machineStatus.length).toBe(11);
-      }));
+      });
 
-      it('should create machine statuses with correct square values', fakeAsync(() => {
+      it('should create machine statuses with correct square values', () => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
           ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -97,45 +101,41 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
             }
           }
         );
-        tick(1100);
-        discardPeriodicTasks();
-      }));
+        timeService.tick(11);
+      });
 
-      it('should set completed as true on evolution error', fakeAsync(() => {
+     it('should set completed as true on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(1100);
-        discardPeriodicTasks();
+        timeService.tick(11);
 
         expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
-      }));
+      });
 
-      it('should set error as true on evolution error', fakeAsync(() => {
+      it('should set error as true on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(1100);
-        discardPeriodicTasks();
+        timeService.tick(11);
 
         expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
-      }));
+      });
 
-      it('should set errorMessage on evolution error', fakeAsync(() => {
+      it('should set errorMessage on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(1100);
-        discardPeriodicTasks();
+        timeService.tick(11);
 
         expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Cannot read symbol on square with index 21');
-      }));
+      });
 
     });
 
@@ -150,7 +150,7 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         initialTape.squares[0].symbol = new TapeSymbol(TapeSymbol.ONE);
       });
 
-      it('should create 1 machine status', fakeAsync(() => {
+      it('should create 1 machine status', () => {
         const machineStatus: Array<MachineStatus> = [];
 
         oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
@@ -158,13 +158,12 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(machineStatus.length).toBe(1);
-      }));
+      });
 
-      it('should create machine status with correct square values', fakeAsync(() => {
+      it('should create machine status with correct square values', () => {
         const expectedSquareValues: Array<Array<string>> = [
           ['1', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         ];
@@ -182,45 +181,41 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
             expect(machineStatus[0].index).toBe(0);
           }
         );
-        tick(200);
-        discardPeriodicTasks();
-      }));
+        timeService.tick(1);
+      });
 
-      it('should set completed as true on evolution error', fakeAsync(() => {
+      it('should set completed as true on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
-      }));
+      });
 
-      it('should set error as true on evolution error', fakeAsync(() => {
+      it('should set error as true on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(oneThirdAlgorithmSingleMConfigService.error).toBeTruthy();
-      }));
+      });
 
-      it('should set errorMessage on evolution error', fakeAsync(() => {
+      it('should set errorMessage on evolution error', () => {
         oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(oneThirdAlgorithmSingleMConfigService.errorMessage).toBe('Tape already contains a symbol in current index');
-      }));
+      });
 
     });
 
@@ -234,54 +229,51 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
       initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
     });
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const machineStatus: Array<MachineStatus> = [];
       oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       oneThirdAlgorithmSingleMConfigService.stop();
 
       expect(machineStatus.length).toBeLessThan(11);
-    }));
+    });
 
-    it('should set completed as true', fakeAsync(() => {
+    it('should set completed as true', () => {
       oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       oneThirdAlgorithmSingleMConfigService.stop();
 
       expect(oneThirdAlgorithmSingleMConfigService.completed).toBeTruthy();
-    }));
+    });
 
-    it('should set error as false', fakeAsync(() => {
+    it('should set error as false', () => {
       oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       oneThirdAlgorithmSingleMConfigService.stop();
 
       expect(oneThirdAlgorithmSingleMConfigService.error).toBeFalsy();
-    }));
+    });
 
   });
 
   describe('pause', () => {
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
       oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
@@ -289,19 +281,18 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       oneThirdAlgorithmSingleMConfigService.pause();
 
       expect(machineStatus.length).toBeLessThan(11);
-    }));
+    });
 
   });
 
   describe('resume', () => {
 
-    it('should resume algorithm evolution', fakeAsync(() => {
+    it('should resume algorithm evolution', () => {
       const initialTape = oneThirdAlgorithmSingleMConfigService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
       oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
@@ -309,18 +300,14 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
       oneThirdAlgorithmSingleMConfigService.pause();
-      tick(1000);
-      discardPeriodicTasks();
 
       oneThirdAlgorithmSingleMConfigService.resume();
-      tick(600);
-      discardPeriodicTasks();
+      timeService.tick(7);
 
       expect(machineStatus.length).toEqual(11);
-    }));
+    });
 
   });
 

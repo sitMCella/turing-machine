@@ -5,6 +5,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OneThirdMachineComponent } from './one-third-machine.component';
 import { OneThirdAlgorithmService } from './one-third-algorithm.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
+import { IntervalService } from '../interval.service';
+import { TimeServiceStub } from '../time-stub.service';
 
 describe('OneThirdMachineComponent', () => {
 
@@ -16,6 +18,7 @@ describe('OneThirdMachineComponent', () => {
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
   beforeEach(() => {
+    const intervalService: IntervalService = new IntervalService(new TimeServiceStub());
     TestBed.configureTestingModule({
       declarations: [
         OneThirdMachineComponent
@@ -23,6 +26,7 @@ describe('OneThirdMachineComponent', () => {
       providers: [
         OneThirdAlgorithmService,
         AlgorithmEvolutionService,
+        { provide: IntervalService, useValue: intervalService },
         { provide: Router, useClass: RouterStub }
       ],
       imports: [FormsModule],

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Subscription, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject, Subject, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
@@ -28,6 +28,7 @@ export class TapeComponent implements OnInit, OnDestroy {
   private finished: boolean;
   private machineStatus: MachineStatus[];
   private notifier: Subject<boolean>;
+  private intervalSubscription: Subscription;
 
   constructor(private intervalService: IntervalService) {
     this.notifier = new Subject<boolean>();
@@ -120,7 +121,8 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   private startTimer(): void {
-    this.intervalService.setInterval(() => {
+    this.intervalService.setInterval(500);
+    this.intervalSubscription = this.intervalService.subscribe(() => {
       if (this.subject) {
         if (!this.finished) {
           this.subject.next(this.machineStatus);
@@ -129,11 +131,16 @@ export class TapeComponent implements OnInit, OnDestroy {
           this.subject.complete();
         }
       }
-    }, 500);
+    });
   }
 
   private stopTimer(): void {
-    this.intervalService.clear();
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+    if (this.intervalService) {
+      this.intervalService.clear();
+    }
     if (this.subject && this.finished && (!this.subject.closed || !this.subject.isStopped)) {
       this.subject.next(this.machineStatus);
       this.subject.complete();

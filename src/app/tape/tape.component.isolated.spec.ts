@@ -7,19 +7,13 @@ import { Tape } from '../tape';
 import { Square } from '../square';
 import { TapeSymbol } from '../tape-symbol';
 import { IntervalService } from '../interval.service';
+import { TimeServiceStub } from '../time-stub.service';
 
 describe('TapeComponent', () => {
 
-  class IntervalServiceStub extends IntervalService {
-    public setInterval(callback: () => void, time: number) {
-    }
-
-    public clear(): void {
-    }
-  }
-
   let component: TapeComponent;
   let intervalService: IntervalService;
+  let intervalServiceAlgorithmEvolution: IntervalService;
   let algorithm: OneThirdAlgorithmService;
   let observable: Observable<MachineStatus>;
   let subscription: Subscription;
@@ -27,10 +21,11 @@ describe('TapeComponent', () => {
   let machineStatusViewSubscription: Subscription;
 
   beforeEach(() => {
-    intervalService = new IntervalServiceStub();
+    intervalService = new IntervalService(new TimeServiceStub());
     component = new TapeComponent(intervalService);
     subscription = new Subscription();
-    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService();
+    intervalServiceAlgorithmEvolution = new IntervalService(new TimeServiceStub());
+    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService(intervalServiceAlgorithmEvolution);
     algorithm = new OneThirdAlgorithmService(algorithmEvolutionService);
     algorithm.subscription = subscription;
     component.algorithm = algorithm;
@@ -45,7 +40,11 @@ describe('TapeComponent', () => {
     spyOn(algorithm, 'getDefaultInitialTape').and.returnValue(defaultInitialTape);
     spyOn(subscription, 'unsubscribe');
     spyOn(intervalService, 'clear');
+    spyOn(intervalService, 'subscribe');
     spyOn(intervalService, 'setInterval');
+    spyOn(intervalServiceAlgorithmEvolution, 'clear');
+    spyOn(intervalServiceAlgorithmEvolution, 'subscribe');
+    spyOn(intervalServiceAlgorithmEvolution, 'setInterval');
   });
 
   it('should initially have the default initial tape', () => {

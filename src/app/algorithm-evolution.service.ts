@@ -5,6 +5,7 @@ import { Configuration } from './configuration';
 import { Tape } from './tape';
 import { DeepCopy } from './deep-copy';
 import { TapeSymbolCompare } from './tape-symbol-compare';
+import { IntervalService } from './interval.service';
 
 @Injectable()
 export class AlgorithmEvolutionService {
@@ -23,7 +24,7 @@ export class AlgorithmEvolutionService {
   private configuration: Configuration;
   private i: number;
 
-  constructor() {
+  constructor(private intervalService: IntervalService) {
     this.deepCopy = new DeepCopy();
     this.tapeSymbolCompare = new TapeSymbolCompare();
   }
@@ -39,12 +40,12 @@ export class AlgorithmEvolutionService {
     this.continue = false;
     this.completed = true;
     this.machineStatus.complete();
-    this._subscription.unsubscribe();
+    this.stopTimer();
   }
 
   public pause(): void {
     this.break = true;
-    this._subscription.unsubscribe();
+    this.stopTimer();
   }
 
   public resume(): void {
@@ -73,7 +74,8 @@ export class AlgorithmEvolutionService {
   }
 
   private algorithmEvolution(): void {
-    this._subscription = interval(100).subscribe(res => {
+    this.intervalService.setInterval(100);
+    this._subscription = this.intervalService.subscribe(() => {
       if (this.continue) {
         this.algorithmConfigurationEvolution();
         this.i++;
@@ -97,6 +99,11 @@ export class AlgorithmEvolutionService {
     } catch (e) {
       this.handleException(e);
     }
+  }
+
+  private stopTimer(): void {
+    this._subscription.unsubscribe();
+    this.intervalService.clear();
   }
 
   private findConfigurationFrom(name: string, actualStatus: MachineStatus): Configuration {

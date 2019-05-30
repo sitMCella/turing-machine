@@ -1,16 +1,21 @@
-import { fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { IncreasingOnesAlgorithmService } from './increasing-ones-algorithm.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
 import { Tape } from '../tape';
 import { DeepCopy } from '../deep-copy';
 import { TapeSymbol } from '../tape-symbol';
+import { IntervalService } from '../interval.service';
+import { TimeServiceStub } from '../time-stub.service';
 
 describe('IncreasingOnesAlgorithmService', () => {
+
+  let timeService: TimeServiceStub;
   let increasingOnesAlgorithmService: IncreasingOnesAlgorithmService;
 
   beforeEach(() => {
-    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService();
+    timeService = new TimeServiceStub();
+    const intervalService: IntervalService = new IntervalService(timeService);
+    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService(intervalService);
     increasingOnesAlgorithmService = new IncreasingOnesAlgorithmService(algorithmEvolutionService);
   });
 
@@ -48,7 +53,7 @@ describe('IncreasingOnesAlgorithmService', () => {
         defaultInitialTape = increasingOnesAlgorithmService.getDefaultInitialTape();
       });
 
-      it('should create 23 machine statuses', fakeAsync(() => {
+      it('should create 23 machine statuses', () => {
         const machineStatus: Array<MachineStatus> = [];
 
         increasingOnesAlgorithmService.evolve(defaultInitialTape).subscribe(
@@ -56,13 +61,12 @@ describe('IncreasingOnesAlgorithmService', () => {
           error => new Error(error),
           () => { }
         );
-        tick(2300);
-        discardPeriodicTasks();
+        timeService.tick(22);
 
         expect(machineStatus.length).toBe(23);
-      }));
+      });
 
-      it('should create machine statuses with correct square values', fakeAsync(() => {
+      it('should create machine statuses with correct square values', () => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', '', '', '', '', '', '', '', '', '', '', ''],
           ['s', 's', '0', '', '0', '', '', '', '', '', '', ''],
@@ -105,45 +109,41 @@ describe('IncreasingOnesAlgorithmService', () => {
             }
           }
         );
-        tick(2300);
-        discardPeriodicTasks();
-      }));
+        timeService.tick(22);
+      });
 
-      it('should set completed as true on evolution complete', fakeAsync(() => {
+      it('should set completed as true on evolution complete', () => {
         increasingOnesAlgorithmService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(2300);
-        discardPeriodicTasks();
+        timeService.tick(22);
 
         expect(increasingOnesAlgorithmService.completed).toBeTruthy();
-      }));
+      });
 
-      it('should set error as true on evolution error', fakeAsync(() => {
+      it('should set error as true on evolution error', () => {
         increasingOnesAlgorithmService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(2300);
-        discardPeriodicTasks();
+        timeService.tick(22);
 
         expect(increasingOnesAlgorithmService.error).toBeTruthy();
-      }));
+      });
 
-      it('should set errorMessage on evolution error', fakeAsync(() => {
+      it('should set errorMessage on evolution error', () => {
         increasingOnesAlgorithmService.evolve(defaultInitialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(2300);
-        discardPeriodicTasks();
+        timeService.tick(22);
 
         expect(increasingOnesAlgorithmService.errorMessage).toBe('Max tape length reached');
-      }));
+      });
 
     });
 
@@ -158,7 +158,7 @@ describe('IncreasingOnesAlgorithmService', () => {
         initialTape.squares[4].symbol = new TapeSymbol(TapeSymbol.ONE);
       });
 
-      it('should create 1 machine status', fakeAsync(() => {
+      it('should create 1 machine status', () => {
         const machineStatus: Array<MachineStatus> = [];
 
         increasingOnesAlgorithmService.evolve(initialTape).subscribe(
@@ -166,13 +166,12 @@ describe('IncreasingOnesAlgorithmService', () => {
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(machineStatus.length).toBe(1);
-      }));
+      });
 
-      it('should create machine statuses with correct square values', fakeAsync(() => {
+      it('should create machine statuses with correct square values', () => {
         const expectedSquareValues: Array<Array<string>> = [
           ['', '', '', '', '1', '', '', '', '', '', '', '']
         ];
@@ -190,45 +189,41 @@ describe('IncreasingOnesAlgorithmService', () => {
             expect(machineStatus[0].index).toBe(0);
           }
         );
-        tick(200);
-        discardPeriodicTasks();
-      }));
+        timeService.tick(1);
+      });
 
-      it('should set completed as true on evolution error', fakeAsync(() => {
+      it('should set completed as true on evolution error', () => {
         increasingOnesAlgorithmService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(increasingOnesAlgorithmService.completed).toBeTruthy();
-      }));
+      });
 
-      it('should set error as true on evolution error', fakeAsync(() => {
+      it('should set error as true on evolution error', () => {
         increasingOnesAlgorithmService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(increasingOnesAlgorithmService.error).toBeTruthy();
-      }));
+      });
 
-      it('should set errorMessage on evolution error', fakeAsync(() => {
+      it('should set errorMessage on evolution error', () => {
         increasingOnesAlgorithmService.evolve(initialTape).subscribe(
           status => { },
           error => new Error(error),
           () => { }
         );
-        tick(200);
-        discardPeriodicTasks();
+        timeService.tick(1);
 
         expect(increasingOnesAlgorithmService.errorMessage).toBe('Tape already contains a symbol in current index');
-      }));
+      });
 
     });
 
@@ -242,54 +237,51 @@ describe('IncreasingOnesAlgorithmService', () => {
       initialTape = increasingOnesAlgorithmService.getDefaultInitialTape();
     });
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const machineStatus: Array<MachineStatus> = [];
       increasingOnesAlgorithmService.evolve(initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(1000);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       increasingOnesAlgorithmService.stop();
 
       expect(machineStatus.length).toBeLessThan(23);
-    }));
+    });
 
-    it('should set completed as true', fakeAsync(() => {
+    it('should set completed as true', () => {
       increasingOnesAlgorithmService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1000);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       increasingOnesAlgorithmService.stop();
 
       expect(increasingOnesAlgorithmService.completed).toBeTruthy();
-    }));
+    });
 
-    it('should set error as false', fakeAsync(() => {
+    it('should set error as false', () => {
       increasingOnesAlgorithmService.evolve(initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1000);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       increasingOnesAlgorithmService.stop();
 
       expect(increasingOnesAlgorithmService.error).toBeFalsy();
-    }));
+    });
 
   });
 
   describe('pause', () => {
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const initialTape = increasingOnesAlgorithmService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
       increasingOnesAlgorithmService.evolve(initialTape).subscribe(
@@ -297,19 +289,18 @@ describe('IncreasingOnesAlgorithmService', () => {
         error => new Error(error),
         () => { }
       );
-      tick(1000);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       increasingOnesAlgorithmService.pause();
 
       expect(machineStatus.length).toBeLessThan(23);
-    }));
+    });
 
   });
 
   describe('resume', () => {
 
-    it('should resume algorithm evolution', fakeAsync(() => {
+    it('should resume algorithm evolution', () => {
       const initialTape = increasingOnesAlgorithmService.getDefaultInitialTape();
       const machineStatus: Array<MachineStatus> = [];
       increasingOnesAlgorithmService.evolve(initialTape).subscribe(
@@ -317,18 +308,14 @@ describe('IncreasingOnesAlgorithmService', () => {
         error => new Error(error),
         () => { }
       );
-      tick(1000);
-      discardPeriodicTasks();
+      timeService.tick(10);
       increasingOnesAlgorithmService.pause();
-      tick(1000);
-      discardPeriodicTasks();
 
       increasingOnesAlgorithmService.resume();
-      tick(1300);
-      discardPeriodicTasks();
+      timeService.tick(12);
 
       expect(machineStatus.length).toEqual(23);
-    }));
+    });
 
   });
 

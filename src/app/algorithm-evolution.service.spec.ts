@@ -1,4 +1,3 @@
-import { fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { AlgorithmEvolutionService } from './algorithm-evolution.service';
 import { Configuration } from './configuration';
 import { MachineStatus } from './machine-status';
@@ -8,15 +7,20 @@ import { TapeSymbol } from './tape-symbol';
 import { PrintOneOperation } from './operations/print-one-operation';
 import { MoveRightOperation } from './operations/move-right-operation';
 import { PrintZeroOperation } from './operations/print-zero-operation';
+import { IntervalService } from './interval.service';
+import { TimeServiceStub } from './time-stub.service';
 
 describe('AlgorithmEvolutionService', () => {
 
+  let timeService: TimeServiceStub;
   let algorithmEvolutionService: AlgorithmEvolutionService;
   let configurations: Array<Configuration>;
   let initialTape: Tape;
 
   beforeEach(() => {
-    algorithmEvolutionService = new AlgorithmEvolutionService();
+    timeService = new TimeServiceStub();
+    const intervalService: IntervalService = new IntervalService(timeService);
+    algorithmEvolutionService = new AlgorithmEvolutionService(intervalService);
 
     const firstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE),
       [new PrintZeroOperation(), new MoveRightOperation()], 'c');
@@ -45,20 +49,19 @@ describe('AlgorithmEvolutionService', () => {
 
   describe('evolve', () => {
 
-    it('should create 11 machine statuses', fakeAsync(() => {
+    it('should create 11 machine statuses', () => {
       const machineStatus: Array<MachineStatus> = [];
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(1100);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       expect(machineStatus.length).toBe(11);
-    }));
+    });
 
-    it('should create machine statuses with correct square values', fakeAsync(() => {
+    it('should create machine statuses with correct square values', () => {
       const expectedSquareValues: Array<Array<string>> = [
         ['', '', '', '', '', '', '', '', '', ''],
         ['0', '', '', '', '', '', '', '', '', ''],
@@ -88,138 +91,126 @@ describe('AlgorithmEvolutionService', () => {
           }
         }
       );
-      tick(1100);
-      discardPeriodicTasks();
-    }));
+      timeService.tick(10);
+    });
 
-    it('should set completed as true on evolution error', fakeAsync(() => {
+    it('should set completed as true on evolution error', () => {
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1100);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       expect(algorithmEvolutionService.completed).toBeTruthy();
-    }));
+    });
 
-    it('should set error as true on evolution error', fakeAsync(() => {
+    it('should set error as true on evolution error', () => {
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(1100);
-      discardPeriodicTasks();
+      timeService.tick(10);
 
       expect(algorithmEvolutionService.error).toBeTruthy();
-    }));
+    });
 
   });
 
   describe('stop', () => {
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const machineStatus: Array<MachineStatus> = [];
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       algorithmEvolutionService.stop();
 
       expect(machineStatus.length).toBeLessThan(11);
-    }));
+    });
 
-    it('should set completed as true', fakeAsync(() => {
+    it('should set completed as true', () => {
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       algorithmEvolutionService.stop();
 
       expect(algorithmEvolutionService.completed).toBeTruthy();
-    }));
+    });
 
-    it('should set error as false', fakeAsync(() => {
+    it('should set error as false', () => {
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => { },
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       algorithmEvolutionService.stop();
 
       expect(algorithmEvolutionService.error).toBeFalsy();
-    }));
+    });
 
   });
 
   describe('pause', () => {
 
-    it('should stop algorithm evolution', fakeAsync(() => {
+    it('should stop algorithm evolution', () => {
       const machineStatus: Array<MachineStatus> = [];
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       algorithmEvolutionService.pause();
 
       expect(machineStatus.length).toBeLessThan(11);
-    }));
+    });
 
-    it('should not set completed as true', fakeAsync(() => {
+    it('should not set completed as true', () => {
       const machineStatus: Array<MachineStatus> = [];
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
 
       algorithmEvolutionService.pause();
 
       expect(algorithmEvolutionService.completed).toBeFalsy();
-    }));
+    });
 
   });
 
   describe('resume', () => {
 
-    it('should resume algorithm evolution', fakeAsync(() => {
+    it('should resume algorithm evolution', () => {
       const machineStatus: Array<MachineStatus> = [];
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
         error => new Error(error),
         () => { }
       );
-      tick(500);
-      discardPeriodicTasks();
+      timeService.tick(3);
       algorithmEvolutionService.pause();
-      tick(1000);
-      discardPeriodicTasks();
 
       algorithmEvolutionService.resume();
-      tick(600);
-      discardPeriodicTasks();
+      timeService.tick(7);
 
       expect(machineStatus.length).toEqual(11);
-    }));
+    });
 
   });
 
