@@ -48,6 +48,7 @@ describe('MachineStatus', () => {
       machineStatus.symbol = new TapeSymbol(TapeSymbol.SCHWA);
 
       expect(machineStatus.symbol.value).toEqual(TapeSymbol.SCHWA);
+      machineStatus.symbol = new TapeSymbol(TapeSymbol.X);
     });
 
   });

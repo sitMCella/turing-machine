@@ -79,19 +79,18 @@ describe('AlgorithmEvolutionService', () => {
 
       algorithmEvolutionService.evolve(configurations, initialTape).subscribe(
         status => machineStatus.push(status),
-        error => new Error(error),
-        () => {
-          for (let tapeIndex = 0; tapeIndex < 11; tapeIndex++) {
-            expect(machineStatus[tapeIndex].tape.squares.length).toEqual(10);
-            for (let squareIndex = 0; squareIndex < 10; squareIndex++) {
-              expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
-            }
-            expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
-          }
-        }
+        error => new Error(error)
       );
       timeService.tick(10);
+
+      for (let tapeIndex = 0; tapeIndex < 11; tapeIndex++) {
+        expect(machineStatus[tapeIndex].tape.squares.length).toEqual(10);
+        for (let squareIndex = 0; squareIndex < 10; squareIndex++) {
+          expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+          expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+        }
+        expect(machineStatus[tapeIndex].index).toBe(tapeIndex);
+      }
     });
 
     it('should set completed as true on evolution error', () => {

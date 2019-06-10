@@ -93,23 +93,22 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
 
         oneThirdAlgorithmSingleMConfigService.evolve(defaultInitialTape).subscribe(
           status => machineStatus.push(status),
-          error => new Error(error),
-          () => {
-            for (let tapeIndex = 0; tapeIndex < 12; tapeIndex++ , expectedIndex += 2) {
-              expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
-              for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-                expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
-              }
-              if (tapeIndex === 0) {
-                expect(machineStatus[tapeIndex].index).toBe(0);
-              } else {
-                expect(machineStatus[tapeIndex].index).toBe(expectedIndex);
-              }
-            }
-          }
+          error => new Error(error)
         );
         timeService.tick(11);
+
+        for (let tapeIndex = 0; tapeIndex < 11; tapeIndex++ , expectedIndex += 2) {
+          expect(machineStatus[tapeIndex].tape.squares.length).toEqual(20);
+          for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
+            expect(machineStatus[tapeIndex].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+            expect(machineStatus[tapeIndex].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[tapeIndex][squareIndex]);
+          }
+          if (tapeIndex === 0) {
+            expect(machineStatus[tapeIndex].index).toBe(0);
+          } else {
+            expect(machineStatus[tapeIndex].index).toBe(expectedIndex);
+          }
+        }
       });
 
      it('should set completed as true on evolution error', () => {
@@ -179,17 +178,16 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
 
         oneThirdAlgorithmSingleMConfigService.evolve(initialTape).subscribe(
           status => machineStatus.push(status),
-          error => new Error(error),
-          () => {
-            expect(machineStatus[0].tape.squares.length).toEqual(20);
-            for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
-              expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
-              expect(machineStatus[0].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[0][squareIndex]);
-            }
-            expect(machineStatus[0].index).toBe(0);
-          }
+          error => new Error(error)
         );
         timeService.tick(1);
+
+        expect(machineStatus[0].tape.squares.length).toEqual(20);
+        for (let squareIndex = 0; squareIndex < 20; squareIndex++) {
+          expect(machineStatus[0].tape.squares[squareIndex].id).toBe(squareIndex + 1);
+          expect(machineStatus[0].tape.squares[squareIndex].symbol.value).toBe(expectedSquareValues[0][squareIndex]);
+        }
+        expect(machineStatus[0].index).toBe(0);
       });
 
       it('should set completed as true on evolution error', () => {
