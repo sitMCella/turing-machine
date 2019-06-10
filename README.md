@@ -43,11 +43,15 @@ Features:
 
 # Development
 
+## Setup
+
+Install NodeJS version 10.16.0 LTS. See: https://nodejs.org/it/download/
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Run `npm start` for open dev Electron window 
+Run `npm start` on another terminal for open dev Electron window.
 
 ## Build
 
