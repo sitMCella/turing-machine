@@ -1,6 +1,8 @@
 import { OneThirdAlgorithmSingleMConfigService } from './one-third-algorithm-single-m-config.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
+import { Configuration } from '../configuration';
+import { PrintZeroOperation } from '../operations/print-zero-operation';
 import { Tape } from '../tape';
 import { DeepCopy } from '../deep-copy';
 import { TapeSymbol } from '../tape-symbol';
@@ -25,6 +27,12 @@ describe('OneThirdAlgorithmSingleMConfigService', () => {
 
   it('should initially have error as false', () => {
     expect(oneThirdAlgorithmSingleMConfigService.error).toBeFalsy();
+  });
+
+  it('should get the first configuration', () => {
+    const firstConfiguration = oneThirdAlgorithmSingleMConfigService.getFirstConfiguration();
+    const expectedFirstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE), [new PrintZeroOperation()], 'b');
+    expect(firstConfiguration).toEqual(expectedFirstConfiguration);
   });
 
   describe('getDefaultInitialTape', () => {

@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Subscription, Observable, BehaviorSubject, interval } from 'rxjs';
 import { TapeComponent } from './tape.component';
+import { Configuration } from '../configuration';
+import { Operation } from '../operation';
 import { Tape } from '../tape';
 import { Square } from '../square';
 import { MachineStatus } from '../machine-status';
@@ -13,12 +15,22 @@ import { TimeServiceStub } from '../time-stub.service';
 
 describe('TapeComponent', () => {
 
+  class FakeFirstOperation implements Operation {
+    apply(machineStatus: MachineStatus): MachineStatus {
+      const finalSquares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE)), new Square(2, new TapeSymbol(TapeSymbol.NONE))];
+      const finalTape: Tape = new Tape(finalSquares);
+      const finalMachineStatus: MachineStatus = new MachineStatus(machineStatus.configurationName, finalTape, 1);
+      return finalMachineStatus;
+    }
+  }
+
   class AlgorithmService implements Algorithm {
     public completed: boolean;
     public error: boolean;
     public errorMessage: string;
     public break: boolean;
 
+    private firstConfiguration: Configuration;
     private _subscription: Subscription;
     private deepCopy: DeepCopy;
     private machineStatus: BehaviorSubject<MachineStatus>;
@@ -27,7 +39,14 @@ describe('TapeComponent', () => {
       this.completed = false;
       this.error = false;
       this.break = false;
+      const operations: Array<Operation> = [new FakeFirstOperation()];
+      const symbol: TapeSymbol = new TapeSymbol(TapeSymbol.NONE);
+      this.firstConfiguration = new Configuration('b', symbol, operations, 'c');
       this.deepCopy = new DeepCopy();
+    }
+
+    public getFirstConfiguration(): Configuration {
+      return this.firstConfiguration;
     }
 
     public getDefaultInitialTape(): Tape {
@@ -123,11 +142,21 @@ describe('TapeComponent', () => {
     expect(component).toBeTruthy();
   }));
 
+  it('should contain the first configuration name', async(() => {
+    const compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+
+    const firstConfigurationName: HTMLElement = compiled.querySelector('.initial-tape-configuration .configuration-name');
+    expect(firstConfigurationName).not.toBeNull();
+    expect(firstConfigurationName).toBeDefined();
+    expect(firstConfigurationName.textContent).toBe('b');
+  }));
+
   it('should contain the default initial tape', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     fixture.detectChanges();
 
-    const initialTape: HTMLElement = compiled.querySelector('.initial-tape');
+    const initialTape: HTMLElement = compiled.querySelector('.initial-tape-configuration');
     expect(initialTape).not.toBeNull();
     expect(initialTape).toBeDefined();
   }));
@@ -136,7 +165,7 @@ describe('TapeComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     fixture.detectChanges();
 
-    const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
+    const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape-configuration .square');
     expect(squares).not.toBeNull();
     expect(squares).toBeDefined();
     expect(squares.length).toBe(2);
@@ -194,7 +223,7 @@ describe('TapeComponent', () => {
         algorithmTimeService.tick(1);
         fixture.detectChanges();
 
-        const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
+        const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape-configuration .square');
         expect(squares).not.toBeNull();
         expect(squares).toBeDefined();
         expect(squares.length).toBe(4);
@@ -231,7 +260,7 @@ describe('TapeComponent', () => {
       fixture.detectChanges();
       algorithmTimeService.tick(1);
       fixture.detectChanges();
-      const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape .square');
+      const squares: Array<HTMLElement> = compiled.querySelectorAll('.initial-tape-configuration .square');
       const firstSquareInitialTape: HTMLInputElement = squares[0].querySelector('input');
       firstSquareInitialTape.value = '1';
       firstSquareInitialTape.dispatchEvent(new Event('input'));

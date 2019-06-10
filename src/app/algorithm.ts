@@ -1,6 +1,7 @@
 import { Subscription, Observable } from 'rxjs';
-import { MachineStatus } from './machine-status';
+import { Configuration } from './configuration';
 import { Tape } from './tape';
+import { MachineStatus } from './machine-status';
 
 export interface Algorithm {
   completed: boolean;
@@ -9,6 +10,7 @@ export interface Algorithm {
   break: boolean;
   subscription: Subscription;
 
+  getFirstConfiguration(): Configuration;
   getDefaultInitialTape(): Tape;
   evolve(initialTape: Tape): Observable<MachineStatus>;
   stop(): void;

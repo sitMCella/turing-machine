@@ -27,6 +27,10 @@ export class OneThirdAlgorithmSingleMConfigService implements Algorithm {
     this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration];
   }
 
+  public getFirstConfiguration(): Configuration {
+    return this.configurations[0];
+  }
+
   public getDefaultInitialTape(): Tape {
     return this.defaultInitialTape;
   }

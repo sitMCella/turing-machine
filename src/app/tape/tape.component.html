@@ -1,10 +1,12 @@
-<div class="initial-tape">
-  <div class="title">Initial tape:</div>
-  <div>
-    <span class="square" *ngFor="let square of initialTape.squares">
-      <input type="text" [(ngModel)]="square.symbol.value">
-    </span>
-  </div>
+<div class="initial-tape-header">
+  <span class="configuration-name"><b>m-config</b></span>
+  <span class="title"><b>initial tape:</b></span>
+</div>
+<div class="initial-tape-configuration">
+  <span class="configuration-name">{{algorithm.getFirstConfiguration().name}}</span>
+  <span class="square" *ngFor="let square of initialTape.squares">
+    <input type="text" [(ngModel)]="square.symbol.value">
+  </span>
 </div>
 <div class="settings">
   <span class="squaresCount">

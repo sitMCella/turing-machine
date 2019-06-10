@@ -1,6 +1,11 @@
 import { IncreasingOnesAlgorithmService } from './increasing-ones-algorithm.service';
 import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
 import { MachineStatus } from '../machine-status';
+import { Configuration } from '../configuration';
+import { MoveRightOperation } from '../operations/move-right-operation';
+import { PrintSchwaOperation } from '../operations/print-schwa-operation';
+import { PrintZeroOperation } from '../operations/print-zero-operation';
+import { MoveLeftOperation } from '../operations/move-left-operation';
 import { Tape } from '../tape';
 import { DeepCopy } from '../deep-copy';
 import { TapeSymbol } from '../tape-symbol';
@@ -25,6 +30,16 @@ describe('IncreasingOnesAlgorithmService', () => {
 
   it('should initially have error as false', () => {
     expect(increasingOnesAlgorithmService.error).toBeFalsy();
+  });
+
+  it('should get the first configuration', () => {
+    const firstConfiguration = increasingOnesAlgorithmService.getFirstConfiguration();
+    const expectedFirstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE),
+    [new PrintSchwaOperation(), new MoveRightOperation(), new PrintSchwaOperation(),
+    new MoveRightOperation(), new PrintZeroOperation(), new MoveRightOperation(),
+    new MoveRightOperation(), new PrintZeroOperation(), new MoveLeftOperation(),
+    new MoveLeftOperation()], 'o');
+    expect(firstConfiguration).toEqual(expectedFirstConfiguration);
   });
 
   describe('getDefaultInitialTape', () => {

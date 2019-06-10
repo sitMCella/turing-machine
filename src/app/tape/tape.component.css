@@ -1,7 +1,3 @@
-.initial-tape .title {
-    padding-bottom: 5px;
-}
-
 .settings {
     padding: 5px;
 }
@@ -16,7 +12,8 @@
     text-align: center;
 }
 
-.initial-tape,
+.initial-tape-header,
+.initial-tape-configuration,
 .complete-configuration,
 .complete-configuration-header {
     display: table;
@@ -25,7 +22,8 @@
 }
 
 .configuration-name,
-.complete-configuration .title,
+.initial-tape-header .title,
+.complete-configuration-header .title,
 .square {
     display: table-cell;
     padding: 1px;
@@ -36,7 +34,9 @@
     vertical-align: middle;
 }
 
-.complete-configuration .title {
+.initial-tape-header .title,
+.complete-configuration-header .title {
+    text-align: left;
     width: 250px;
     min-width: 250px;
 }

@@ -51,6 +51,10 @@ export class IncreasingOnesAlgorithmService implements Algorithm {
       eightConfiguration, ninthConfiguration, tenthConfiguration];
   }
 
+  public getFirstConfiguration(): Configuration {
+    return this.configurations[0];
+  }
+
   public getDefaultInitialTape(): Tape {
     return this.defaultInitialTape;
   }
