@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  turing-machine:
+    image: "turing-machine"
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+    container_name: "turing-machine"
+    ports:
+      - "80:80"
