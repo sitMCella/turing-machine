@@ -30,21 +30,21 @@ describe('TapeComponent', () => {
     algorithm.subscription = subscription;
     component.algorithm = algorithm;
     observable = of(new MachineStatus('configuration name', null, 33));
-    spyOn(algorithm, 'evolve').and.returnValue(observable);
-    spyOn(observable, 'pipe').and.returnValue(observable);
+    jest.spyOn(algorithm, 'evolve').mockReturnValue(observable);
+    jest.spyOn(observable, 'pipe').mockReturnValue(observable);
     machineStatusViewSubscription = new Subscription();
-    spyOn(observable, 'subscribe').and.returnValue(machineStatusViewSubscription);
-    spyOnProperty(algorithm, 'subscription', 'get').and.returnValue(subscription);
+    jest.spyOn(observable, 'subscribe').mockReturnValue(machineStatusViewSubscription);
+    jest.spyOn(algorithm, 'subscription', 'get').mockReturnValue(subscription);
     const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.NONE)), new Square(2, new TapeSymbol(TapeSymbol.ONE))];
     defaultInitialTape = new Tape(squares);
-    spyOn(algorithm, 'getDefaultInitialTape').and.returnValue(defaultInitialTape);
-    spyOn(subscription, 'unsubscribe');
-    spyOn(intervalService, 'clear');
-    spyOn(intervalService, 'subscribe');
-    spyOn(intervalService, 'setInterval');
-    spyOn(intervalServiceAlgorithmEvolution, 'clear');
-    spyOn(intervalServiceAlgorithmEvolution, 'subscribe');
-    spyOn(intervalServiceAlgorithmEvolution, 'setInterval');
+    jest.spyOn(algorithm, 'getDefaultInitialTape').mockReturnValue(defaultInitialTape);
+    jest.spyOn(subscription, 'unsubscribe');
+    jest.spyOn(intervalService, 'clear');
+    jest.spyOn(intervalService, 'subscribe');
+    jest.spyOn(intervalService, 'setInterval');
+    jest.spyOn(intervalServiceAlgorithmEvolution, 'clear');
+    jest.spyOn(intervalServiceAlgorithmEvolution, 'subscribe');
+    jest.spyOn(intervalServiceAlgorithmEvolution, 'setInterval');
   });
 
   it('should initially have the default initial tape', () => {
@@ -108,8 +108,8 @@ describe('TapeComponent', () => {
   describe('stop', () => {
 
     beforeEach(() => {
-      spyOn(algorithm, 'stop');
-      spyOn(machineStatusViewSubscription, 'unsubscribe');
+      jest.spyOn(algorithm, 'stop');
+      jest.spyOn(machineStatusViewSubscription, 'unsubscribe');
     });
 
     it('should stop algorithm evolution', () => {
@@ -141,7 +141,7 @@ describe('TapeComponent', () => {
   describe('pause', () => {
 
     beforeEach(() => {
-      spyOn(algorithm, 'pause');
+      jest.spyOn(algorithm, 'pause');
     });
 
     it('should pause algorithm evolution', () => {
@@ -165,7 +165,7 @@ describe('TapeComponent', () => {
   describe('resume', () => {
 
     beforeEach(() => {
-      spyOn(algorithm, 'resume');
+      jest.spyOn(algorithm, 'resume');
     });
 
     it('should resume algorithm evolution', () => {

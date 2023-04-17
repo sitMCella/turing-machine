@@ -61,7 +61,7 @@ describe('OneThirdMachineComponent', () => {
   });
 
   it('should open the turing machines catalog', inject([Router], (router: Router) => {
-    const spy = spyOn(router, 'navigateByUrl');
+    jest.spyOn(router, 'navigateByUrl');
     const compiled: any = fixture.debugElement.nativeElement;
     const reference: HTMLElement = compiled.querySelector('.reference');
 
