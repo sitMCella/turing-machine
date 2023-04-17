@@ -84,6 +84,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "include": [
+              "**/*.spec.ts"
             ]
           }
         }
