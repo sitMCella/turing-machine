@@ -45,7 +45,7 @@ Features:
 
 ## Setup
 
-Install NodeJS version 10.16.0 LTS. See: https://nodejs.org/it/download/
+Install NodeJS version 19.5.0 or higher. See: https://nodejs.org/it/download/
 
 ## Development server
 

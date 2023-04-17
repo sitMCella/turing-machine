@@ -1,10 +1,11 @@
-FROM node:12.7-alpine AS build
+FROM node:19.9.0-alpine AS build
 WORKDIR /usr/src/turing-machine
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json nginx.conf ./
 RUN npm install
 COPY . .
 RUN npm run build --prod
 
 FROM nginx:1.17.1-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/turing-machine/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/turing-machine/dist/turing-machine /usr/share/nginx/html
+EXPOSE 80
