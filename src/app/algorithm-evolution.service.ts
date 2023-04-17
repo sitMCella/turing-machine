@@ -39,7 +39,9 @@ export class AlgorithmEvolutionService {
   public stop(): void {
     this.continue = false;
     this.completed = true;
-    this.machineStatus.complete();
+    if(this.machineStatus) {
+      this.machineStatus.complete();
+    }
     this.stopTimer();
   }
 

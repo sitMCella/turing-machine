@@ -43,7 +43,7 @@ describe('MachinesCatalogComponent', () => {
   });
 
   it('should open the one third turing machine', inject([Router], (router: Router) => {
-    const spy = spyOn(router, 'navigateByUrl');
+    jest.spyOn(router, 'navigateByUrl');
     const compiled = fixture.debugElement.nativeElement;
     const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
 
@@ -53,7 +53,7 @@ describe('MachinesCatalogComponent', () => {
   }));
 
   it('should open the one third turing machine single m-config', inject([Router], (router: Router) => {
-    const spy = spyOn(router, 'navigateByUrl');
+    jest.spyOn(router, 'navigateByUrl');
     const compiled = fixture.debugElement.nativeElement;
     const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
 
@@ -63,7 +63,7 @@ describe('MachinesCatalogComponent', () => {
   }));
 
   it('should open the increasing ones turing machine', inject([Router], (router: Router) => {
-    const spy = spyOn(router, 'navigateByUrl');
+    jest.spyOn(router, 'navigateByUrl');
     const compiled = fixture.debugElement.nativeElement;
     const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
 
