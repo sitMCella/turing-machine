@@ -1,25 +1,27 @@
-<div class="initial-tape-header">
-  <span class="configuration-name"><b>m-config</b></span>
-  <span class="title"><b>initial tape:</b></span>
+<div class="nes-container with-title">
+  <div class="title">Initial configuration</div>
+  <div class="nes-table-responsive" style="text-align: center;">
+    <table class="nes-table is-bordered is-centered">
+      <tr><th style="width:200px">m-config</th><th style="width:200px">tape size</th></tr>
+      <tr><td style="width:200px">{{algorithm.getFirstConfiguration().name}}</td><td style="width:200px">{{initialTape.squares.length}}</td></tr>
+    </table>
+  </div>
+  <div style="margin-top: 10px">
+    <div class="settings">
+      <span class="squaresCount">
+        <input type="text" [(ngModel)]="squaresCount">
+      </span>
+      <button [disabled]="!squaresCount || !algorithm.completed" (click)="changeInitialTapeSize()" class="applySettings">Resize</button>
+    </div>
+    <div class="actions">
+      <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
+      <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
+      <button *ngIf="!algorithm.break && !algorithm.completed" (click)="pause()" class="pause">Pause</button>
+      <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
+    </div>
+  </div>
 </div>
-<div class="initial-tape-configuration">
-  <span class="configuration-name">{{algorithm.getFirstConfiguration().name}}</span>
-  <span class="square" *ngFor="let square of initialTape.squares">
-    <input type="text" [(ngModel)]="square.symbol.value">
-  </span>
-</div>
-<div class="settings">
-  <span class="squaresCount">
-    <input type="text" [(ngModel)]="squaresCount">
-  </span>
-  <button [disabled]="!squaresCount || !algorithm.completed" (click)="changeInitialTapeSize()" class="applySettings">Resize</button>
-</div>
-<div class="actions">
-  <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
-  <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
-  <button *ngIf="!algorithm.break && !algorithm.completed" (click)="pause()" class="pause">Pause</button>
-  <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
-</div>
+<h2 class="evolution-title">Evolution</h2>
 <div class="complete-configuration-header">
   <span class="configuration-name"><b>m-config</b></span>
   <span class="title"><b>tape symbols and position of the head</b></span>
