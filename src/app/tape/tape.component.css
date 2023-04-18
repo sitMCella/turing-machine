@@ -27,8 +27,8 @@
 .square {
     display: table-cell;
     padding: 1px;
-    width: 70px;
-    min-width: 70px;
+    width: 200px;
+    min-width: 150px;
     height: 20px;
     text-align: center;
     vertical-align: middle;
@@ -37,16 +37,21 @@
 .initial-tape-header .title,
 .complete-configuration-header .title {
     text-align: left;
-    width: 250px;
-    min-width: 250px;
+    width: 700px;
+    min-width: 500px;
+}
+
+.evolution-title {
+    padding: 1.5rem 2rem;
 }
 
 .square {
     border-left: 1px solid black;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    width: 20px;
-    min-width: 20px;
+    width: 30px;
+    min-width: 25px;
+    height: 15px;
 }
 
 .square:last-child {
@@ -54,7 +59,8 @@
 }
 
 .square input {
-    width: 10px;
+    width: 30px;
+    height: 15px;
     border: none;
 }
 
@@ -64,6 +70,7 @@
 
 .error {
     padding: 5px;
+    margin-top: 10px;
 }
 
 .error .message {

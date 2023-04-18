@@ -1,22 +1,26 @@
-<div class="title">Increasing Ones Turing machine</div>
-<div class="reference" (click)="navigateTo('')">Back to Turing machines catalog</div>
-<div class="configuration">
-  <div>
-    <table>
-      <tr><th>m-config</th><th>symbol</th><th>operations</th><th>final m-config</th></tr>
-      <tr><td>b</td><td>none</td><td>Ps,R,Ps,R,P0,R,R,P0,L,L</td><td>o</td></tr>
-      <tr><td>o</td><td>1</td><td>R,Px,L,L,L</td><td>o</td></tr>
-      <tr><td>o</td><td>0</td><td></td><td>q</td></tr>
-      <tr><td>q</td><td>any</td><td>R,R</td><td>q</td></tr>
-      <tr><td>q</td><td>none</td><td>P1,L</td><td>p</td></tr>
-      <tr><td>p</td><td>x</td><td>E,R</td><td>q</td></tr>
-      <tr><td>p</td><td>s</td><td>R</td><td>f</td></tr>
-      <tr><td>p</td><td>none</td><td>L,L</td><td>p</td></tr>
-      <tr><td>f</td><td>any</td><td>R,R</td><td>f</td></tr>
-      <tr><td>f</td><td>none</td><td>P0,L,L</td><td>o</td></tr>
-    </table>
+<div class="container">
+  <h1>Increasing Ones Turing machine</h1>
+  <div class="reference" (click)="navigateTo('')">Back to Turing machines catalog</div>
+  <hr>
+  <h2 class="subtitle">Turing Machine</h2>
+  <div class="configuration">
+    <div class="nes-table-responsive">
+      <table class="nes-table is-bordered is-centered">
+        <tr><th style="width:200px">m-config</th><th style="width:200px">symbol</th><th style="width:500px">operations</th><th style="width:200px">final m-config</th></tr>
+        <tr><td style="width:200px">b</td><td style="width:200px">none</td><td style="width:500px">Ps,R,Ps,R,P0,R,R,P0,L,L</td><td style="width:200px">o</td></tr>
+        <tr><td>o</td><td>1</td><td>R,Px,L,L,L</td><td>o</td></tr>
+        <tr><td>o</td><td>0</td><td></td><td>q</td></tr>
+        <tr><td>q</td><td>any</td><td>R,R</td><td>q</td></tr>
+        <tr><td>q</td><td>none</td><td>P1,L</td><td>p</td></tr>
+        <tr><td>p</td><td>x</td><td>E,R</td><td>q</td></tr>
+        <tr><td>p</td><td>s</td><td>R</td><td>f</td></tr>
+        <tr><td>p</td><td>none</td><td>L,L</td><td>p</td></tr>
+        <tr><td>f</td><td>any</td><td>R,R</td><td>f</td></tr>
+        <tr><td>f</td><td>none</td><td>P0,L,L</td><td>o</td></tr>
+      </table>
+    </div>
   </div>
-</div>
-<div class="app-tape">
-  <app-tape [algorithm]="algorithm"></app-tape>
+  <div class="app-tape">
+    <app-tape [algorithm]="algorithm"></app-tape>
+  </div>
 </div>

@@ -1,3 +1,8 @@
+.container {
+    padding: 1.5rem 2rem;
+    border-width: 4px;
+}
+
 .title {
     font-size: 18px;
     font-size: 1.2857em;
@@ -5,6 +10,10 @@
     margin-top: 10px;
     margin-left: 20px;
     margin-bottom: 20px;
+}
+
+.subtitle {
+    margin-top: 20px;
 }
 
 .reference {
@@ -23,7 +32,6 @@
 }
 
 .configuration table td {
-    padding: 1px;
     width: 100px;
 }
 
