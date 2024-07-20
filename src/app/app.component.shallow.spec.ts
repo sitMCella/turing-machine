@@ -1,15 +1,15 @@
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { APP_BASE_HREF } from '@angular/common';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { MachinesCatalogComponent } from './machines-catalog/machines-catalog.component';
-import { OneThirdMachineComponent } from './one-third-machine/one-third-machine.component';
-import { OneThirdMachineSingleMConfigComponent } from './one-third-machine-single-m-config/one-third-machine-single-m-config.component';
-import { IncreasingOnesMachineComponent } from './increasing-ones-machine/increasing-ones-machine.component';
-import { TapeComponent } from './tape/tape.component';
+import { TestBed, ComponentFixture, async } from "@angular/core/testing";
+import { FormsModule } from "@angular/forms";
+import { APP_BASE_HREF } from "@angular/common";
+import { AppComponent } from "./app.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { MachinesCatalogComponent } from "./machines-catalog/machines-catalog.component";
+import { OneThirdMachineComponent } from "./one-third-machine/one-third-machine.component";
+import { OneThirdMachineSingleMConfigComponent } from "./one-third-machine-single-m-config/one-third-machine-single-m-config.component";
+import { IncreasingOnesMachineComponent } from "./increasing-ones-machine/increasing-ones-machine.component";
+import { TapeComponent } from "./tape/tape.component";
 
-describe('AppComponent', () => {
+describe("AppComponent", () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
@@ -21,15 +21,10 @@ describe('AppComponent', () => {
         OneThirdMachineComponent,
         OneThirdMachineSingleMConfigComponent,
         IncreasingOnesMachineComponent,
-        TapeComponent
+        TapeComponent,
       ],
-      providers: [
-        { provide: APP_BASE_HREF, useValue: '/' }
-      ],
-      imports: [
-        AppRoutingModule,
-        FormsModule
-      ]
+      providers: [{ provide: APP_BASE_HREF, useValue: "/" }],
+      imports: [AppRoutingModule, FormsModule],
     }).compileComponents();
   });
 
@@ -38,16 +33,15 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create the app', async(() => {
+  it("should create the app", async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
-  it('should show the turing machines catalog', async(() => {
+  it("should show the turing machines catalog", async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    const catalog = compiled.querySelectorAll('.catalog');
+    const catalog = compiled.querySelectorAll(".catalog");
     expect(catalog).not.toBeNull();
     expect(catalog).toBeDefined();
   }));
-
 });

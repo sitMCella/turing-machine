@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { interval, Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { MachineStatus } from './machine-status';
-import { Configuration } from './configuration';
-import { Tape } from './tape';
-import { DeepCopy } from './deep-copy';
-import { TapeSymbolCompare } from './tape-symbol-compare';
-import { IntervalService } from './interval.service';
+import { Injectable } from "@angular/core";
+import { interval, Subscription, Observable, BehaviorSubject } from "rxjs";
+import { MachineStatus } from "./machine-status";
+import { Configuration } from "./configuration";
+import { Tape } from "./tape";
+import { DeepCopy } from "./deep-copy";
+import { TapeSymbolCompare } from "./tape-symbol-compare";
+import { IntervalService } from "./interval.service";
 
 @Injectable()
 export class AlgorithmEvolutionService {
@@ -29,7 +29,10 @@ export class AlgorithmEvolutionService {
     this.tapeSymbolCompare = new TapeSymbolCompare();
   }
 
-  public evolve(configurations: Array<Configuration>, initialTape: Tape): Observable<MachineStatus> {
+  public evolve(
+    configurations: Array<Configuration>,
+    initialTape: Tape,
+  ): Observable<MachineStatus> {
     this.i = 0;
     this.init(configurations, initialTape);
     this.algorithmEvolution();
@@ -39,7 +42,7 @@ export class AlgorithmEvolutionService {
   public stop(): void {
     this.continue = false;
     this.completed = true;
-    if(this.machineStatus) {
+    if (this.machineStatus) {
       this.machineStatus.complete();
     }
     this.stopTimer();
@@ -68,10 +71,14 @@ export class AlgorithmEvolutionService {
     this.configurations = configurations;
     this.completed = false;
     this.error = false;
-    this.errorMessage = '';
+    this.errorMessage = "";
     this.continue = true;
     this.break = false;
-    this.actualStatus = new MachineStatus(this.configuration.name, <Tape>this.deepCopy.apply(initialTape), 0);
+    this.actualStatus = new MachineStatus(
+      this.configuration.name,
+      <Tape>this.deepCopy.apply(initialTape),
+      0,
+    );
     this.machineStatus = new BehaviorSubject(this.actualStatus);
   }
 
@@ -91,12 +98,15 @@ export class AlgorithmEvolutionService {
   private algorithmConfigurationEvolution(): void {
     try {
       if (this.actualStatus.maxSquareCount()) {
-        throw Error('Max tape length reached');
+        throw Error("Max tape length reached");
       }
       this.actualStatus = this.configuration.evolve(this.actualStatus);
       if (this.error === false) {
         this.machineStatus.next(this.actualStatus);
-        this.configuration = this.findConfigurationFrom(this.configuration.finalConfigurationName, this.actualStatus);
+        this.configuration = this.findConfigurationFrom(
+          this.configuration.finalConfigurationName,
+          this.actualStatus,
+        );
       }
     } catch (e) {
       this.handleException(e);
@@ -108,14 +118,22 @@ export class AlgorithmEvolutionService {
     this.intervalService.clear();
   }
 
-  private findConfigurationFrom(name: string, actualStatus: MachineStatus): Configuration {
+  private findConfigurationFrom(
+    name: string,
+    actualStatus: MachineStatus,
+  ): Configuration {
     if (actualStatus.maxSquareCount()) {
-      throw Error('Max tape length reached');
+      throw Error("Max tape length reached");
     }
     let index = -1;
     for (let i = 0; i < this.configurations.length; i++) {
-      if (this.configurations[i].name === name
-        && this.tapeSymbolCompare.compare(actualStatus.symbol, this.configurations[i].symbol)) {
+      if (
+        this.configurations[i].name === name &&
+        this.tapeSymbolCompare.compare(
+          actualStatus.symbol,
+          this.configurations[i].symbol,
+        )
+      ) {
         index = i;
         break;
       }
@@ -123,7 +141,12 @@ export class AlgorithmEvolutionService {
     if (index > -1) {
       return this.configurations[index];
     }
-    throw Error('Cannot find m-configuration with name ' + name + ' and symbol ' + actualStatus.symbol.value);
+    throw Error(
+      "Cannot find m-configuration with name " +
+        name +
+        " and symbol " +
+        actualStatus.symbol.value,
+    );
   }
 
   private handleException(e: Error): void {
@@ -132,5 +155,4 @@ export class AlgorithmEvolutionService {
     this.errorMessage = e.message;
     this.continue = false;
   }
-
 }

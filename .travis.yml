@@ -6,7 +6,7 @@ sudo: required
 
 branches:
   only:
-  - master
+    - master
 before_script:
   - npm install -g @angular/cli
 install:

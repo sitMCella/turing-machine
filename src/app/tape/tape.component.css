@@ -1,86 +1,88 @@
 .settings {
-    padding: 5px;
+  padding: 5px;
 }
 
 .actions {
-    padding: 5px;
-    margin-bottom: 10px;
-    text-align: left;
+  padding: 5px;
+  text-align: left;
 }
 
-.actions button {    
-    text-align: center;
+.actions button {
+  text-align: center;
 }
 
 .initial-tape-header,
 .initial-tape-configuration,
 .complete-configuration,
 .complete-configuration-header {
-    display: table;
-    table-layout: fixed;
-    padding: 5px;
+  display: table;
+  table-layout: fixed;
+  padding: 5px;
 }
 
 .configuration-name,
 .initial-tape-header .title,
 .complete-configuration-header .title,
 .square {
-    display: table-cell;
-    padding: 1px;
-    width: 200px;
-    min-width: 150px;
-    height: 20px;
-    text-align: center;
-    vertical-align: middle;
+  display: table-cell;
+  padding: 1px;
+  width: 200px;
+  min-width: 150px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .initial-tape-header .title,
 .complete-configuration-header .title {
-    text-align: left;
-    width: 700px;
-    min-width: 500px;
+  text-align: left;
+  width: 700px;
+  min-width: 500px;
 }
 
 .evolution-title {
-    padding: 1.5rem 2rem;
+  padding: 1.5rem 2rem;
 }
 
 .square {
-    border-left: 1px solid black;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    width: 30px;
-    min-width: 25px;
-    height: 15px;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 30px;
+  min-width: 25px;
+  height: 15px;
 }
 
 .square:last-child {
-    border-right: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .square input {
-    width: 30px;
-    height: 15px;
-    border: none;
+  width: 30px;
+  height: 15px;
+  border: none;
 }
 
 .squaresCount input {
-    min-width: 150px;
-    width: 150px;
+  min-width: 150px;
+  width: 150px;
 }
 
 .index {
-    background-color: yellow;
+  background-color: yellow;
+}
+
+.tape-configuration-button {
+  margin-right: 5px;
 }
 
 .error {
-    padding: 5px;
-    margin-top: 10px;
+  padding: 5px;
 }
 
 .error .message {
-    color: red;
-    font-size: 14px;
-    font-size: 1em;
-    font-weight: bold;
+  color: red;
+  font-size: 14px;
+  font-size: 1em;
+  font-weight: bold;
 }

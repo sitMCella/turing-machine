@@ -1,39 +1,95 @@
-<div class="nes-container with-title">
-  <div class="title">Initial configuration</div>
-  <div class="nes-table-responsive" style="text-align: center;">
-    <table class="nes-table is-bordered is-centered">
-      <tr><th style="width:200px">m-config</th><th style="width:200px">tape size</th></tr>
-      <tr><td style="width:200px">{{algorithm.getFirstConfiguration().name}}</td><td style="width:200px">{{initialTape.squares.length}}</td></tr>
-    </table>
-  </div>
-  <div style="margin-top: 10px">
-    <div class="settings">
-      <span class="squaresCount">
-        <input type="text" [(ngModel)]="squaresCount">
-      </span>
-      <button [disabled]="!squaresCount || !algorithm.completed" (click)="changeInitialTapeSize()" class="applySettings">Resize</button>
+<div class="tui-window tui-no-shadow white-168 black-255-text">
+  <fieldset class="tui-fieldset tui-border-dotted white-168">
+    <legend>Initial configuration</legend>
+    <div class="configuration" style="text-align: center">
+      <table class="tui-table is-bordered is-centered">
+        <thead class="black-168-text">
+          <tr>
+            <th style="width: 200px">m-config</th>
+            <th style="width: 200px">tape size</th>
+          </tr>
+        </thead>
+        <tbody class="black-168-text">
+          <tr>
+            <td style="width: 200px">
+              {{ algorithm.getFirstConfiguration().name }}
+            </td>
+            <td style="width: 200px">{{ initialTape.squares.length }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="actions">
-      <button [disabled]="!algorithm.completed" (click)="evolve()" class="evolve">Evolve</button>
-      <button [disabled]="algorithm.completed" (click)="stop()" class="stop">Stop</button>
-      <button *ngIf="!algorithm.break && !algorithm.completed" (click)="pause()" class="pause">Pause</button>
-      <button *ngIf="algorithm.break && !algorithm.completed" (click)="resume()" class="resume">Resume</button>
+    <div>
+      <div class="settings">
+        <span class="squaresCount">
+          <input type="text" [(ngModel)]="squaresCount" />
+        </span>
+        <button
+          [disabled]="!squaresCount || !algorithm.completed"
+          (click)="changeInitialTapeSize()"
+          class="tui-button tui-no-shadow tape-configuration-button applySettings"
+        >
+          Resize
+        </button>
+      </div>
+      <div class="actions">
+        <button
+          [disabled]="!algorithm.completed"
+          (click)="evolve()"
+          class="tui-button tui-no-shadow tape-configuration-button evolve"
+        >
+          Evolve
+        </button>
+        <button
+          [disabled]="algorithm.completed"
+          (click)="stop()"
+          class="tui-button tui-no-shadow tape-configuration-button stop"
+        >
+          Stop
+        </button>
+        <button
+          *ngIf="!algorithm.break && !algorithm.completed"
+          (click)="pause()"
+          class="tui-button tui-no-shadow tape-configuration-button pause"
+        >
+          Pause
+        </button>
+        <button
+          *ngIf="algorithm.break && !algorithm.completed"
+          (click)="resume()"
+          class="tui-button tui-no-shadow tape-configuration-button resume"
+        >
+          Resume
+        </button>
+      </div>
     </div>
+  </fieldset>
+</div>
+<div>
+  <div class="tui-window tui-no-shadow white-168 black-255-text">
+    <fieldset class="tui-fieldset tui-border-solid white-168">
+      <div class="complete-configuration-header">
+        <span class="configuration-name"><b>m-config</b></span>
+        <span class="title"><b>tape symbols and position of the head</b></span>
+      </div>
+      <div
+        class="complete-configuration"
+        *ngFor="let status of machineStatusObservable | async"
+      >
+        <span class="configuration-name">{{ status.configurationName }}</span>
+        <span
+          class="square"
+          *ngFor="let square of status.tape.squares; let i = index"
+          [ngClass]="{ index: status.index == i }"
+        >
+          {{ square.symbol.value }}
+        </span>
+      </div>
+      <div class="error">
+        <span *ngIf="algorithm.error" class="message">
+          {{ algorithm.errorMessage }}
+        </span>
+      </div>
+    </fieldset>
   </div>
-</div>
-<h2 class="evolution-title">Evolution</h2>
-<div class="complete-configuration-header">
-  <span class="configuration-name"><b>m-config</b></span>
-  <span class="title"><b>tape symbols and position of the head</b></span>
-</div>
-<div class="complete-configuration" *ngFor="let status of machineStatusObservable | async">
-  <span class="configuration-name">{{status.configurationName}}</span>
-  <span class="square" *ngFor="let square of status.tape.squares; let i = index;" [ngClass]="{'index': status.index == i}">
-    {{square.symbol.value}}
-  </span>
-</div>
-<div class="error">
-  <span *ngIf="algorithm.error" class="message">
-    {{algorithm.errorMessage}}
-  </span>
 </div>

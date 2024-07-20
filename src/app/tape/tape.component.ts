@@ -1,22 +1,33 @@
-import { Component, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Subscription, Observable, BehaviorSubject, Subject, interval } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MachineStatus } from '../machine-status';
-import { Tape } from '../tape';
-import { Square } from '../square';
-import { TapeSymbol } from '../tape-symbol';
-import { DeepCopy } from '../deep-copy';
-import { Algorithm } from '../algorithm';
-import { IntervalService } from '../interval.service';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import {
+  Subscription,
+  Observable,
+  BehaviorSubject,
+  Subject,
+  interval,
+} from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { MachineStatus } from "../machine-status";
+import { Tape } from "../tape";
+import { Square } from "../square";
+import { TapeSymbol } from "../tape-symbol";
+import { DeepCopy } from "../deep-copy";
+import { Algorithm } from "../algorithm";
+import { IntervalService } from "../interval.service";
 
 @Component({
-  selector: 'app-tape',
-  templateUrl: './tape.component.html',
-  styleUrls: ['./tape.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: "app-tape",
+  templateUrl: "./tape.component.html",
+  styleUrls: ["./tape.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TapeComponent implements OnInit, OnDestroy {
-
   @Input()
   public algorithm: Algorithm;
   public initialTape: Tape;
@@ -36,7 +47,9 @@ export class TapeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const deepCopy: DeepCopy = new DeepCopy();
-    this.initialTape = <Tape>deepCopy.apply(this.algorithm.getDefaultInitialTape());
+    this.initialTape = <Tape>(
+      deepCopy.apply(this.algorithm.getDefaultInitialTape())
+    );
     this.init();
     this.evolveAlgorithm();
   }
@@ -57,7 +70,10 @@ export class TapeComponent implements OnInit, OnDestroy {
   public changeInitialTapeSize(): void {
     const deepCopy: DeepCopy = new DeepCopy();
     const squares: Array<Square> = [];
-    const size: number = this.squaresCount < this.initialTape.squares.length ? this.squaresCount : this.initialTape.squares.length;
+    const size: number =
+      this.squaresCount < this.initialTape.squares.length
+        ? this.squaresCount
+        : this.initialTape.squares.length;
     for (let i = 0; i < size; i++) {
       squares.push(<Square>deepCopy.apply(this.initialTape.squares[i]));
     }
@@ -101,17 +117,18 @@ export class TapeComponent implements OnInit, OnDestroy {
   }
 
   private evolveAlgorithm(): void {
-    this.subscription = this.algorithm.evolve(this.initialTape)
-    .pipe(takeUntil(this.notifier))
-    .subscribe(
-      (value) => {
-        this.machineStatus.push(value);
-      },
-      (error) => {
-        this.clearAlgorithmStatus();
-      },
-      () => this.clearAlgorithmStatus()
-    );
+    this.subscription = this.algorithm
+      .evolve(this.initialTape)
+      .pipe(takeUntil(this.notifier))
+      .subscribe(
+        (value) => {
+          this.machineStatus.push(value);
+        },
+        (error) => {
+          this.clearAlgorithmStatus();
+        },
+        () => this.clearAlgorithmStatus(),
+      );
   }
 
   private clearAlgorithmStatus(): void {
@@ -141,10 +158,13 @@ export class TapeComponent implements OnInit, OnDestroy {
     if (this.intervalService) {
       this.intervalService.clear();
     }
-    if (this.subject && this.finished && (!this.subject.closed || !this.subject.isStopped)) {
+    if (
+      this.subject &&
+      this.finished &&
+      (!this.subject.closed || !this.subject.isStopped)
+    ) {
       this.subject.next(this.machineStatus);
       this.subject.complete();
     }
   }
-
 }

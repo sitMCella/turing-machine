@@ -1,38 +1,38 @@
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { OneThirdMachineComponent } from './one-third-machine.component';
-import { OneThirdAlgorithmService } from './one-third-algorithm.service';
-import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
-import { IntervalService } from '../interval.service';
-import { TimeServiceStub } from '../time-stub.service';
+import { ComponentFixture, TestBed, inject } from "@angular/core/testing";
+import { Router } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { OneThirdMachineComponent } from "./one-third-machine.component";
+import { OneThirdAlgorithmService } from "./one-third-algorithm.service";
+import { AlgorithmEvolutionService } from "../algorithm-evolution.service";
+import { IntervalService } from "../interval.service";
+import { TimeServiceStub } from "../time-stub.service";
 
-describe('OneThirdMachineComponent', () => {
-
+describe("OneThirdMachineComponent", () => {
   class RouterStub {
-    navigateByUrl(url: string) { return url; }
+    navigateByUrl(url: string) {
+      return url;
+    }
   }
 
   let component: OneThirdMachineComponent;
   let fixture: ComponentFixture<OneThirdMachineComponent>;
 
   beforeEach(() => {
-    const intervalService: IntervalService = new IntervalService(new TimeServiceStub());
+    const intervalService: IntervalService = new IntervalService(
+      new TimeServiceStub(),
+    );
     TestBed.configureTestingModule({
-      declarations: [
-        OneThirdMachineComponent
-      ],
+      declarations: [OneThirdMachineComponent],
       providers: [
         OneThirdAlgorithmService,
         AlgorithmEvolutionService,
         { provide: IntervalService, useValue: intervalService },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
       ],
       imports: [FormsModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -41,40 +41,42 @@ describe('OneThirdMachineComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show title', () => {
+  it("should show title", () => {
     const compiled: any = fixture.debugElement.nativeElement;
-    const title: HTMLElement = compiled.querySelector('.title');
+    const title: HTMLElement = compiled.querySelector(".title");
     expect(title).not.toBeNull();
     expect(title).toBeDefined();
-    expect(title.innerHTML).toBe('One third Turing machine');
+    expect(title.innerHTML).toBe("One third Turing machine");
   });
 
-  it('should show link to turing machines catalog', () => {
+  it("should show link to turing machines catalog", () => {
     const compiled: any = fixture.debugElement.nativeElement;
-    const reference: HTMLElement = compiled.querySelector('.reference');
+    const reference: HTMLElement = compiled.querySelector(".reference");
     expect(reference).not.toBeNull();
     expect(reference).toBeDefined();
   });
 
-  it('should open the turing machines catalog', inject([Router], (router: Router) => {
-    jest.spyOn(router, 'navigateByUrl');
+  it("should open the turing machines catalog", inject(
+    [Router],
+    (router: Router) => {
+      jest.spyOn(router, "navigateByUrl");
+      const compiled: any = fixture.debugElement.nativeElement;
+      const reference: HTMLElement = compiled.querySelector(".reference");
+
+      reference.click();
+
+      expect(router.navigateByUrl).toHaveBeenCalledWith("");
+    },
+  ));
+
+  it("should show turing machine configuration", () => {
     const compiled: any = fixture.debugElement.nativeElement;
-    const reference: HTMLElement = compiled.querySelector('.reference');
-
-    reference.click();
-
-    expect(router.navigateByUrl).toHaveBeenCalledWith('');
-  }));
-
-  it('should show turing machine configuration', () => {
-    const compiled: any = fixture.debugElement.nativeElement;
-    const configuration: HTMLElement = compiled.querySelector('.configuration');
+    const configuration: HTMLElement = compiled.querySelector(".configuration");
     expect(configuration).not.toBeNull();
     expect(configuration).toBeDefined();
   });
-
 });

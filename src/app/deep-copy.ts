@@ -1,9 +1,8 @@
-import { Square } from './square';
-import { Tape } from './tape';
-import { MachineStatus } from './machine-status';
+import { Square } from "./square";
+import { Tape } from "./tape";
+import { MachineStatus } from "./machine-status";
 
 export class DeepCopy {
-
   public apply(obj: object): object {
     let copy: object;
 
@@ -12,7 +11,11 @@ export class DeepCopy {
     }
 
     if (obj instanceof MachineStatus) {
-      return new MachineStatus(obj.configurationName, <Tape>this.apply(obj.tape), obj.index);
+      return new MachineStatus(
+        obj.configurationName,
+        <Tape>this.apply(obj.tape),
+        obj.index,
+      );
     }
 
     if (obj instanceof Array) {
@@ -33,6 +36,6 @@ export class DeepCopy {
       return copy;
     }
 
-    throw new Error('Unable to copy the object. Type not supported.');
+    throw new Error("Unable to copy the object. Type not supported.");
   }
 }

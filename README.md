@@ -10,17 +10,18 @@ The first column contains the m-configuration, the second column contains the ta
 The following is an example of a Turing machine Table:
 
 | m-config | symbol | operations | final m-config |
-| :------: | :------: | :------: | :------: |
-| b | none | P0,R | c |
-| c | none | R | e |
-| e | none | P1,R | f |
-| f | none | R | b |
+| :------: | :----: | :--------: | :------------: |
+|    b     |  none  |    P0,R    |       c        |
+|    c     |  none  |     R      |       e        |
+|    e     |  none  |    P1,R    |       f        |
+|    f     |  none  |     R      |       b        |
 
 The machines make use of a one-dimensional tape divided into squares.
 
 The application prints at every computational stage the complete configuration (the current m-configuration, all the symbols into the tape and the position of the head).
 
 There are some assumptions:
+
 - The machines compute binary numeric sequences
 - The machines use only alternate squares for printing numeric sequences
 - The tape does not extend infinitely toward the right
@@ -33,10 +34,12 @@ There are some assumptions:
 - The Turing machine evolution starts with the first m-configuration listed in the Table
 
 Turing machine initial setup:
+
 - The initial tape is composed of 20 blank squares
 - The head is located on the first square of the initial tape
 
 Features:
+
 - Turing machine async evolution
 - The initial tape square symbols are editable
 - The initial tape squares count can be changed
@@ -59,13 +62,14 @@ Run `npm start` on another terminal for open dev Electron window.
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
 ## Running unit tests
+
 Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/docs/testing-frameworks).
 
 # Production
 
 ## Build and Create Docker Image
 
-``` sh
+```sh
 docker-compose build
 ```
 
@@ -82,4 +86,5 @@ http://localhost:80
 ```
 
 ## Demo
+
 https://sitmcella.github.io/turing-machine/

@@ -1,17 +1,17 @@
-import { MachineStatus } from './machine-status';
-import { Tape } from './tape';
-import { Square } from './square';
-import { DeepCopy } from './deep-copy';
-import { TapeSymbol } from './tape-symbol';
+import { MachineStatus } from "./machine-status";
+import { Tape } from "./tape";
+import { Square } from "./square";
+import { DeepCopy } from "./deep-copy";
+import { TapeSymbol } from "./tape-symbol";
 
-describe('DeepCopy', () => {
+describe("DeepCopy", () => {
   let deepCopy: DeepCopy;
 
   beforeEach(() => {
     deepCopy = new DeepCopy();
   });
 
-  it('should copy Square object', () => {
+  it("should copy Square object", () => {
     const square: Square = new Square(1, new TapeSymbol(TapeSymbol.ANY));
 
     const copiedSquare: Square = <Square>deepCopy.apply(square);
@@ -21,8 +21,11 @@ describe('DeepCopy', () => {
     expect(copiedSquare.symbol.value).toBe(TapeSymbol.ANY);
   });
 
-  it('should copy Tape object', () => {
-    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.NONE)), new Square(2, new TapeSymbol(TapeSymbol.SCHWA))];
+  it("should copy Tape object", () => {
+    const squares: Array<Square> = [
+      new Square(1, new TapeSymbol(TapeSymbol.NONE)),
+      new Square(2, new TapeSymbol(TapeSymbol.SCHWA)),
+    ];
     const tape: Tape = new Tape(squares);
 
     const copiedTape: Tape = <Tape>deepCopy.apply(tape);
@@ -36,21 +39,30 @@ describe('DeepCopy', () => {
     expect(copiedTape.squares[1].symbol.value).toBe(TapeSymbol.SCHWA);
   });
 
-  it('should copy MachineStatus object', () => {
-    const configurationName = 'configuration name';
-    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.ONE))];
+  it("should copy MachineStatus object", () => {
+    const configurationName = "configuration name";
+    const squares: Array<Square> = [
+      new Square(1, new TapeSymbol(TapeSymbol.ONE)),
+    ];
     const tape: Tape = new Tape(squares);
-    const machineStatus: MachineStatus = new MachineStatus(configurationName, tape, 3);
+    const machineStatus: MachineStatus = new MachineStatus(
+      configurationName,
+      tape,
+      3,
+    );
 
-    const copiedMachineStatus: MachineStatus = <MachineStatus>deepCopy.apply(machineStatus);
+    const copiedMachineStatus: MachineStatus = <MachineStatus>(
+      deepCopy.apply(machineStatus)
+    );
 
     expect(copiedMachineStatus).not.toBe(machineStatus);
     expect(copiedMachineStatus.configurationName).toBe(configurationName);
     expect(copiedMachineStatus.tape).not.toBe(machineStatus.tape);
     expect(copiedMachineStatus.tape.squares.length).toBe(1);
     expect(copiedMachineStatus.tape.squares[0].id).toBe(1);
-    expect(copiedMachineStatus.tape.squares[0].symbol.value).toBe(TapeSymbol.ONE);
+    expect(copiedMachineStatus.tape.squares[0].symbol.value).toBe(
+      TapeSymbol.ONE,
+    );
     expect(copiedMachineStatus.index).toBe(3);
   });
-
 });

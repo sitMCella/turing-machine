@@ -1,4 +1,4 @@
-import { TapeSymbol } from './tape-symbol';
+import { TapeSymbol } from "./tape-symbol";
 
 export class Square {
   public id: number;
