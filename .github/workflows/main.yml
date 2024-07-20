@@ -22,7 +22,7 @@ jobs:
       - name: Deploy to gh pages
         run: |
           git remote set-url origin https://git:${GH_TOKEN}@github.com/sitMCella/turing-machine.git
-          npx angular-cli-ghpages --dir=dist/turing-machine --no-silent -u "github-actions-bot <support+actions@github.com>"
+          npx angular-cli-ghpages --dir=dist/turing-machine --no-silent --name="sitMCella" --email=phcella@libero.it
         env:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
