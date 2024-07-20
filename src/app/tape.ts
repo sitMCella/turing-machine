@@ -1,4 +1,4 @@
-import { Square } from './square';
+import { Square } from "./square";
 
 export class Tape {
   squares: Array<Square>;

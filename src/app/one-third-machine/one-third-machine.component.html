@@ -1,20 +1,59 @@
 <div class="container">
-  <h1>One third Turing machine</h1>
-  <div class="reference" (click)="navigateTo('')">Back to Turing machines catalog</div>
-  <hr>
-  <h2 class="subtitle">Turing Machine</h2>
-  <div class="configuration">
-    <div class="nes-table-responsive">
-      <table class="nes-table is-bordered is-centered">
-        <tr><th style="width:200px">m-config</th><th style="width:200px">symbol</th><th style="width:500px">operations</th><th style="width:200px">final m-config</th></tr>
-        <tr><td style="width:200px">b</td><td style="width:200px">none</td><td style="width:500px">P0,R</td><td style="width:200px">c</td></tr>
-        <tr><td>c</td><td>none</td><td>R</td><td>e</td></tr>
-        <tr><td>e</td><td>none</td><td>P1,R</td><td>f</td></tr>
-        <tr><td>f</td><td>none</td><td>R</td><td>b</td></tr>
-      </table>
-    </div>
+  <div
+    class="tui-panel cyan-168 full-width black-255-text tui-no-shadow center"
+  >
+    <h1>One third Turing machine</h1>
   </div>
-  <div class="app-tape">
-    <app-tape [algorithm]="algorithm"></app-tape>
+  <div class="tui-panel cyan-168 full-width black-255-text tui-no-shadow">
+    <button class="tui-button tui-no-shadow" (click)="navigateTo('')">
+      Catalog
+    </button>
   </div>
+  <div class="tui-divider"></div>
+  <div
+    class="tui-window tui-no-shadow white-168 black-255-text turing-machine-configuration"
+  >
+    <fieldset class="tui-fieldset tui-border-dotted white-168">
+      <legend>Turing Machine</legend>
+      <div class="configuration">
+        <table class="tui-table is-bordered is-centered">
+          <thead class="black-168-text">
+            <tr>
+              <th style="width: 200px">m-config</th>
+              <th style="width: 200px">symbol</th>
+              <th style="width: 500px">operations</th>
+              <th style="width: 200px">final m-config</th>
+            </tr>
+          </thead>
+          <tbody class="black-168-text">
+            <tr>
+              <td style="width: 200px">b</td>
+              <td style="width: 200px">none</td>
+              <td style="width: 500px">P0,R</td>
+              <td style="width: 200px">c</td>
+            </tr>
+            <tr>
+              <td>c</td>
+              <td>none</td>
+              <td>R</td>
+              <td>e</td>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td>none</td>
+              <td>P1,R</td>
+              <td>f</td>
+            </tr>
+            <tr>
+              <td>f</td>
+              <td>none</td>
+              <td>R</td>
+              <td>b</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+  <app-tape [algorithm]="algorithm"></app-tape>
 </div>

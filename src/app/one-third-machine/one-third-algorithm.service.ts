@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Algorithm } from '../algorithm';
-import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
-import { PrintZeroOperation } from '../operations/print-zero-operation';
-import { MoveRightOperation } from '../operations/move-right-operation';
-import { PrintOneOperation } from '../operations/print-one-operation';
-import { Configuration } from '../configuration';
-import { MachineStatus } from '../machine-status';
-import { Square } from '../square';
-import { Tape } from '../tape';
-import { TapeSymbol } from '../tape-symbol';
+import { Injectable } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
+import { Algorithm } from "../algorithm";
+import { AlgorithmEvolutionService } from "../algorithm-evolution.service";
+import { PrintZeroOperation } from "../operations/print-zero-operation";
+import { MoveRightOperation } from "../operations/move-right-operation";
+import { PrintOneOperation } from "../operations/print-one-operation";
+import { Configuration } from "../configuration";
+import { MachineStatus } from "../machine-status";
+import { Square } from "../square";
+import { Tape } from "../tape";
+import { TapeSymbol } from "../tape-symbol";
 
 @Injectable()
 export class OneThirdAlgorithmService implements Algorithm {
@@ -19,15 +19,36 @@ export class OneThirdAlgorithmService implements Algorithm {
 
   constructor(private algorithmEvolutionService: AlgorithmEvolutionService) {
     this.defaultInitialTape = this.createDefaultInitialTape();
-    const firstConfiguration = new Configuration('b', new TapeSymbol(TapeSymbol.NONE),
-      [new PrintZeroOperation(), new MoveRightOperation()], 'c');
-    const secondConfiguration = new Configuration('c', new TapeSymbol(TapeSymbol.NONE),
-      [new MoveRightOperation()], 'e');
-    const thirdConfiguration = new Configuration('e', new TapeSymbol(TapeSymbol.NONE),
-      [new PrintOneOperation(), new MoveRightOperation()], 'f');
-    const fourthConfiguration = new Configuration('f', new TapeSymbol(TapeSymbol.NONE),
-      [new MoveRightOperation()], 'b');
-    this.configurations = [firstConfiguration, secondConfiguration, thirdConfiguration, fourthConfiguration];
+    const firstConfiguration = new Configuration(
+      "b",
+      new TapeSymbol(TapeSymbol.NONE),
+      [new PrintZeroOperation(), new MoveRightOperation()],
+      "c",
+    );
+    const secondConfiguration = new Configuration(
+      "c",
+      new TapeSymbol(TapeSymbol.NONE),
+      [new MoveRightOperation()],
+      "e",
+    );
+    const thirdConfiguration = new Configuration(
+      "e",
+      new TapeSymbol(TapeSymbol.NONE),
+      [new PrintOneOperation(), new MoveRightOperation()],
+      "f",
+    );
+    const fourthConfiguration = new Configuration(
+      "f",
+      new TapeSymbol(TapeSymbol.NONE),
+      [new MoveRightOperation()],
+      "b",
+    );
+    this.configurations = [
+      firstConfiguration,
+      secondConfiguration,
+      thirdConfiguration,
+      fourthConfiguration,
+    ];
   }
 
   public getFirstConfiguration(): Configuration {
@@ -39,7 +60,10 @@ export class OneThirdAlgorithmService implements Algorithm {
   }
 
   public evolve(initialTape: Tape): Observable<MachineStatus> {
-    return this.algorithmEvolutionService.evolve(this.configurations, initialTape);
+    return this.algorithmEvolutionService.evolve(
+      this.configurations,
+      initialTape,
+    );
   }
 
   public stop(): void {
@@ -85,5 +109,4 @@ export class OneThirdAlgorithmService implements Algorithm {
     }
     return new Tape(squares);
   }
-
 }

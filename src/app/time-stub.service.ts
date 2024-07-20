@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { TimeService } from './time.service';
-import { Subject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { TimeService } from "./time.service";
+import { Subject, Observable } from "rxjs";
 
 @Injectable()
 export class TimeServiceStub extends TimeService {
@@ -31,5 +31,4 @@ export class TimeServiceStub extends TimeService {
       this.timeSubject.next(i);
     }
   }
-
 }

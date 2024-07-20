@@ -12,12 +12,14 @@ function createWindow() {
   process.env.host = "http://localhost:4200";
 
   // load the dist folder from Angular
-  if (process.env.PACKAGE === 'true'){
-    win.loadURL(url.format({
-      pathname: path.join(__dirname, '/dist/turing-machine/index.html'),
-      protocol: 'file:',
-      slashes: true
-    }));
+  if (process.env.PACKAGE === "true") {
+    win.loadURL(
+      url.format({
+        pathname: path.join(__dirname, "/dist/turing-machine/index.html"),
+        protocol: "file:",
+        slashes: true,
+      }),
+    );
   } else {
     win.loadURL(process.env.HOST);
     win.webContents.openDevTools();

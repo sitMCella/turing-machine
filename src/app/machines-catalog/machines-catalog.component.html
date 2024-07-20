@@ -1,10 +1,20 @@
-<div class="nes-container">
-  <h1>Turing machines catalog</h1>
-  <div class="lists">
-    <ul class="catalog nes-list is-circle">
-      <li (click)="navigateTo('/one-third')">One third Turing machine</li>
-      <li (click)="navigateTo('/one-third-single-m-config')">One third Turing machine single m-config</li>
-      <li (click)="navigateTo('/increasing-ones')">Increasing Ones Turing machine</li>
-    </ul>
+<div class="container">
+  <div class="tui-window tui-no-shadow white-168 black-255-text">
+    <div
+      class="tui-panel cyan-168 full-width black-255-text tui-no-shadow center"
+    >
+      <h1>Turing machines catalog</h1>
+    </div>
+    <div class="lists">
+      <ul class="catalog tui-fieldset is-circle">
+        <li (click)="navigateTo('/one-third')">One third Turing machine</li>
+        <li (click)="navigateTo('/one-third-single-m-config')">
+          One third Turing machine single m-config
+        </li>
+        <li (click)="navigateTo('/increasing-ones')">
+          Increasing Ones Turing machine
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { MachinesCatalogComponent } from './machines-catalog.component';
+import { ComponentFixture, TestBed, inject } from "@angular/core/testing";
+import { Router } from "@angular/router";
+import { MachinesCatalogComponent } from "./machines-catalog.component";
 
-describe('MachinesCatalogComponent', () => {
-
+describe("MachinesCatalogComponent", () => {
   class RouterStub {
-    navigateByUrl(url: string) { return url; }
+    navigateByUrl(url: string) {
+      return url;
+    }
   }
 
   let component: MachinesCatalogComponent;
@@ -14,11 +15,8 @@ describe('MachinesCatalogComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MachinesCatalogComponent],
-      providers: [
-        { provide: Router, useClass: RouterStub }
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: Router, useClass: RouterStub }],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -27,49 +25,65 @@ describe('MachinesCatalogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show the turing machines catalog', () => {
+  it("should show the turing machines catalog", () => {
     const compiled: any = fixture.debugElement.nativeElement;
-    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+    const catalog: Array<HTMLElement> =
+      compiled.querySelectorAll(".catalog>li");
     expect(catalog).not.toBeNull();
     expect(catalog).toBeDefined();
     expect(catalog.length).toBe(3);
-    expect(catalog[0].innerHTML).toBe('One third Turing machine');
-    expect(catalog[1].innerHTML).toBe('One third Turing machine single m-config');
-    expect(catalog[2].innerHTML).toBe('Increasing Ones Turing machine');
+    expect(catalog[0].innerHTML).toBe("One third Turing machine");
+    expect(catalog[1].innerHTML).toBe(
+      "One third Turing machine single m-config",
+    );
+    expect(catalog[2].innerHTML).toBe("Increasing Ones Turing machine");
   });
 
-  it('should open the one third turing machine', inject([Router], (router: Router) => {
-    jest.spyOn(router, 'navigateByUrl');
-    const compiled = fixture.debugElement.nativeElement;
-    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+  it("should open the one third turing machine", inject(
+    [Router],
+    (router: Router) => {
+      jest.spyOn(router, "navigateByUrl");
+      const compiled = fixture.debugElement.nativeElement;
+      const catalog: Array<HTMLElement> =
+        compiled.querySelectorAll(".catalog>li");
 
-    catalog[0].click();
+      catalog[0].click();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/one-third');
-  }));
+      expect(router.navigateByUrl).toHaveBeenCalledWith("/one-third");
+    },
+  ));
 
-  it('should open the one third turing machine single m-config', inject([Router], (router: Router) => {
-    jest.spyOn(router, 'navigateByUrl');
-    const compiled = fixture.debugElement.nativeElement;
-    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+  it("should open the one third turing machine single m-config", inject(
+    [Router],
+    (router: Router) => {
+      jest.spyOn(router, "navigateByUrl");
+      const compiled = fixture.debugElement.nativeElement;
+      const catalog: Array<HTMLElement> =
+        compiled.querySelectorAll(".catalog>li");
 
-    catalog[1].click();
+      catalog[1].click();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/one-third-single-m-config');
-  }));
+      expect(router.navigateByUrl).toHaveBeenCalledWith(
+        "/one-third-single-m-config",
+      );
+    },
+  ));
 
-  it('should open the increasing ones turing machine', inject([Router], (router: Router) => {
-    jest.spyOn(router, 'navigateByUrl');
-    const compiled = fixture.debugElement.nativeElement;
-    const catalog: Array<HTMLElement> = compiled.querySelectorAll('.catalog>li');
+  it("should open the increasing ones turing machine", inject(
+    [Router],
+    (router: Router) => {
+      jest.spyOn(router, "navigateByUrl");
+      const compiled = fixture.debugElement.nativeElement;
+      const catalog: Array<HTMLElement> =
+        compiled.querySelectorAll(".catalog>li");
 
-    catalog[2].click();
+      catalog[2].click();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/increasing-ones');
-  }));
-
+      expect(router.navigateByUrl).toHaveBeenCalledWith("/increasing-ones");
+    },
+  ));
 });

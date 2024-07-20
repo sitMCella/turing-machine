@@ -1,40 +1,36 @@
 .container {
-    padding: 1.5rem 2rem;
-    border-width: 4px;
+  padding: 1.5rem 2rem;
+  border-width: 4px;
 }
 
 .title {
-    font-size: 18px;
-    font-size: 1.2857em;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.subtitle {
-    margin-top: 20px;
+  font-size: 18px;
+  font-size: 1.2857em;
+  font-weight: bold;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .reference {
-    margin-left: 20px;
-    margin-bottom: 20px;
-    text-decoration: underline;
-    cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.turing-machine-configuration {
+  margin-right: 10px;
+  float: left;
 }
 
 .configuration {
-    text-align: center;
+  text-align: center;
 }
 
 .configuration table {
-    width: 404px;
+  width: 404px;
 }
 
 .configuration table td {
-    width: 100px;
-}
-
-.app-tape {
-    margin-top: 30px;
+  width: 100px;
 }

@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { TimeService } from './time.service';
+import { Injectable } from "@angular/core";
+import { Subscription } from "rxjs";
+import { TimeService } from "./time.service";
 
 @Injectable()
 export class IntervalService {
-
-  constructor(private timeService: TimeService) {
-  }
+  constructor(private timeService: TimeService) {}
 
   public setInterval(time: number) {
     this.timeService.setInterval(time);
@@ -19,5 +17,4 @@ export class IntervalService {
   public clear(): void {
     this.timeService.clear();
   }
-
 }

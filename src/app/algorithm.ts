@@ -1,7 +1,7 @@
-import { Subscription, Observable } from 'rxjs';
-import { Configuration } from './configuration';
-import { Tape } from './tape';
-import { MachineStatus } from './machine-status';
+import { Subscription, Observable } from "rxjs";
+import { Configuration } from "./configuration";
+import { Tape } from "./tape";
+import { MachineStatus } from "./machine-status";
 
 export interface Algorithm {
   completed: boolean;

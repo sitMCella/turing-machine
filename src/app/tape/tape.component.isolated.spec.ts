@@ -1,16 +1,15 @@
-import { Subscription, Observable, of } from 'rxjs';
-import { TapeComponent } from './tape.component';
-import { AlgorithmEvolutionService } from '../algorithm-evolution.service';
-import { OneThirdAlgorithmService } from '../one-third-machine/one-third-algorithm.service';
-import { MachineStatus } from '../machine-status';
-import { Tape } from '../tape';
-import { Square } from '../square';
-import { TapeSymbol } from '../tape-symbol';
-import { IntervalService } from '../interval.service';
-import { TimeServiceStub } from '../time-stub.service';
+import { Subscription, Observable, of } from "rxjs";
+import { TapeComponent } from "./tape.component";
+import { AlgorithmEvolutionService } from "../algorithm-evolution.service";
+import { OneThirdAlgorithmService } from "../one-third-machine/one-third-algorithm.service";
+import { MachineStatus } from "../machine-status";
+import { Tape } from "../tape";
+import { Square } from "../square";
+import { TapeSymbol } from "../tape-symbol";
+import { IntervalService } from "../interval.service";
+import { TimeServiceStub } from "../time-stub.service";
 
-describe('TapeComponent', () => {
-
+describe("TapeComponent", () => {
   let component: TapeComponent;
   let intervalService: IntervalService;
   let intervalServiceAlgorithmEvolution: IntervalService;
@@ -24,30 +23,40 @@ describe('TapeComponent', () => {
     intervalService = new IntervalService(new TimeServiceStub());
     component = new TapeComponent(intervalService);
     subscription = new Subscription();
-    intervalServiceAlgorithmEvolution = new IntervalService(new TimeServiceStub());
-    const algorithmEvolutionService: AlgorithmEvolutionService = new AlgorithmEvolutionService(intervalServiceAlgorithmEvolution);
+    intervalServiceAlgorithmEvolution = new IntervalService(
+      new TimeServiceStub(),
+    );
+    const algorithmEvolutionService: AlgorithmEvolutionService =
+      new AlgorithmEvolutionService(intervalServiceAlgorithmEvolution);
     algorithm = new OneThirdAlgorithmService(algorithmEvolutionService);
     algorithm.subscription = subscription;
     component.algorithm = algorithm;
-    observable = of(new MachineStatus('configuration name', null, 33));
-    jest.spyOn(algorithm, 'evolve').mockReturnValue(observable);
-    jest.spyOn(observable, 'pipe').mockReturnValue(observable);
+    observable = of(new MachineStatus("configuration name", null, 33));
+    jest.spyOn(algorithm, "evolve").mockReturnValue(observable);
+    jest.spyOn(observable, "pipe").mockReturnValue(observable);
     machineStatusViewSubscription = new Subscription();
-    jest.spyOn(observable, 'subscribe').mockReturnValue(machineStatusViewSubscription);
-    jest.spyOn(algorithm, 'subscription', 'get').mockReturnValue(subscription);
-    const squares: Array<Square> = [new Square(1, new TapeSymbol(TapeSymbol.NONE)), new Square(2, new TapeSymbol(TapeSymbol.ONE))];
+    jest
+      .spyOn(observable, "subscribe")
+      .mockReturnValue(machineStatusViewSubscription);
+    jest.spyOn(algorithm, "subscription", "get").mockReturnValue(subscription);
+    const squares: Array<Square> = [
+      new Square(1, new TapeSymbol(TapeSymbol.NONE)),
+      new Square(2, new TapeSymbol(TapeSymbol.ONE)),
+    ];
     defaultInitialTape = new Tape(squares);
-    jest.spyOn(algorithm, 'getDefaultInitialTape').mockReturnValue(defaultInitialTape);
-    jest.spyOn(subscription, 'unsubscribe');
-    jest.spyOn(intervalService, 'clear');
-    jest.spyOn(intervalService, 'subscribe');
-    jest.spyOn(intervalService, 'setInterval');
-    jest.spyOn(intervalServiceAlgorithmEvolution, 'clear');
-    jest.spyOn(intervalServiceAlgorithmEvolution, 'subscribe');
-    jest.spyOn(intervalServiceAlgorithmEvolution, 'setInterval');
+    jest
+      .spyOn(algorithm, "getDefaultInitialTape")
+      .mockReturnValue(defaultInitialTape);
+    jest.spyOn(subscription, "unsubscribe");
+    jest.spyOn(intervalService, "clear");
+    jest.spyOn(intervalService, "subscribe");
+    jest.spyOn(intervalService, "setInterval");
+    jest.spyOn(intervalServiceAlgorithmEvolution, "clear");
+    jest.spyOn(intervalServiceAlgorithmEvolution, "subscribe");
+    jest.spyOn(intervalServiceAlgorithmEvolution, "setInterval");
   });
 
-  it('should initially have the default initial tape', () => {
+  it("should initially have the default initial tape", () => {
     component.ngOnInit();
 
     expect(component.initialTape).not.toBeNull();
@@ -56,63 +65,60 @@ describe('TapeComponent', () => {
     expect(component.initialTape.squares.length).toEqual(2);
   });
 
-  it('should stop timer', () => {
+  it("should stop timer", () => {
     component.ngOnInit();
 
     expect(intervalService.clear).toHaveBeenCalled();
   });
 
-  it('should start timer', () => {
+  it("should start timer", () => {
     component.ngOnInit();
 
     expect(intervalService.setInterval).toHaveBeenCalled();
   });
 
-  it('should initially have undefined squaresCount', () => {
+  it("should initially have undefined squaresCount", () => {
     component.ngOnInit();
 
     expect(component.squaresCount).not.toBeNull();
     expect(component.squaresCount).toBeUndefined();
   });
 
-  it('should initially create machine status view observable', () => {
+  it("should initially create machine status view observable", () => {
     component.ngOnInit();
 
     expect(component.machineStatusObservable).not.toBeNull();
     expect(component.machineStatusObservable).toBeDefined();
   });
 
-  it('should initially evolve algorithm', () => {
+  it("should initially evolve algorithm", () => {
     component.ngOnInit();
 
     expect(algorithm.evolve).toHaveBeenCalled();
   });
 
-  describe('evolve', () => {
-
-    it('should create machine status view observable', () => {
+  describe("evolve", () => {
+    it("should create machine status view observable", () => {
       component.evolve();
 
       expect(component.machineStatusObservable).not.toBeNull();
       expect(component.machineStatusObservable).toBeDefined();
     });
 
-    it('should evolve algorithm', () => {
+    it("should evolve algorithm", () => {
       component.evolve();
 
       expect(algorithm.evolve).toHaveBeenCalled();
     });
-
   });
 
-  describe('stop', () => {
-
+  describe("stop", () => {
     beforeEach(() => {
-      jest.spyOn(algorithm, 'stop');
-      jest.spyOn(machineStatusViewSubscription, 'unsubscribe');
+      jest.spyOn(algorithm, "stop");
+      jest.spyOn(machineStatusViewSubscription, "unsubscribe");
     });
 
-    it('should stop algorithm evolution', () => {
+    it("should stop algorithm evolution", () => {
       component.evolve();
 
       component.stop();
@@ -120,7 +126,7 @@ describe('TapeComponent', () => {
       expect(algorithm.stop).toHaveBeenCalled();
     });
 
-    it('should unsubscribe from algorithm', () => {
+    it("should unsubscribe from algorithm", () => {
       component.evolve();
 
       component.stop();
@@ -128,23 +134,21 @@ describe('TapeComponent', () => {
       expect(machineStatusViewSubscription.unsubscribe).toHaveBeenCalled();
     });
 
-    it('should stop timer', () => {
+    it("should stop timer", () => {
       component.evolve();
 
       component.stop();
 
       expect(intervalService.clear).toHaveBeenCalled();
     });
-
   });
 
-  describe('pause', () => {
-
+  describe("pause", () => {
     beforeEach(() => {
-      jest.spyOn(algorithm, 'pause');
+      jest.spyOn(algorithm, "pause");
     });
 
-    it('should pause algorithm evolution', () => {
+    it("should pause algorithm evolution", () => {
       component.evolve();
 
       component.pause();
@@ -152,23 +156,21 @@ describe('TapeComponent', () => {
       expect(algorithm.pause).toHaveBeenCalled();
     });
 
-    it('should stop timer', () => {
+    it("should stop timer", () => {
       component.evolve();
 
       component.pause();
 
       expect(intervalService.clear).toHaveBeenCalled();
     });
-
   });
 
-  describe('resume', () => {
-
+  describe("resume", () => {
     beforeEach(() => {
-      jest.spyOn(algorithm, 'resume');
+      jest.spyOn(algorithm, "resume");
     });
 
-    it('should resume algorithm evolution', () => {
+    it("should resume algorithm evolution", () => {
       component.evolve();
       component.pause();
 
@@ -177,7 +179,7 @@ describe('TapeComponent', () => {
       expect(algorithm.resume).toHaveBeenCalled();
     });
 
-    it('should start timer', () => {
+    it("should start timer", () => {
       component.evolve();
       component.pause();
 
@@ -185,7 +187,5 @@ describe('TapeComponent', () => {
 
       expect(intervalService.setInterval).toHaveBeenCalled();
     });
-
   });
-
 });

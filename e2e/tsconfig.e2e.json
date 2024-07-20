@@ -5,10 +5,6 @@
     "baseUrl": "./",
     "module": "commonjs",
     "target": "ES2022",
-    "types": [
-      "jasmine",
-      "jasminewd2",
-      "node"
-    ]
+    "types": ["jasmine", "jasminewd2", "node"]
   }
 }
